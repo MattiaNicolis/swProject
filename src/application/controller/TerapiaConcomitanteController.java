@@ -2,8 +2,8 @@ package application.controller;
 
 import java.io.IOException;
 
-import application.Amministratore;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.Sessione;
 import application.model.TerapiaConcomitante;
 import application.view.Navigator;
 import javafx.event.ActionEvent;

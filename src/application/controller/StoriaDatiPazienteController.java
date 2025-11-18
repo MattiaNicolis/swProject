@@ -1,15 +1,11 @@
 package application.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
-import application.Amministratore;
-import application.Database;
-import application.MessageUtils;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.MessageUtils;
+import application.admin.Sessione;
 import application.model.FattoriComorbiditàAllergie;
 import application.model.Patologia;
 import application.model.TerapiaConcomitante;
@@ -44,272 +40,270 @@ public class StoriaDatiPazienteController {
 		tipologia.getItems().addAll("Fattore Di Rischio", "Comorbidità", "Allergia");
 	}
 	
-	// GESTIONE FATTORI DI RISCHIO E COMORBIDITÀ
+	public enum StoriaDatiPazienteResult {
+		SUCCESS,
+		FAILURE,
+		DATA_ALREADY_EXISTS,
+		INVALID_DATE,
+		EMPTY_FIELDS,
+	}
+
+	// GESTIONE FATTORI DI RISCHIO, COMORBIDITÀ E ALLERGIE
+	public StoriaDatiPazienteResult tryCreateFattoreComorbiditàAllergie(String tipo, String nome) {
+		if(nome == null || nome.isBlank() || tipo == null) {
+			return StoriaDatiPazienteResult.EMPTY_FIELDS;
+		}
+		else if (tipo.equals("Fattore Di Rischio") && 
+				Amministratore.getFattoriDiRischioByCF(p.getCf()).stream()
+					.anyMatch(f -> f.getNome().equalsIgnoreCase(nome))) {
+			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
+		}
+		else if(tipo.equals("Comorbidità") && 
+				Amministratore.getComorbiditàByCF(p.getCf()).stream()
+					.anyMatch(c -> c.getNome().equalsIgnoreCase(nome))) {
+			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
+		}
+		else if(tipo.equals("Allergia") && 
+				Amministratore.getAllergieByCF(p.getCf()).stream()
+					.anyMatch(a -> a.getNome().equalsIgnoreCase(nome))) {
+			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
+		}
+		
+		FattoriComorbiditàAllergie fca = new FattoriComorbiditàAllergie(
+				p.getCf(),
+				tipologia.getValue(),
+				nomeField.getText(),
+				u.getCf()
+			);
+		boolean ok = Amministratore.fattoriComorbiditàAllergieDAO.creaFattoreComorbiditàAllergia(fca);
+		if(ok) {
+			return StoriaDatiPazienteResult.SUCCESS;
+		} else {
+			MessageUtils.showError("Errore nell'inserimento del dato.");
+			return StoriaDatiPazienteResult.FAILURE;
+		}
+	}
 	@FXML
 	private void aggiungiFattoreComorbiditàAllergia(ActionEvent event) throws IOException { 
+		StoriaDatiPazienteResult result = tryCreateFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
 
-		if(nomeField.getText() == null || nomeField.getText().isBlank() || tipologia.getValue() == null) {
-			MessageUtils.showError("Inserire i dati correttamente.");
-			return;
+		switch (result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Inserire tutti i dati.");
+			case DATA_ALREADY_EXISTS -> MessageUtils.showError("Dato già presente.");
+			case FAILURE -> MessageUtils.showError("Errore nell'inserimento del dato.");
+			case INVALID_DATE -> {} // Caso non interessante per questo dato
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Dato paziente inserito.");
+				switchToMostraDatiPaziente(event);
+			}
 		}
-	
-		if (tipologia.getValue().equals("Fattore Di Rischio") && 
-				Amministratore.fattoriDiRischio.stream()
-					.anyMatch(f -> f.getNome().equalsIgnoreCase(nomeField.getText()) && f.getCF().equals(p.getCf()))) {
-			MessageUtils.showError("Fattore di rischio già presente.");
-			return;
-		}
-		
-		if (tipologia.getValue().equals("Comorbidità") && 
-				Amministratore.comorbidità.stream()
-					.anyMatch(c -> c.getNome().equalsIgnoreCase(nomeField.getText()) && c.getCF().equals(p.getCf()))) {
-			MessageUtils.showError("Comorbidità già presente.");
-			return;
-		}
-		
-		if (tipologia.getValue().equals("Allergia") && 
-				Amministratore.allergie.stream()
-					.anyMatch(a -> a.getNome().equalsIgnoreCase(nomeField.getText()) && a.getCF().equals(p.getCf()))) {
-			MessageUtils.showError("Allergia già presente.");
-			return;
-		}
-		
-		String query = "INSERT INTO fattoricomorbiditàallergie (CF, tipo, nome, modificato) VALUES (?, ?, ?, ?)";
-			try(Connection conn = Database.getConnection();
-					PreparedStatement stmt = conn.prepareStatement(query)) {
-						
-				stmt.setString(1, p.getCf());
-				stmt.setString(2, tipologia.getValue());
-				stmt.setString(3, nomeField.getText());
-				stmt.setString(4, u.getCf());
-						
-				FattoriComorbiditàAllergie storiaPaziente = new FattoriComorbiditàAllergie(p.getCf(), nomeField.getText(), u.getCf());
-						
-				int rows = stmt.executeUpdate();
-						
-				if(rows > 0) {
-					if(tipologia.getValue().equals("Fattore Di Rischio"))
-						Amministratore.fattoriDiRischio.add(storiaPaziente);
-					else if(tipologia.getValue().equals("Comorbidità"))
-						Amministratore.comorbidità.add(storiaPaziente);
-					else if(tipologia.getValue().equals("Allergia"))
-						Amministratore.allergie.add(storiaPaziente);
-					
-					Amministratore.loadFattoriComorbiditàAllergieFromDatabase();
-					MessageUtils.showSuccess("Dato paziente inserito.");
-					switchToMostraDatiPaziente(event);
-				} else {
-					MessageUtils.showError("Errore nell'inserimento del dato.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}	
 	}
-	
+	public StoriaDatiPazienteResult tryRemoveFattoreComorbiditàAllergie(String tipo, String nome) {
+		if(nome == null || nome.isBlank() || tipo == null) {
+			return StoriaDatiPazienteResult.EMPTY_FIELDS;
+		}
+		
+		FattoriComorbiditàAllergie fca = new FattoriComorbiditàAllergie(
+				p.getCf(),
+				tipologia.getValue(),
+				nomeField.getText(),
+				u.getCf()
+			);
+		boolean ok = Amministratore.fattoriComorbiditàAllergieDAO.eliminaFattoreComorbiditàAllergia(fca);
+		if(ok) {
+			return StoriaDatiPazienteResult.SUCCESS;
+		} else {
+			return StoriaDatiPazienteResult.FAILURE;
+		}
+	}
 	@FXML
 	private void rimuoviFattoreComorbiditàAllergia(ActionEvent event) throws IOException {
-		
-		if(nomeField.getText() == null || nomeField.getText().isBlank() || tipologia.getValue() == null) {
-			MessageUtils.showError("Inserire i dati correttamente.");
-		} else {
-			String query = "DELETE FROM fattoricomorbiditàallergia WHERE CF = ? AND tipo = ? AND nome = ?";
-			try(Connection conn = Database.getConnection();
-					PreparedStatement stmt = conn.prepareStatement(query)) {
-						
-				stmt.setString(1, p.getCf());
-				stmt.setString(2, tipologia.getValue());
-				stmt.setString(3, nomeField.getText());
-						
-				int rows = stmt.executeUpdate();
-						
-				if(rows > 0) {
-					Amministratore.loadFattoriComorbiditàAllergieFromDatabase();
-					MessageUtils.showSuccess("Dato paziente rimosso.");
-					switchToMostraDatiPaziente(event);
-				} else {
-					MessageUtils.showError("Errore nella rimozione del dato.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+		StoriaDatiPazienteResult result = tryRemoveFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
+
+		switch (result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Inserire tutti i dati.");
+			case FAILURE -> MessageUtils.showError("Errore nella rimozione del dato.\nDato non trovato.");
+			case DATA_ALREADY_EXISTS -> {} // Caso non interessante per la rimozione
+			case INVALID_DATE -> {} // Caso non interessante per questo dato
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Dato paziente rimosso.");
+				switchToMostraDatiPaziente(event);
 			}
 		}
 	}
 	
 	// GESTIONE PATOLOGIE PREGRESSE
+	public StoriaDatiPazienteResult tryCreatePatologia(String nome, LocalDate dataInizio, String indicazioni) {
+		if(nome == null || nome.isBlank() || indicazioni == null || indicazioni.isBlank() || dataInizio == null) {
+			return StoriaDatiPazienteResult.EMPTY_FIELDS;
+		}
+		else if (Amministratore.getPatologieByCF(p.getCf()).stream()
+				.anyMatch(patologia -> patologia.getNome().equalsIgnoreCase(nome))) {
+			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
+		}
+		else if(dataInizio.isAfter(LocalDate.now())) {
+			return StoriaDatiPazienteResult.INVALID_DATE;
+		}
+		
+		Patologia patologia = new Patologia(
+				p.getCf(),
+				nome,
+				dataInizio,
+				indicazioni,
+				u.getCf()
+			);
+		boolean ok = Amministratore.patologiaDAO.creaPatologia(patologia);
+		if(ok) {
+			return StoriaDatiPazienteResult.SUCCESS;
+		} else {
+			return StoriaDatiPazienteResult.FAILURE;
+		}
+	}
 	@FXML
 	private void aggiungiPatologia(ActionEvent event) throws IOException {
-		
-		if (Amministratore.patologie.stream()
-				.anyMatch(patologia -> patologia.getNome().equalsIgnoreCase(nomePatologiaField.getText()) && patologia.getCf().equals(p.getCf()))) {
-			MessageUtils.showError("Patologia già presente.");
-			return;
-		}
-		
-		if(dataPatologiaField.getValue() == null) {
-			MessageUtils.showError("Inserire tutti i dati.");
-			return;
-		}
-		
-		if(nomePatologiaField.getText() == null || nomePatologiaField.getText().isBlank() || 
-				indicazioniPatologiaArea.getText() == null || indicazioniPatologiaArea.getText().isBlank() ||
-				dataPatologiaField.getValue().isAfter(LocalDate.now())) {
-			MessageUtils.showError("Inserire i dati correttamente.");
-			return;
-		}
+		StoriaDatiPazienteResult result = tryCreatePatologia(
+				nomePatologiaField.getText(),
+				dataPatologiaField.getValue(),
+				indicazioniPatologiaArea.getText()
+			);
 
-		String query = "INSERT INTO patologie (CF, nome, dataInizio, stato, modificato) VALUES (?, ?, ?, ?, ?)";
-			try(Connection conn = Database.getConnection();
-					PreparedStatement stmt = conn.prepareStatement(query)) {
-						
-				stmt.setString(1, p.getCf());
-				stmt.setString(2, nomePatologiaField.getText());
-				stmt.setDate(3, java.sql.Date.valueOf(dataPatologiaField.getValue()));
-				stmt.setString(4, indicazioniPatologiaArea.getText());
-				stmt.setString(5, u.getCf());
-						
-				Patologia patologia = new Patologia(
-						p.getCf(),
-						nomePatologiaField.getText(),
-						dataPatologiaField.getValue(),
-						indicazioniPatologiaArea.getText(),
-						u.getCf()
-					);
-						
-				int rows = stmt.executeUpdate();
-						
-				if(rows > 0) {
-					Amministratore.patologie.add(patologia);
-					Amministratore.loadPatologieFromDatabase();
-					MessageUtils.showSuccess("Dato paziente inserito.");
-					switchToMostraDatiPaziente(event);
-				} else {
-					MessageUtils.showError("Errore nell'inserimento del dato.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+		switch (result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Inserire tutti i dati.");
+			case DATA_ALREADY_EXISTS -> MessageUtils.showError("Patologia già presente.");
+			case INVALID_DATE -> MessageUtils.showError("La data di inizio non può essere futura.");
+			case FAILURE -> MessageUtils.showError("Errore nell'inserimento della patologia.");
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Patologia paziente inserita.");
+				switchToMostraDatiPaziente(event);
 			}
+		}
 	}
-	
+	public StoriaDatiPazienteResult tryRemovePatologia(String nome, LocalDate dataInizio, String indicazioni) {
+		if(nome == null || nome.isBlank()) {
+			return StoriaDatiPazienteResult.EMPTY_FIELDS;
+		}
+		
+		Patologia patologia = new Patologia(
+				p.getCf(),
+				nome,
+				dataInizio,
+				indicazioni,
+				u.getCf()
+			);
+		boolean ok = Amministratore.patologiaDAO.eliminaPatologia(patologia);
+		if(ok) {
+			return StoriaDatiPazienteResult.SUCCESS;
+		} else {
+			return StoriaDatiPazienteResult.FAILURE;
+		}
+	}
 	@FXML
 	private void rimuoviPatologia(ActionEvent event) throws IOException {
-		
-		if(nomePatologiaField.getText() == null || nomePatologiaField.getText().isBlank() || 
-				indicazioniPatologiaArea.getText() == null || indicazioniPatologiaArea.getText().isBlank() ||
-				dataPatologiaField.getValue().isAfter(LocalDate.now())) {
-			MessageUtils.showError("Inserire i dati correttamente.");
-			return;
+		StoriaDatiPazienteResult result = tryRemovePatologia(
+				nomePatologiaField.getText(),
+				dataPatologiaField.getValue(),
+				indicazioniPatologiaArea.getText()
+			);
+
+		switch (result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Inserire il nome della patologia.");
+			case FAILURE -> MessageUtils.showError("Errore nella rimozione della patologia.\nPatologia non trovata.");
+			case DATA_ALREADY_EXISTS -> {} // Caso non interessante per la rimozione
+			case INVALID_DATE -> {} // Caso non interessante per questo dato
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Patologia paziente rimossa.");
+				switchToMostraDatiPaziente(event);
+			}
+		}
+	}
+
+	// GESTIONE TERAPIE CONCOMITANTI
+	public StoriaDatiPazienteResult tryCreateTerapiaConcomitante(String nome, LocalDate dataInizio, LocalDate dataFine) {
+		if(nome == null || nome.isBlank() || dataInizio == null || dataFine == null) {
+			return StoriaDatiPazienteResult.EMPTY_FIELDS;
+		}
+		else if (Amministratore.getTerapieConcomitantiByCF(p.getCf()).stream()
+				.anyMatch(terapia -> terapia.getNome().equalsIgnoreCase(nome)
+						&& terapia.getDataInizio().equals(dataInizio))) {
+			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
+		}
+		else if(dataFine.isBefore(dataInizio)) {
+			return StoriaDatiPazienteResult.INVALID_DATE;
 		}
 		
-		String query = "DELETE FROM patologie WHERE CF = ? AND nome = ?";
-			try(Connection conn = Database.getConnection();
-					PreparedStatement stmt = conn.prepareStatement(query)) {
-						
-				stmt.setString(1, p.getCf());
-				stmt.setString(2, nomePatologiaField.getText());
-						
-				int rows = stmt.executeUpdate();
-						
-				if(rows > 0) {
-					Amministratore.loadPatologieFromDatabase();
-					MessageUtils.showSuccess("Patologia paziente rimossa.");
-					switchToMostraDatiPaziente(event);
-				} else {
-					MessageUtils.showError("Errore nella rimozione della patologia.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		TerapiaConcomitante terapiaConcomitante = new TerapiaConcomitante(
+				p.getCf(),
+				nome,
+				dataInizio,
+				dataFine,
+				u.getCf()
+			);
+		boolean ok = Amministratore.terapiaConcomitanteDAO.creaTerapiaConcomitante(terapiaConcomitante);
+		if(ok) {
+			return StoriaDatiPazienteResult.SUCCESS;
+		} else {
+			return StoriaDatiPazienteResult.FAILURE;
+		}
 	}
-	
-	// GESTIONE TERAPIE CONCOMITANTI
 	@FXML
 	private void aggiungiTerapia(ActionEvent event) throws IOException {
-		
-		if (Amministratore.terapieConcomitanti.stream()
-				.anyMatch(tc -> tc.getNome().equalsIgnoreCase(nomeTerapiaField.getText()) 
-							&& tc.getDataInizio().equals(dataInizioTerapiaField.getValue())
-							&& tc.getCf().equals(p.getCf()))) {
-			MessageUtils.showError("Terapia concomitante già presente.");
-			return;
-		}
-		
-		if(dataInizioTerapiaField.getValue() == null || dataFineTerapiaField.getValue() == null) {
-			MessageUtils.showError("Inserire tutti i dati.");
-			return;
-		}
-			
-		if(nomeTerapiaField.getText() == null || nomeTerapiaField.getText().isBlank() ||
-				dataFineTerapiaField.getValue().isBefore(dataInizioTerapiaField.getValue())) {
-			MessageUtils.showError("Inserire i dati correttamente.");
-			return;
-		}
+		StoriaDatiPazienteResult result = tryCreateTerapiaConcomitante(
+				nomeTerapiaField.getText(),
+				dataInizioTerapiaField.getValue(),
+				dataFineTerapiaField.getValue()
+			);
 
-		String query = "INSERT INTO terapieconcomitanti (CF, nome, dataInizio, dataFine, modificato) VALUES (?, ?, ?, ?, ?)";
-			try(Connection conn = Database.getConnection();
-					PreparedStatement stmt = conn.prepareStatement(query)) {
-						
-				stmt.setString(1, p.getCf());
-				stmt.setString(2, nomeTerapiaField.getText());
-				stmt.setDate(3, java.sql.Date.valueOf(dataInizioTerapiaField.getValue()));
-				stmt.setDate(4, java.sql.Date.valueOf(dataFineTerapiaField.getValue()));
-				stmt.setString(5, u.getCf());
-						
-				TerapiaConcomitante terapiaConcomitante = new TerapiaConcomitante(
-						p.getCf(),
-						nomeTerapiaField.getText(),
-						dataInizioTerapiaField.getValue(),
-						dataFineTerapiaField.getValue(),
-						u.getCf()
-					);
-						
-				int rows = stmt.executeUpdate();
-						
-				if(rows > 0) {
-					Amministratore.terapieConcomitanti.add(terapiaConcomitante);
-					Amministratore.loadTerapieConcomitantiFromDatabase();
-					MessageUtils.showSuccess("Terapia concomitante inserita.");
-					switchToMostraDatiPaziente(event);
-				} else {
-					MessageUtils.showError("Errore nell'inserimento della terapia concomitante.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+		switch (result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Inserire tutti i dati.");
+			case DATA_ALREADY_EXISTS -> MessageUtils.showError("Terapia concomitante già presente.");
+			case INVALID_DATE -> MessageUtils.showError("La data di fine non può essere precedente alla data di inizio.");
+			case FAILURE -> MessageUtils.showError("Errore nell'inserimento della terapia concomitante.");
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Terapia concomitante paziente inserita.");
+				switchToMostraDatiPaziente(event);
 			}
+		}
 	}
-	
+	public StoriaDatiPazienteResult tryRemoveTerapia(String nome, LocalDate dataInizio, LocalDate dataFine) {
+		if(nome == null || nome.isBlank() || dataInizio == null) {
+			return StoriaDatiPazienteResult.EMPTY_FIELDS;
+		}
+		else if(dataFine.isBefore(dataInizio)) {
+			return StoriaDatiPazienteResult.INVALID_DATE;
+		}
+		
+		TerapiaConcomitante terapiaConcomitante = new TerapiaConcomitante(
+				p.getCf(),
+				nome,
+				dataInizio,
+				dataFine,
+				u.getCf()
+			);
+		boolean ok = Amministratore.terapiaConcomitanteDAO.eliminaTerapiaConcomitante(terapiaConcomitante);
+		if(ok) {
+			return StoriaDatiPazienteResult.SUCCESS;
+		} else {
+			return StoriaDatiPazienteResult.FAILURE;
+		}
+	}
 	@FXML
 	private void rimuoviTerapia(ActionEvent event) throws IOException {
-		
-		if(dataInizioTerapiaField.getValue() == null || dataFineTerapiaField.getValue() == null) {
-			MessageUtils.showError("Inserire tutti i dati.");
-			return;
-		}
-			
-		if(nomeTerapiaField.getText() == null || nomeTerapiaField.getText().isBlank() ||
-				dataFineTerapiaField.getValue().isBefore(dataInizioTerapiaField.getValue())) {
-			MessageUtils.showError("Inserire i dati correttamente.");
-			return;
-		}
-		
-		String query = "DELETE FROM terapieconcomitanti WHERE CF = ? AND nome = ?";
-			try(Connection conn = Database.getConnection();
-					PreparedStatement stmt = conn.prepareStatement(query)) {
-						
-				stmt.setString(1, p.getCf());
-				stmt.setString(2, nomeTerapiaField.getText());
-						
-				int rows = stmt.executeUpdate();
-						
-				if(rows > 0) {
-					Amministratore.loadTerapieConcomitantiFromDatabase();
-					MessageUtils.showSuccess("Terapia concomitante rimossa.");
-					switchToMostraDatiPaziente(event);
-				} else {
-					MessageUtils.showError("Errore nella rimozione della terapia concomitante.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+		StoriaDatiPazienteResult result = tryRemoveTerapia(
+				nomeTerapiaField.getText(),
+				dataInizioTerapiaField.getValue(),
+				dataFineTerapiaField.getValue()
+			);
+
+		switch (result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Inserire il nome e la data di inizio della terapia.");
+			case INVALID_DATE -> MessageUtils.showError("La data di fine non può essere precedente alla data di inizio.");
+			case FAILURE -> MessageUtils.showError("Errore nella rimozione della terapia concomitante.\nTerapia non trovata.");
+			case DATA_ALREADY_EXISTS -> {} // Caso non interessante per la rimozione
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Terapia concomitante paziente rimossa.");
+				switchToMostraDatiPaziente(event);
 			}
+		}
 	}
 	
 	// NAVIGAZIONE

@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Comparator;
 
-import application.Amministratore;
-import application.MessageUtils;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.MessageUtils;
+import application.admin.Sessione;
 import application.model.Glicemia;
 import application.model.Utente;
 import application.view.Navigator;
@@ -20,15 +20,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class MostraDatiPazienteController {
 
 	private Utente p;
 	
 	//VARIABILI
+	private String scelta;
 	private LocalDate date;
 	private LocalDate date2;
-	private String nomeDiabetologo;
 	
 	// GRAFICO
 	@FXML private LineChart<String, Number> grafico;
@@ -43,6 +45,7 @@ public class MostraDatiPazienteController {
 	@FXML private Label medicoRifLabel;
 	@FXML private ComboBox<String> sceltaVisualizza;
 	@FXML private DatePicker dataVisualizza;
+	@FXML private ImageView fotoProfilo;
 	
 	//LISTE
 	@FXML public ListView<String> listaTerapiePaziente;
@@ -71,16 +74,15 @@ public class MostraDatiPazienteController {
 		p = Sessione.getInstance().getPazienteSelezionato();
 		
 		labelPaziente.setText("Profilo clinico di " + p.getNomeCognome());
+		labelPaziente.setFocusTraversable(true);
 		dataDiNascitaDato.setText(p.getDataDiNascita().format(Amministratore.dateFormatter));
 		sessoDato.setText(p.getSesso());
 		mailDato.setText(p.getMail());
+
+		Image image = new Image(p.getFoto());
+		fotoProfilo.setImage(image);
 		
-		Amministratore.diabetologi.stream()
-			.filter(d -> d.getCf().equals(p.getDiabetologoRif()))
-			.findFirst()
-			.ifPresent(d -> {
-				medicoRifLabel.setText("Diabetologo di riferimento: " + d.getNomeCognome() + " (" + d.getCf() + ")");
-			});
+		medicoRifLabel.setText("Diabetologo di riferimento: " + Amministratore.getNomeUtenteByCf(p.getDiabetologoRif()) + " (" + p.getDiabetologoRif() + ")");
 			
 		sceltaVisualizza.getItems().addAll("Settimana", "Mese");
 		
@@ -92,9 +94,9 @@ public class MostraDatiPazienteController {
 	}
 	
 	public void visualizzaDati() throws IOException {
+		// TERAPIE
 		listaTerapiePazienteAsObservable.addAll(
-			Amministratore.terapie.stream()
-				.filter(terapia -> terapia.getCf().equals(p.getCf()))
+			Amministratore.getTerapieByCF(p.getCf()).stream()
 				.map(terapia -> terapia.getNomeFarmaco() + " (" + terapia.getDataInizio() + ")")
 				.toList()
 		);
@@ -104,7 +106,7 @@ public class MostraDatiPazienteController {
 		listaTerapiePaziente.setOnMouseClicked(e -> {
 			String selectedTerapia = listaTerapiePaziente.getSelectionModel().getSelectedItem();
 			if(selectedTerapia != null) {
-				Amministratore.terapie.stream()
+				Amministratore.getTerapieByCF(p.getCf()).stream()
 					.filter(terapia -> (terapia.getNomeFarmaco() + " (" + terapia.getDataInizio() + ")").equals(selectedTerapia))
 					.findAny()
 					.ifPresent(terapia -> {
@@ -121,16 +123,9 @@ public class MostraDatiPazienteController {
 	
 		// FATTORI DI RISCHIO
 		listaFattoriAsObservable.addAll(
-			Amministratore.fattoriDiRischio.stream()
-				.filter(fattore -> fattore.getCF().equals(p.getCf()))
+			Amministratore.getFattoriDiRischioByCF(p.getCf()).stream()
 				.map(fattore -> {
-		            nomeDiabetologo = Amministratore.diabetologi.stream()
-		                .filter(d -> d.getCf().equals(fattore.getModificato()))
-		                .map(Utente::getNomeCognome)
-		                .findFirst()
-		                .orElse("Sconosciuto");
-		            
-		            return fattore.getNome() + " (Aggiunto da: " + nomeDiabetologo + ")";
+		            return fattore.getNome() + " (Aggiunto da: " + Amministratore.getNomeUtenteByCf(fattore.getModificato()) + ")";
 		        })
 		        .toList()
 		);
@@ -138,16 +133,9 @@ public class MostraDatiPazienteController {
 		
 		// COMORBIDITÀ
 		listaComorbiditàAsObservable.addAll(
-			Amministratore.comorbidità.stream()
-			.filter(c -> c.getCF().equals(p.getCf()))
+			Amministratore.getComorbiditàByCF(p.getCf()).stream()
 				.map(c -> {
-		            nomeDiabetologo = Amministratore.diabetologi.stream()
-		                .filter(d -> d.getCf().equals(c.getModificato()))
-		                .map(Utente::getNomeCognome)
-		                .findFirst()
-		                .orElse("Sconosciuto");
-		            
-		            return c.getNome() + " (Aggiunto da: " + nomeDiabetologo + ")";
+		            return c.getNome() + " (Aggiunto da: " + Amministratore.getNomeUtenteByCf(c.getModificato()) + ")";
 		        })
 		        .toList()
 		);
@@ -155,16 +143,9 @@ public class MostraDatiPazienteController {
 		
 		// ALLERGIE
 		listaAllergieAsObservable.addAll(
-			Amministratore.allergie.stream()
-				.filter(a -> a.getCF().equals(p.getCf()))
+			Amministratore.getAllergieByCF(p.getCf()).stream()
 				.map(a -> {
-		            nomeDiabetologo = Amministratore.diabetologi.stream()
-		                .filter(d -> d.getCf().equals(a.getModificato()))
-		                .map(Utente::getNomeCognome)
-		                .findFirst()
-		                .orElse("Sconosciuto");
-		            
-		            return a.getNome() + " (Aggiunto da: " + nomeDiabetologo + ")";
+		            return a.getNome() + " (Aggiunto da: " + Amministratore.getNomeUtenteByCf(a.getModificato()) + ")";
 		        })
 		        .toList()
 		);
@@ -172,8 +153,7 @@ public class MostraDatiPazienteController {
 		
 		// PATOLOGIE
 		listaPatologieAsObservable.addAll(
-			Amministratore.patologie.stream()
-				.filter(patologia -> patologia.getCf().equals(p.getCf()))
+			Amministratore.getPatologieByCF(p.getCf()).stream()
 				.map(patologia -> patologia.getNome())
 				.toList()
 		);
@@ -183,7 +163,7 @@ public class MostraDatiPazienteController {
 		listaPatologie.setOnMouseClicked(e -> {
 			String selectedPatologia = listaPatologie.getSelectionModel().getSelectedItem();
 			if(selectedPatologia != null) {
-				Amministratore.patologie.stream()
+				Amministratore.getPatologieByCF(p.getCf()).stream()
 					.filter(patologia -> patologia.getNome().equals(selectedPatologia))
 					.findFirst()
 					.ifPresent(patologia -> {
@@ -200,8 +180,7 @@ public class MostraDatiPazienteController {
 		
 		// TERAPIE CONCOMITANTI
 		listaTerapieConcomitantiAsObservable.addAll(
-			Amministratore.terapieConcomitanti.stream()
-				.filter(tc -> tc.getCf().equals(p.getCf()))
+			Amministratore.getTerapieConcomitantiByCF(p.getCf()).stream()
 				.map(tc -> tc.getNome() + " (" + tc.getDataInizio() + ")")
 				.toList()
 		);
@@ -211,7 +190,7 @@ public class MostraDatiPazienteController {
 		listaTerapieConcomitanti.setOnMouseClicked(e -> {
 			String selectedTerapiaConcomitante = listaTerapieConcomitanti.getSelectionModel().getSelectedItem();
 			if(selectedTerapiaConcomitante != null) {
-				Amministratore.terapieConcomitanti.stream()
+				Amministratore.getTerapieConcomitantiByCF(p.getCf()).stream()
 					.filter(tc -> (tc.getNome() + " (" + tc.getDataInizio() + ")").equals(selectedTerapiaConcomitante))
 					.findAny()
 					.ifPresent(tc -> {
@@ -236,7 +215,7 @@ public class MostraDatiPazienteController {
 		listaQuestionari.setItems(listaQuestionariAsObservable);
 		
 		// ENTRA IN UNO SPECIFICO QUESTIONARIO
-		listaQuestionari.setOnMouseClicked(_ -> {
+		listaQuestionari.setOnMouseClicked(e -> {
 			String selectedQuestionario = listaQuestionari.getSelectionModel().getSelectedItem();
 			if(selectedQuestionario != null) {
 				Amministratore.questionari.stream()
@@ -246,47 +225,66 @@ public class MostraDatiPazienteController {
 						Sessione.getInstance().setQuestionarioSelezionato(quest);
 					});
 				
-				System.out.println("Saresti entrato nel questionario selezionato.");
+				try {
+					Navigator.getInstance().switchVediQuestionario(e);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}	
 			}
 		});
 	}
 	
+	public enum SceltaResult {
+		EMPTY_FIELD,
+		DATE_IN_FUTURE,
+		OK
+	}
+
+	public SceltaResult tryScelta(String scelta, LocalDate date) {
+		if(date == null || scelta == null) {
+			return SceltaResult.EMPTY_FIELD;
+		} else if(date.isAfter(LocalDate.now())) {
+			return SceltaResult.DATE_IN_FUTURE;
+		}
+		return SceltaResult.OK;
+	}
+
 	@FXML
 	private void handleScelta() throws IOException {
-		String scelta = sceltaVisualizza.getValue();
-		date = dataVisualizza.getValue();
-		if(date == null || scelta == null) {
-			MessageUtils.showError("Scegli data e periodo.");
-			return;
-		} else if(date.isAfter(LocalDate.now())) {
-			MessageUtils.showError("Scegliere una data antecedente a:\n" + LocalDate.now());
-			return;
+		SceltaResult result = tryScelta(sceltaVisualizza.getValue(), dataVisualizza.getValue());
+
+		switch(result) {
+			case EMPTY_FIELD -> MessageUtils.showError("Scegli data e periodo.");
+			case DATE_IN_FUTURE -> MessageUtils.showError("Scegliere una data antecedente a:\n" + LocalDate.now());
+			case OK -> {
+				scelta = sceltaVisualizza.getValue();
+				date = dataVisualizza.getValue();
+				if("Settimana".equals(scelta)) {
+					date2 = date.plusDays(7);
+					if(date2.isAfter(LocalDate.now()))
+						date2 = LocalDate.now();
+				} else if("Mese".equals(scelta)) {
+					date2 = date.plusMonths(1);
+					if(date2.isAfter(LocalDate.now()))
+						date2 = LocalDate.now();
+				}
+					
+				grafico.getData().clear(); // svuota il grafico
+				serie.getData().clear();   // svuota la serie
+				
+				serie.getData().addAll(
+					Amministratore.glicemia.stream()
+					.filter(g -> g.getCf().equals(p.getCf())
+								&& g.getGiorno().isAfter(date.minusDays(1))
+								&& g.getGiorno().isBefore(date2.plusDays(1)))
+					.sorted(Comparator.comparing(Glicemia::getGiorno))
+					.map(g -> new XYChart.Data<String, Number>(g.getGiorno().toString(), g.getValore()))
+					.toList()
+				);
+				
+				grafico.getData().add(serie);
+			}
 		}
-		if("Settimana".equals(scelta)) {
-			date2 = date.plusDays(7);
-			if(date2.isAfter(LocalDate.now()))
-				date2 = LocalDate.now();
-		} else if("Mese".equals(scelta)) {
-			date2 = date.plusMonths(1);
-			if(date2.isAfter(LocalDate.now()))
-				date2 = LocalDate.now();
-		}
-			
-		grafico.getData().clear(); // svuota il grafico
-		serie.getData().clear();   // svuota la serie
-		
-		serie.getData().addAll(
-			Amministratore.glicemia.stream()
-			.filter(g -> g.getCf().equals(p.getCf())
-						&& g.getGiorno().isAfter(date.minusDays(1))
-						&& g.getGiorno().isBefore(date2.plusDays(1)))
-			.sorted(Comparator.comparing(Glicemia::getGiorno))
-			.map(g -> new XYChart.Data<String, Number>(g.getGiorno().toString(), g.getValore()))
-			.toList()
-		);
-		
-        grafico.getData().add(serie);
-			
 	}
 	
 	@FXML

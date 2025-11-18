@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import application.Amministratore;
-import application.Database;
-import application.MessageUtils;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.Database;
+import application.admin.MessageUtils;
+import application.admin.Sessione;
 import application.model.Glicemia;
 import application.model.Utente;
 import application.view.Navigator;
@@ -23,6 +23,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class PazienteController {
 
@@ -39,12 +41,24 @@ public class PazienteController {
 	@FXML private Button mailButton;
 	@FXML private Button questButton;
 
+	// LABEL - PROFILO
+	@FXML private Label nomeLabel;
+	@FXML private Label ddnLabel;
+	@FXML private Label sessoLabel;
+	@FXML private Label diabetologoLabel;
+	@FXML private ImageView fotoProfilo;
+
+	// LABEL - TERAPIA CORRENTE
+	@FXML private Label terapiaCorrente;
+	@FXML private Label nomeFarmacoLabel;
+	@FXML private Label dosiGiornaliereLabel;
+	@FXML private Label quantitàLabel;
+	@FXML private Label periodoLabel;
+	@FXML private Label indicazioniLabel;
+	@FXML private Label modificatoLabel;
+
 	// VARIABILI
-	int valore;
 	LocalDate giorno;
-	String ora;
-	String minuti;
-	String indicazioni;
 	boolean compilato = false;
 	boolean terapiaInCorso = false;
 
@@ -54,7 +68,38 @@ public class PazienteController {
 		u = Sessione.getInstance().getUtente();
 		
 		welcomeLabel.setText("Ciao, " + u.getNomeCognome());
-		
+
+		nomeLabel.setText("Nome e cognome: " + u.getNomeCognome());
+		ddnLabel.setText("Data di nascita: " + u.getDataDiNascita());
+		sessoLabel.setText("Sesso: " + u.getSesso());
+		diabetologoLabel.setText("Diabetologo di riferimento: " + Amministratore.getNomeUtenteByCf(u.getDiabetologoRif()));
+		Image image = new Image(u.getFoto());
+		fotoProfilo.setImage(image);
+
+		Amministratore.getTerapieByCF(u.getCf()).stream()
+			.filter(t -> !t.getDataInizio().isAfter(LocalDate.now()) && !t.getDataFine().isBefore(LocalDate.now()))
+			.findFirst()
+			.ifPresentOrElse(t -> {
+				terapiaCorrente.setText("Terapia corrente:");
+				nomeFarmacoLabel.setText(t.getNomeFarmaco());
+				dosiGiornaliereLabel.setText(String.valueOf(t.getDosiGiornaliere()));
+				quantitàLabel.setText(String.valueOf(t.getQuantità()));
+				periodoLabel.setText(t.getDataInizio().format(Amministratore.dateFormatter) + " - " + t.getDataFine().format(Amministratore.dateFormatter));
+				if(t.getIndicazioni() != null && !t.getIndicazioni().isBlank())
+					indicazioniLabel.setText(t.getIndicazioni());
+				else
+					indicazioniLabel.setText("Nessuna indicazione.");
+				modificatoLabel.setText(Amministratore.getNomeUtenteByCf(t.getDiabetologo()));
+			}, () -> {
+				terapiaCorrente.setText("Nessuna terapia in corso");
+				nomeFarmacoLabel.setText("-");
+				dosiGiornaliereLabel.setText("-");
+				quantitàLabel.setText("-");
+				periodoLabel.setText("----/--/--" + " - " + "----/--/--");
+				indicazioniLabel.setText("-");
+				modificatoLabel.setText("-");
+			});
+
 		graficoGlicemia.setFocusTraversable(true);
 		
 		
@@ -62,18 +107,17 @@ public class PazienteController {
 			.filter(q -> q.getCf().equals(u.getCf())
 						&& q.getGiornoCompilazione().equals(LocalDate.now()))
 			.findFirst()
-			.ifPresent(_ -> {
+			.ifPresent(e -> {
 				statoQuestionarioOdierno.setText("Questionario odierno compilato!");
 				compilato = true;
 				questButton.setDisable(true);
 			});
 		
-		Amministratore.terapie.stream()
-			.filter(t -> t.getCf().equals(u.getCf())
-						&& ((t.getDataInizio().isBefore(LocalDate.now()) || t.getDataInizio().isEqual(LocalDate.now())) 
+		Amministratore.getTerapieByCF(u.getCf()).stream()
+			.filter(t -> ((t.getDataInizio().isBefore(LocalDate.now()) || t.getDataInizio().isEqual(LocalDate.now())) 
 						&& ((t.getDataFine().isAfter(LocalDate.now())) || t.getDataFine().isEqual(LocalDate.now()))))
 			.findAny()
-			.ifPresent(_ -> {
+			.ifPresent(e -> {
 				if(compilato == false) {
 					statoQuestionarioOdierno.setText("Questionario odierno da compilare!");
 				}
@@ -88,40 +132,42 @@ public class PazienteController {
 		mailButton.setText(Amministratore.contatoreMailNonLette() > 0 ? Amministratore.contatoreMailNonLette() + " Mail" : "Mail");
 	    mailButton.setStyle(Amministratore.contatoreMailNonLette() > 0 ? "-fx-text-fill: red;" : "-fx-text-fill: black;");
 	    
+		indicazioniBox.getItems().clear();
+		indicazioniBox.getItems().addAll("Pre pasto", "Post pasto");
+
 	    visualizzaGrafico();
 	    javafx.application.Platform.runLater(() -> notificaTerapia());
 	}
 	
 	private void notificaTerapia() {
-		Amministratore.terapie.stream()
-	    .filter(t -> t.getCf().equals(u.getCf()))
-	    .filter(t -> !t.getVisualizzata() && !t.getDataInizio().isAfter(LocalDate.now()))
-	    .findFirst()
-	    .ifPresent(t -> {
-	        Optional<ButtonType> result = MessageUtils.showInizioTerapia();
+		Amministratore.getTerapieByCF(u.getCf()).stream()
+			.filter(t -> !t.getVisualizzata() && !t.getDataInizio().isAfter(LocalDate.now()))
+			.findFirst()
+			.ifPresent(t -> {
+				Optional<ButtonType> result = MessageUtils.showConferma("Inizio terapia", "È iniziata una nuova terapia: " + t.getNomeFarmaco());
 
-	        if (result.isPresent() && result.get() == ButtonType.OK) {
-	            String query = "UPDATE terapie SET visualizzata = ? WHERE id = ?";
-	            try (Connection conn = Database.getConnection();
-	                 PreparedStatement stmt = conn.prepareStatement(query)) {
+				if (result.isPresent() && result.get() == ButtonType.OK) {
+					String query = "UPDATE terapie SET visualizzata = ? WHERE id = ?";
+					try (Connection conn = Database.getConnection();
+						PreparedStatement stmt = conn.prepareStatement(query)) {
 
-	                stmt.setBoolean(1, true);
-	                stmt.setInt(2, t.getId());
+						stmt.setBoolean(1, true);
+						stmt.setInt(2, t.getId());
 
-	                int rows = stmt.executeUpdate();
+						int rows = stmt.executeUpdate();
 
-	                if (rows > 0) {
-	                    Amministratore.loadTerapieFromDatabase();
-	                } else {
-	                    MessageUtils.showError("Errore: nessuna terapia trovata da aggiornare.");
-	                }
+						if (rows > 0) {
+							Amministratore.loadTerapieFromDatabase();
+						} else {
+							MessageUtils.showError("Errore: nessuna terapia trovata da aggiornare.");
+						}
 
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	                MessageUtils.showError("Errore nel salvataggio della notifica nel database.");
-	            }
-	        }
-	    });
+					} catch (SQLException e) {
+						e.printStackTrace();
+						MessageUtils.showError("Errore nel salvataggio della notifica nel database.");
+					}
+				}
+			});
 	}
 	
 	private void visualizzaGrafico() {
@@ -138,7 +184,7 @@ public class PazienteController {
 	    		
 	    		XYChart.Data<String, Number> punto = new XYChart.Data<>(orario, valore);
 	    		
-	    		punto.nodeProperty().addListener((_, _, newNode) -> { // underscore al posto di obs e oldNode in quanto non usati
+	    		punto.nodeProperty().addListener((obs, oldNode, newNode) -> {
 	                if (newNode != null) {
 	                    if(indicazioni.equals("Pre pasto")) {
 	                    	if(valore < 80 || valore > 130)
@@ -160,106 +206,89 @@ public class PazienteController {
 	    
 	    graficoGlicemia.getData().clear(); //cancella la precedente
         graficoGlicemia.getData().add(serie);
-
-	    indicazioniBox.getItems().clear();
-	    indicazioniBox.getItems().addAll("Pre pasto", "Post pasto");
 	}
 	
-	@FXML
-	private void handleGlicemia(ActionEvent event) throws IOException {
-	    String valoreText = valoreField.getText().trim();
-	    ora = oraField.getText().trim();
-	    minuti = minutiField.getText().trim();
-	    indicazioni = indicazioniBox.getValue();
-
-	    if (valoreText.isEmpty() || ora.isEmpty() || minuti.isEmpty() || indicazioni == null) {
-	    		MessageUtils.showError("Compilare tutti i campi.");
-	        return;
+	public enum GlicemiaResult {
+		EMPTY_FIELDS,
+		INVALID_DATA,
+		SUCCESS,
+		FAILURE
+	}
+	public GlicemiaResult tryCreateGlicemia(String valore, String ora, String minuti, String indicazioni) {
+		if (valore.isEmpty() || ora.isEmpty() || minuti.isEmpty() || indicazioni == null) {
+	    	return GlicemiaResult.EMPTY_FIELDS;
 	    }
-
-	    int oraInt, minutiInt;
-	    try {
-	        oraInt = Integer.parseInt(ora);
+		
+		int oraInt, minutiInt, valoreInt;
+		try {
+			oraInt = Integer.parseInt(ora);
 	        minutiInt = Integer.parseInt(minuti);
-	        valore = Integer.parseInt(valoreText);
-	    } catch (NumberFormatException e) {
-	    		MessageUtils.showError("Valore, ora e minuti devono essere numeri interi.");
-	        return;
+	        valoreInt = Integer.parseInt(valore);
+		} catch (NumberFormatException e) {
+	        return GlicemiaResult.INVALID_DATA;
 	    }
 
-	    if (oraInt < 0 || oraInt > 23) {
-	    		MessageUtils.showError("Ora non valida.");
-	        return;
+		if (oraInt < 0 || oraInt > 23) {
+	        return GlicemiaResult.INVALID_DATA;
 	    }
-	    if (ora.length() == 1) ora = "0" + ora;
+		if (ora.length() == 1) ora = "0" + ora;
 
 	    if (minutiInt < 0 || minutiInt > 59) {
-	    		MessageUtils.showError("Minuti non validi.");
-	        return;
+			return GlicemiaResult.INVALID_DATA;
 	    }
 	    if (minuti.length() == 1) minuti = "0" + minuti;
 
-	    String orario = ora + ":" + minuti;
+		String orario = ora + ":" + minuti;
 	    giorno = LocalDate.now();
 
-	    String query = "INSERT INTO glicemia (CF, valore, giorno, orario, indicazioni) VALUES (?, ?, ?, ?, ?)";
-	    try (Connection conn = Database.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(query)) {
+	    Glicemia glicemia = new Glicemia(u.getCf(), valoreInt, giorno, orario, indicazioni);
+		boolean ok = Amministratore.glicemiaDAO.creaGlicemia(glicemia);
+		if(ok) {
+			if (!graficoGlicemia.getData().isEmpty()) {
+				XYChart.Series<String, Number> serie = graficoGlicemia.getData().get(0);
 
-	        stmt.setString(1, u.getCf());
-	        stmt.setInt(2, valore);
-	        stmt.setDate(3, java.sql.Date.valueOf(giorno));
-	        stmt.setString(4, orario);
-	        stmt.setString(5, indicazioni);
+				XYChart.Data<String, Number> dataPoint = new XYChart.Data<>(orario, valoreInt);
 
-	        int rows = stmt.executeUpdate();
+				dataPoint.nodeProperty().addListener((obs, oldNode, newNode) -> {
+					if (newNode != null) {
+						if("Pre pasto".equals(indicazioni)) {
+							if(valoreInt < 80 || valoreInt > 130)
+								newNode.setStyle("-fx-background-color: red;");
+							else
+								newNode.setStyle("-fx-background-color: green;");
+						} else if("Post pasto".equals(indicazioni)) {
+							if(valoreInt > 180)
+								newNode.setStyle("-fx-background-color: red;");
+							else
+								newNode.setStyle("-fx-background-color: green;");
+						}
+					}
+				});
 
-	        if (rows > 0) {
-        			Amministratore.glicemia.add(new Glicemia(u.getCf(), valore, giorno, orario, indicazioni));
-        			MessageUtils.showSuccess("Valore inserito.");
-	            valoreField.clear();
-	            oraField.clear();
-	            minutiField.clear();
-	            
-	            //SISTEMARE IL RESET DELLA COMBO BOX
-	            indicazioniBox.getSelectionModel().clearSelection();
-	        } else {
-	        		MessageUtils.showError("Errore nell'inserimento del valore.");
-	        }
+				serie.getData().add(dataPoint);
+			}
+			valoreField.clear();
+			oraField.clear();
+			minutiField.clear();
+			return GlicemiaResult.SUCCESS;
+		}
+		else {
+			return GlicemiaResult.FAILURE;
+		}
+	}
+	@FXML
+	private void handleGlicemia(ActionEvent event) throws IOException {
+		GlicemiaResult result = tryCreateGlicemia(valoreField.getText().trim(), oraField.getText().trim(), minutiField.getText().trim(), indicazioniBox.getValue());
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    // Recupero la serie già presente nel grafico
-	    if (!graficoGlicemia.getData().isEmpty()) {
-	        XYChart.Series<String, Number> serie = graficoGlicemia.getData().get(0);
-
-	        XYChart.Data<String, Number> dataPoint = new XYChart.Data<>(orario, valore);
-
-	        dataPoint.nodeProperty().addListener((_, _, newNode) -> { // underscore al posto di obs e oldNode in quanto non usati
-	            if (newNode != null) {
-	                if(indicazioni.equals("Pre pasto")) {
-                    	if(valore < 80 || valore > 130)
-	                        newNode.setStyle("-fx-background-color: red;");
-	                    else
-	                        newNode.setStyle("-fx-background-color: green;");
-                    } else if(indicazioni.equals("Post pasto")) {
-                    	if(valore > 180)
-                    		newNode.setStyle("-fx-background-color: red;");
-                    	else
-                    		newNode.setStyle("-fx-background-color: green;");
-                    }
-	            }
-	        });
-
-	        serie.getData().add(dataPoint);
-	    }
-	    
-	    Amministratore.loadGlicemiaFromDatabase();
-		try {
-			Navigator.getInstance().switchToPazientePage(event);
-		} catch (IOException e) {
-			e.printStackTrace();
+		switch(result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Per favore, compila tutti i campi.");
+			case INVALID_DATA -> MessageUtils.showError("Compila i dati correttamente.");
+			case FAILURE -> MessageUtils.showError("Errore durante l'inserimento della glicemia.");
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Glicemia aggiunta con successo!");
+				indicazioniBox.getItems().clear();
+				indicazioniBox.getItems().addAll("Pre pasto", "Post pasto");
+			}
 		}
 	}
 	
@@ -278,10 +307,5 @@ public class PazienteController {
 	@FXML
 	private void switchToQuestionarioPage(ActionEvent event) throws IOException {
 		Navigator.getInstance().switchToQuestionarioPage(event);
-	}
-	
-	@FXML
-	private void switchToProfiloPaziente(ActionEvent event) throws IOException {
-		Navigator.getInstance().switchToProfiloPaziente(event);
 	}
 }

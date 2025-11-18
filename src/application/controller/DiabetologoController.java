@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Comparator;
 
-import application.Amministratore;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.Sessione;
 import application.model.Glicemia;
 import application.model.Questionario;
 import application.model.Utente;
@@ -18,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class DiabetologoController {
 		
@@ -30,6 +32,12 @@ public class DiabetologoController {
 	@FXML private ListView<Glicemia> listaGlicemieSballate;
 	@FXML private ListView<Questionario> listaQuestNonConformi;
 	@FXML private Button mailButton;
+
+	// LABEL - PROFILO
+	@FXML private Label nomeLabel;
+	@FXML private Label ddnLabel;
+	@FXML private Label sessoLabel;
+	@FXML private ImageView fotoProfilo;
 	
 	// VARIABILI
 	private String cf;
@@ -40,10 +48,16 @@ public class DiabetologoController {
 		
 		welcomeLabel.setText("Ciao, " + u.getNomeCognome());
 		welcomeLabel.setFocusTraversable(true);
+
+		nomeLabel.setText("Nome e cognome: " + u.getNomeCognome());
+		ddnLabel.setText("Data di nascita: " + u.getDataDiNascita());
+		sessoLabel.setText("Sesso: " + u.getSesso());
+		Image image = new Image(u.getFoto());
+		fotoProfilo.setImage(image);
 		
 		mailButton.setText(Amministratore.contatoreMailNonLette() > 0 ? Amministratore.contatoreMailNonLette() + " Mail" : "Mail");
 		mailButton.setStyle(Amministratore.contatoreMailNonLette() > 0 ? "-fx-text-fill: red;" : "-fx-text-fill: black;");
-		
+
 		setupListaPazienti();
 		setupListaGlicemieSballate();
 		setupListaQuestionariNonConformi();
@@ -58,7 +72,7 @@ public class DiabetologoController {
 			);
 		listaNomiPazienti.setItems(listaNomiPazientiAsObservable);
 		
-		listaNomiPazienti.setCellFactory(_ -> new ListCell<Utente>() {
+		listaNomiPazienti.setCellFactory(e -> new ListCell<Utente>() {
 		    protected void updateItem(Utente paziente, boolean empty) {
 		        super.updateItem(paziente, empty);
 		        
@@ -127,7 +141,7 @@ public class DiabetologoController {
 			        .toList()
 			);
 		listaGlicemieSballate.setItems(listaGlicemieSballateAsObservable);
-		listaGlicemieSballate.setCellFactory(_ -> new ListCell<Glicemia>() {
+		listaGlicemieSballate.setCellFactory(e -> new ListCell<Glicemia>() {
 		    protected void updateItem(Glicemia glicemia, boolean empty) {
 		        super.updateItem(glicemia, empty);
 		        if (empty || glicemia == null) {
@@ -182,7 +196,7 @@ public class DiabetologoController {
 	
 		listaQuestNonConformi.setItems(listaQuestNonConformiAsObservable);
 		
-		listaQuestNonConformi.setCellFactory(_ -> new ListCell<Questionario>() {
+		listaQuestNonConformi.setCellFactory(e -> new ListCell<Questionario>() {
 		    protected void updateItem(Questionario quest, boolean empty) {
 		        super.updateItem(quest, empty);
 		        
@@ -234,10 +248,5 @@ public class DiabetologoController {
 	@FXML
 	private void switchToMailPage(ActionEvent event) throws IOException {
 		Navigator.getInstance().switchToMailPage(event);
-	}
-	
-	@FXML
-	private void switchToProfiloDiabetologo(ActionEvent event) throws IOException {
-		Navigator.getInstance().switchToProfiloDiabetologo(event);
 	}
 }

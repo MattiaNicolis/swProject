@@ -6,15 +6,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 
-import application.Amministratore;
-import application.Database;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.Database;
+import application.admin.Sessione;
 import application.model.Mail;
 import application.model.Utente;
 import application.view.Navigator;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class VediMailController {
@@ -28,6 +29,7 @@ public class VediMailController {
 	@FXML private Label oggettoLabel;
 	@FXML private Label corpoLabel;
 	@FXML private Label giornoOraLabel;
+	@FXML Button rispondiButton;
 	
 	@FXML
 	private void initialize() throws IOException {
@@ -37,6 +39,7 @@ public class VediMailController {
 		if(m.getMittente().equals(u.getMail())) {
 			mittenteLabel.setText(u.getMail());
 			destinatarioLabel.setText(m.getDestinatario());
+			rispondiButton.setDisable(true);
 		} else if(m.getDestinatario().equals(u.getMail())) {
 			mittenteLabel.setText(m.getMittente());
 			destinatarioLabel.setText(u.getMail());

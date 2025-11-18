@@ -1,17 +1,14 @@
 package application.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import application.Amministratore;
-import application.Database;
-import application.MessageUtils;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.MessageUtils;
+import application.admin.Sessione;
+import application.controller.NuovaTerapiaController.TerapiaResult;
 import application.model.Terapia;
 import application.model.Utente;
 import application.view.Navigator;
@@ -45,6 +42,7 @@ public class ModificaTerapiaController {
 	int quantità;
 	LocalDate dataInizio;
 	LocalDate dataFine;
+	StringBuilder msg;
 	
 	@FXML
 	private void initialize() {
@@ -55,38 +53,38 @@ public class ModificaTerapiaController {
 		labelPaziente.setText(p.getNomeCognome() + " (" + p.getCf() + ")");
 		nomeFarmacoLabel.setText(t.getNomeFarmaco());
 	}
-	
-	@FXML
-	private void handleModificaTerapia(ActionEvent event) throws IOException {
-		
+
+	/*public enum ModificaTerapiaResult {
+		SUCCESS,
+		FAILURE,
+		INVALID_DATA,
+		INVALID_DATE_RANGE,
+		EMPTY_FIELDS,
+	}*/
+
+	public TerapiaResult tryModificaTerapia(String dosiGiornaliere, String quantità, LocalDate dataInizio, LocalDate dataFine, String indicazioni) {
+		if(dataInizio == null || dataFine == null) {
+			return TerapiaResult.EMPTY_FIELDS;
+		}
+
 		try {
-	        dosiGiornaliere = Integer.parseInt(dosiGiornaliereField.getText());
-	        quantità = Integer.parseInt(quantitàField.getText());
-	        dataInizio = dataInizioField.getValue();
-	        dataFine = dataFineField.getValue();
-
-	        if (dosiGiornaliere < 1 || quantità < 1 ||
-	            dataInizio.isBefore(LocalDate.now()) ||
-	            dataFine.isBefore(dataInizio) ||
-	            dataFine.isEqual(dataInizio) ||
-	            dataFine.isBefore(LocalDate.now())) {
-
-	        		MessageUtils.showError("Per favore compila tutti i campi correttamente.");
-	            return;
-	        }
-
-	    } catch (NullPointerException n) {
-	    		MessageUtils.showError("Per favore compila tutti i campi obbligatori.");
-	        return;
+	        this.dosiGiornaliere = Integer.parseInt(dosiGiornaliere);
+	        this.quantità = Integer.parseInt(quantità);
 	    } catch (NumberFormatException n) {
-	    		MessageUtils.showError("Per favore inserisci solo numeri nei campi numerici.");
-	        return;
+	    	return TerapiaResult.INVALID_DATA;
 	    }
+
+		if(dataInizio.isBefore(LocalDate.now()) ||
+				dataFine.isBefore(dataInizio) ||
+				dataFine.isEqual(dataInizio) ||
+				dataFine.isBefore(LocalDate.now()) ||
+				this.dosiGiornaliere < 1 || this.quantità < 1) {
+			return TerapiaResult.INVALID_DATA;
+		}
 		
 		// LISTA TERAPIA IN CONFLITTO
-		List<Terapia> conflitti = Amministratore.terapie.stream()
-			.filter(terapia -> terapia.getCf().equals(p.getCf())
-					&& !terapia.getNomeFarmaco().equals(t.getNomeFarmaco())
+		List<Terapia> conflitti = Amministratore.getTerapieByCF(p.getCf()).stream()
+			.filter(terapia -> !terapia.getNomeFarmaco().equals(t.getNomeFarmaco())
 					&& !terapia.getDataInizio().equals(dataInizioField.getValue()))
 			.filter(terapia -> {
 					LocalDate inizio = terapia.getDataInizio();
@@ -101,42 +99,40 @@ public class ModificaTerapiaController {
 			.collect(Collectors.toList());
 		
 		if(!conflitti.isEmpty()) {
-			StringBuilder msg = new StringBuilder("Terapie in conflitto:\n");
+			msg = new StringBuilder("Terapie in conflitto:\n");
 			conflitti.forEach(terapia ->
 					msg.append("- ").append(terapia.getNomeFarmaco()).append(": ")
 					   .append(terapia.getDataInizio()).append(" -> ")
 					   .append(terapia.getDataFine()).append("\n")
 			);
-			
-			MessageUtils.showError(msg.toString());
-			return;
+			return TerapiaResult.INVALID_DATE_RANGE;
 		}
-	    
-		String query = "UPDATE terapie SET dosiGiornaliere = ?, quantità = ?, dataInizio = ?, dataFine = ?, indicazioni = ?, modificato = ? WHERE id = ?";
-		try (Connection conn = Database.getConnection(); 
-			PreparedStatement stmt = conn.prepareStatement(query)) {
+		
+		// Modifica della terapia nel database
+		Terapia terapia = new Terapia(t.getId(), t.getCf(), null, this.dosiGiornaliere, this.quantità, dataInizio, dataFine, indicazioniField.getText(), u.getCf(), false);
+		boolean ok = Amministratore.terapiaDAO.modificaTerapia(terapia);
 
-	        stmt.setInt(1, dosiGiornaliere);
-	        stmt.setInt(2, quantità);
-	        stmt.setDate(3, java.sql.Date.valueOf(dataInizio));
-	        stmt.setDate(4, java.sql.Date.valueOf(dataFine));
-	        stmt.setString(5, indicazioniField.getText());
-	        stmt.setString(6, u.getNomeCognome());
-	        stmt.setInt(7, t.getId());
-	        
-	        int rows = stmt.executeUpdate();
+		if(ok) {
+			return TerapiaResult.SUCCESS;
+		} else {
+			return TerapiaResult.FAILURE;
+		}
+	}
+	
+	@FXML
+	private void handleModificaTerapia(ActionEvent event) throws IOException {
+		TerapiaResult result = tryModificaTerapia(dosiGiornaliereField.getText(), quantitàField.getText(), dataInizioField.getValue(), dataFineField.getValue(), indicazioniField.getText());
 
-	        if (rows > 0) {
-	        		Amministratore.loadTerapieFromDatabase();
-	        		MessageUtils.showSuccess("Terapia modificata correttamente.");
-	            switchToMostraDatiPaziente(event);
-	        } else {
-	        		MessageUtils.showError("Errore nell'inserimento della terapia.");
-	        }
-
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+		switch(result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Per favore, compila tutti i campi.");
+			case INVALID_DATA -> MessageUtils.showError("Dati non validi. Controlla le date e i numeri inseriti.");
+			case INVALID_DATE_RANGE -> MessageUtils.showError(msg.toString());
+			case FAILURE -> MessageUtils.showError("Errore durante la creazione della terapia.");
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Terapia modificata con successo.");
+				Navigator.getInstance().switchToMostraDatiPaziente(event);
+			}
+		}
 	}
 	
 	@FXML

@@ -1,18 +1,13 @@
 package application.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
-import application.Amministratore;
-import application.Database;
-import application.MessageUtils;
-import application.Sessione;
+import application.admin.Amministratore;
+import application.admin.MessageUtils;
+import application.admin.Sessione;
+import application.model.Questionario;
 import application.model.Utente;
 import application.view.Navigator;
-
-import java.time.LocalDate;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,54 +33,53 @@ public class QuestionarioController {
 		u = Sessione.getInstance().getUtente();
 	}
 	
+	public enum QuestResult {
+		EMPTY_FIELDS,
+		INVALID_DATA,
+		SUCCESS,
+		FAILURE
+	}
+	public QuestResult tryCreateQuestionario(String nomeFarmaco, String dosiGiornaliere, String quantità, String sintomi) {
+		if(nomeFarmaco == null || nomeFarmaco.isBlank() || 
+		dosiGiornaliere == null || dosiGiornaliere.isBlank() || 
+		quantità == null || quantità.isBlank()) {
+			return QuestResult.EMPTY_FIELDS;
+		}
+
+		int dosiGiornaliereInt, quantitàInt;
+		try {
+			dosiGiornaliereInt = Integer.parseInt(dosiGiornaliereField.getText());
+	        quantitàInt = Integer.parseInt(quantitàField.getText());
+		} catch (NumberFormatException n) {
+			return QuestResult.INVALID_DATA;
+		}
+
+		if(dosiGiornaliereInt < 1 || quantitàInt < 1) {
+			return QuestResult.INVALID_DATA;
+		}
+
+		Questionario quest = new Questionario(u.getCf(), null, nomeFarmaco, dosiGiornaliereInt, quantitàInt, sintomi, false);
+		boolean ok = Amministratore.questDAO.creaQuestionario(quest);
+		if(ok) {
+			return QuestResult.SUCCESS;
+		}
+		else {
+			return QuestResult.FAILURE;
+		}
+	}
 	@FXML
 	private void handleQuestionario(ActionEvent event) throws IOException {
-		
-		try {
-			nomeFarmacoField.getText().isBlank();
-	        dosiGiornaliere = Integer.parseInt(dosiGiornaliereField.getText());
-	        quantità = Integer.parseInt(quantitàField.getText());
+		QuestResult result = tryCreateQuestionario(nomeFarmacoField.getText(), dosiGiornaliereField.getText(), quantitàField.getText(), sintomiArea.getText());
 
-	        if (dosiGiornaliere < 1 || quantità < 1) {
-	        		MessageUtils.showError("Per favore compila tutti i campi correttamente.");
-	            return;
-	        }
-
-	    } catch (NullPointerException n) {
-	    		MessageUtils.showError("Per favore compila tutti i campi obbligatori.");
-	        return;
-	    } catch (NumberFormatException n) {
-	    		MessageUtils.showError("Per favore inserisci solo numeri nei campi numerici.");
-	        return;
-	    }
-		
-		sintomi = sintomiArea.getText();
-		
-		String query = "INSERT INTO questionario (CF, giornoCompilazione, nomeFarmaco, dosiGiornaliere, quantità, sintomi, controllato) VALUES (?, ?, ?, ?, ?, ?, ?)";
-	    	try (Connection conn = Database.getConnection(); 
-	    		PreparedStatement stmt = conn.prepareStatement(query)) {
-	
-	    		stmt.setString(1, u.getCf());
-	    		stmt.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
-	    		stmt.setString(3, nomeFarmacoField.getText());
-	    		stmt.setInt(4, dosiGiornaliere);
-	    	    stmt.setInt(5, quantità);
-	    	    stmt.setString(6, sintomi);
-	    	    stmt.setBoolean(7, false);
-
-	    	    int rows = stmt.executeUpdate();
-
-	    	    if (rows > 0) {
-	        		Amministratore.loadQuestionarioFromDatabase();
-	        		MessageUtils.showSuccess("Questionario compilato.");
-	        		switchToPazientePage(event);
-	    	    } else {
-	    	    		MessageUtils.showError("Errore nell'inserimento della terapia.");
-	    	    }
-
-    	    } catch (SQLException e) {
-    	        e.printStackTrace();
-    	    }
+		switch(result) {
+			case EMPTY_FIELDS -> MessageUtils.showError("Compilare tutti i campi.");
+			case INVALID_DATA -> MessageUtils.showError("Compilare i campi correttamente.");
+			case FAILURE -> MessageUtils.showError("Errore durante il salvataggio del questionario.");
+			case SUCCESS -> {
+				MessageUtils.showSuccess("Questionario compilato!");
+				Navigator.getInstance().switchToPazientePage(event);
+			}
+		}
 	}
 	
 	// NAVIGAZIONE
