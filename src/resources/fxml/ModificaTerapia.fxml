@@ -90,7 +90,7 @@
     </center>
     
     <bottom>
-        <Button onAction="#switchToMostraDatiPaziente" style="-fx-background-color: #ccc; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 4;" text="⬅ Annulla e Torna Indietro" BorderPane.alignment="CENTER">
+        <Button onAction="#switchToMostraDettagliTerapia" style="-fx-background-color: #ccc; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 4;" text="⬅ Annulla e Torna Indietro" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="20.0" top="10.0" />
             </BorderPane.margin>

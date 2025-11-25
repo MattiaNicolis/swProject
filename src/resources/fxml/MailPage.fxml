@@ -30,7 +30,7 @@
 
             <Button maxWidth="1.7976931348623157E308" onAction="#showMailInviate" style="-fx-background-color: transparent; -fx-alignment: center-left; -fx-font-size: 14px;" text="📤 Inviate" />
             
-            <VBox VBox.vgrow="ALWAYS" /> <Button fx:id="bottoneIndietro" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ccc; -fx-font-size: 14px;" text="⬅ Indietro" />
+            <VBox VBox.vgrow="ALWAYS" /> <Button fx:id="bottoneIndietro" maxWidth="1.7976931348623157E308" onAction="#indietro" style="-fx-background-color: #ccc; -fx-font-size: 14px;" text="⬅ Indietro" />
         </VBox>
     </left>
 

@@ -104,39 +104,8 @@
             </HBox>
 
             <VBox prefWidth="350.0" spacing="10.0" style="-fx-background-color: #f7f7f7; -fx-padding: 15; -fx-border-radius: 5;">
-                <Label fx:id="terapiaCorrente" style="-fx-font-size: 18.0; -fx-font-weight: bold;" text="💊 Terapia Corrente" />
-                <GridPane hgap="10.0" vgap="5.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="110.0" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="150.0" />
-                    </columnConstraints>
-                    
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Farmaco:" GridPane.rowIndex="0" />
-                    <Label fx:id="nomeFarmacoLabel" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Dosi gg.:" GridPane.rowIndex="1" />
-                    <Label fx:id="dosiGiornaliereLabel" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Quantità:" GridPane.rowIndex="2" />
-                    <Label fx:id="quantitàLabel" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Periodo:" GridPane.rowIndex="3" />
-                    <Label fx:id="periodoLabel" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                    
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Indicazioni:" GridPane.rowIndex="4" />
-                    <Label fx:id="indicazioniLabel" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Modificato da:" GridPane.rowIndex="5" />
-                    <Label fx:id="modificatoLabel" text="N/D" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
-                </GridPane>
+                <Label fx:id="terapiaCorrente" style="-fx-font-size: 18.0; -fx-font-weight: bold;" text="💊 Terapie Correnti" />
+            <ListView fx:id="terapieCorrenti" prefHeight="170.0" prefWidth="293.0" />
             </VBox>
             
             <VBox prefWidth="350.0" spacing="10.0" style="-fx-background-color: #f7f7f7; -fx-padding: 15; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
