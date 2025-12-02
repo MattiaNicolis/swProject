@@ -1,0 +1,35 @@
+#welcomeLabel{
+    -fx-font-size: 32pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: dodgerblue;
+}
+
+#mailButton{
+    -fx-background-color: #fff;
+    -fx-font-weight: bold;
+    -fx-font-size: 14pt;
+    -fx-text-fill: dodgerblue;
+}
+
+#logoutButton{
+    -fx-background-color: #ff6666;
+    -fx-font-weight: bold;
+    -fx-font-size: 14pt;
+}
+
+#listaPazientiLabel{
+    -fx-font-size: 16pt;
+    -fx-font-weight: bold;
+}
+
+#glicemieFuoriRangeLabel{
+    -fx-font-size: 16pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: #cc0000;
+}
+
+#questionariNonConformiLabel{
+    -fx-font-size: 16pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff9900;
+}
