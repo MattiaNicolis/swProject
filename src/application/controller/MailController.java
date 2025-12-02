@@ -97,29 +97,28 @@ public class MailController {
 		FAILURE
 	}
 	public MailResult trySendMail(String destinatario, String oggetto, String corpo) {
-		if(destinatarioField.getText().isBlank() || oggettoField.getText().isBlank() || corpoArea.getText().isBlank()) {
+		if(destinatario == null || destinatario.isBlank() || oggetto == null || oggetto.isBlank()
+			|| corpo == null || corpo.isBlank()) {
 			return MailResult.EMPTY_FIELDS;
 		}
 
 		boolean esiste = AdminService.utenti.stream()
-			.anyMatch(d -> d.getMail().equals(destinatarioField.getText()));
+			.anyMatch(d -> d.getMail().equals(destinatario));
 		if(!esiste) {
-			destinatarioField.clear();
 			return MailResult.INVALID_DATA;
 		}
 
 		if(u.isPaziente()) {
 			boolean pToP = AdminService.pazienti.stream()
-				.anyMatch(p -> p.getMail().equalsIgnoreCase(destinatarioField.getText()));
+				.anyMatch(p -> p.getMail().equalsIgnoreCase(destinatario));
 			
 			if(pToP) {
-				destinatarioField.clear();
 				return MailResult.INVALID_DATA;
 			}	
 		}
 
 		Mail mail = new Mail(0, u.getMail(), destinatario, oggetto, corpo, null, null, false);
-		boolean ok = AdminService.mailDAO.scriviMail(mail);
+		boolean ok = AdminService.scriviMail(mail);
 		if(ok) {
 			return MailResult.SUCCESS;
 		}
@@ -133,7 +132,10 @@ public class MailController {
 
 		switch(result) {
 			case EMPTY_FIELDS -> MessageUtils.showError("Compilare tutti i campi.");
-			case INVALID_DATA -> MessageUtils.showError("Mail destinatario non valida.");
+			case INVALID_DATA -> {
+				destinatarioField.clear();
+				MessageUtils.showError("Mail destinatario non valida.");
+			}
 			case FAILURE -> MessageUtils.showError("Errore nell'invio della mail.");
 			case SUCCESS -> {
 				mailInviate = AdminService.loadMailInviate(u);

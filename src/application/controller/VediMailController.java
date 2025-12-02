@@ -54,7 +54,7 @@ public class VediMailController {
 
 	private void gestioneLettura() {
 		if(!m.getLetta() && m.getDestinatario().equalsIgnoreCase(u.getMail())) {
-            boolean ok = AdminService.mailDAO.vediMail(m);
+            boolean ok = AdminService.vediMail(m);
             if(ok) {
                 m.setLetta(true);
             }

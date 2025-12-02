@@ -2,13 +2,14 @@ package application.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import application.model.FattoriComorbiditàAllergie;
 import application.model.Glicemia;
 import application.model.Patologia;
+import application.model.Peso;
 import application.model.Questionario;
 import application.model.Terapia;
 import application.model.TerapiaConcomitante;
@@ -18,7 +19,6 @@ import application.utils.MessageUtils;
 import application.utils.Sessione;
 import application.view.Navigator;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
@@ -43,12 +43,14 @@ public class MostraDatiPazienteController {
 	private List<FattoriComorbiditàAllergie> fattoriComorbiditàAllergie = new ArrayList<>();
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
+	private List<Peso> peso = new ArrayList<>();
 
 	
-	// GRAFICO
+	// GRAFICO GLICEMIA
 	@FXML private LineChart<String, Number> grafico;
-	XYChart.Series<String, Number> serie = new XYChart.Series<>();
 
+	// GRAFICO PESO
+	@FXML private LineChart<String, Number> graficoPeso;
 	
 	//LABEL
 	@FXML private Label labelPaziente;
@@ -61,33 +63,40 @@ public class MostraDatiPazienteController {
 	@FXML private ImageView fotoProfilo;
 	
 	//LISTE
-	@FXML public ListView<String> listaTerapiePaziente;
-	ObservableList<String> listaTerapiePazienteAsObservable = FXCollections.observableArrayList();
-	
-	@FXML public ListView<String> listaFattori;
-	ObservableList<String> listaFattoriAsObservable = FXCollections.observableArrayList();
-	
-	@FXML public ListView<String> listaComorbidità;
-	ObservableList<String> listaComorbiditàAsObservable = FXCollections.observableArrayList();
-	
-	@FXML public ListView<String> listaAllergie;
-	ObservableList<String> listaAllergieAsObservable = FXCollections.observableArrayList();
-	
-	@FXML public ListView<String> listaPatologie;
-	ObservableList<String> listaPatologieAsObservable = FXCollections.observableArrayList();
-	
-	@FXML public ListView<String> listaTerapieConcomitanti;
-	ObservableList<String> listaTerapieConcomitantiAsObservable = FXCollections.observableArrayList();
-	
-	@FXML public ListView<String> listaQuestionari;
-	ObservableList<String> listaQuestionariAsObservable = FXCollections.observableArrayList();
+	@FXML public ListView<Terapia> listaTerapiePaziente;
+	@FXML public ListView<FattoriComorbiditàAllergie> listaFattori;
+	@FXML public ListView<FattoriComorbiditàAllergie> listaComorbidità;
+	@FXML public ListView<FattoriComorbiditàAllergie> listaAllergie;
+	@FXML public ListView<Patologia> listaPatologie;
+	@FXML public ListView<TerapiaConcomitante> listaTerapieConcomitanti;
+	@FXML public ListView<Questionario> listaQuestionari;
 	
 	@FXML
 	private void initialize() {
 		p = Sessione.getInstance().getPazienteSelezionato();
 		
 		caricaDatiPaziente();
+		setUpInterfaccia();
+		
+		try {
+			visualizzaDati();
+		} catch (IOException e) {
+			e.printStackTrace();
+			MessageUtils.showError("Errore nel caricamento dati del paziente: " + p.getNomeCognome());
+		}
+	}
 
+	private void caricaDatiPaziente() {
+		glicemia = AdminService.loadGlicemiaByPaziente(p);
+		terapie = AdminService.loadTerapieByPaziente(p);
+		questionari = AdminService.loadQuestionariByPaziente(p);
+		fattoriComorbiditàAllergie = AdminService.loadFattoriComorbiditàAllergieByPaziente(p);
+		terapieConcomitanti = AdminService.loadTerapieConcomitantiByPaziente(p);
+		patologie = AdminService.loadPatologieByPaziente(p);
+		peso = AdminService.loadPesoByCf(p.getCf());
+	}
+	
+	private void setUpInterfaccia() {
 		labelPaziente.setText("Profilo clinico di " + p.getNomeCognome());
 		labelPaziente.setFocusTraversable(true);
 		dataDiNascitaDato.setText(p.getDataDiNascita().format(AdminService.dateFormatter));
@@ -100,163 +109,114 @@ public class MostraDatiPazienteController {
 		medicoRifLabel.setText(AdminService.getNomeUtenteByCf(p.getDiabetologoRif()) + " (" + p.getDiabetologoRif() + ")");
 			
 		sceltaVisualizza.getItems().addAll("Settimana", "Mese");
-		
-		try {
-			visualizzaDati();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
-	private void caricaDatiPaziente() {
-		glicemia = AdminService.loadGlicemiaByPaziente(p);
-		terapie = AdminService.loadTerapieByPaziente(p);
-		questionari = AdminService.loadQuestionariByPaziente(p);
-		fattoriComorbiditàAllergie = AdminService.loadFattoriComorbiditàAllergieByPaziente(p);
-		terapieConcomitanti = AdminService.loadTerapieConcomitantiByPaziente(p);
-		patologie = AdminService.loadPatologieByPaziente(p);
-	}
-	
 	public void visualizzaDati() throws IOException {
 		// TERAPIE
-		listaTerapiePazienteAsObservable = FXCollections.observableArrayList(
-			terapie.stream()
-				.map(t -> t.getNomeFarmaco() + " (" + t.getDataInizio().format(AdminService.dateFormatter) + " / " + t.getDataFine().format(AdminService.dateFormatter) + ")")
-				.toList()
+		listaTerapiePaziente.setItems(FXCollections.observableArrayList(terapie));
+		AdminService.setCustomCellFactory(listaTerapiePaziente, t -> 
+			t.getNomeFarmaco() + " (" + 
+			t.getDataInizio().format(AdminService.dateFormatter) + " - " + 
+			t.getDataFine().format(AdminService.dateFormatter) + ")"
 		);
-		listaTerapiePaziente.setItems(listaTerapiePazienteAsObservable);
-		
-		// ENTRA IN UNA SPECIFICA TERAPIA
 		listaTerapiePaziente.setOnMouseClicked(e -> {
-			String selectedTerapia = listaTerapiePaziente.getSelectionModel().getSelectedItem();
+			Terapia selectedTerapia = listaTerapiePaziente.getSelectionModel().getSelectedItem();
 			if(selectedTerapia != null) {
-				terapie.stream()
-					.filter(t -> (t.getNomeFarmaco() + " (" + t.getDataInizio().format(AdminService.dateFormatter) + " / " + t.getDataFine().format(AdminService.dateFormatter) + ")").equals(selectedTerapia))
-					.findAny()
-					.ifPresent(t -> {
-						Sessione.getInstance().setTerapiaSelezionata(t);
-					});
-				
+				Sessione.getInstance().setTerapiaSelezionata(selectedTerapia);
 				try {
 					clearAll();
 					Navigator.getInstance().switchToMostraDettagliTerapia(e);
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				} catch (IOException ev) {
+					ev.printStackTrace();
 				}
 			}
 		});
 	
 		// FATTORI DI RISCHIO
-		listaFattoriAsObservable = FXCollections.observableArrayList(
+		listaFattori.setItems(FXCollections.observableArrayList(
 			fattoriComorbiditàAllergie.stream()
 				.filter(f -> f.getTipo().equals("Fattore Di Rischio"))
-				.map(f -> f.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(f.getModificato()) + ")")
 				.toList()
-		);
-		listaFattori.setItems(listaFattoriAsObservable);
+		));
+		AdminService.setCustomCellFactory(listaFattori, f -> 
+			f.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(f.getModificato()) + ")");
 		
 		// COMORBIDITÀ
-		listaComorbiditàAsObservable = FXCollections.observableArrayList(
+		listaComorbidità.setItems(FXCollections.observableArrayList(
 			fattoriComorbiditàAllergie.stream()
 				.filter(c -> c.getTipo().equals("Comorbidità"))
-				.map(c -> c.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(c.getModificato()) + ")")
 				.toList()
-		);
-		listaComorbidità.setItems(listaComorbiditàAsObservable);
+		));
+		AdminService.setCustomCellFactory(listaComorbidità, c -> 
+			c.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(c.getModificato()) + ")");
 		
 		// ALLERGIE
-		listaAllergieAsObservable = FXCollections.observableArrayList(
+		listaAllergie.setItems(FXCollections.observableArrayList(
 			fattoriComorbiditàAllergie.stream()
 				.filter(a -> a.getTipo().equals("Allergia"))
-				.map(a -> a.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(a.getModificato()) + ")")
 				.toList()
-		);
-		listaAllergie.setItems(listaAllergieAsObservable);
+		));
+		AdminService.setCustomCellFactory(listaAllergie, a -> 
+			a.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(a.getModificato()) + ")");
 		
 		// PATOLOGIE
-		listaPatologieAsObservable = FXCollections.observableArrayList(
-			patologie.stream()
-				.map(p -> p.getNome())
-				.toList()
-		);
-		listaPatologie.setItems(listaPatologieAsObservable);
-		
-		// ENTRA IN UNA SPECIFICA PATOLOGIA
+		listaPatologie.setItems(FXCollections.observableArrayList(patologie));
+		AdminService.setCustomCellFactory(listaPatologie, p -> p.getNome());
 		listaPatologie.setOnMouseClicked(e -> {
-			String selectedPatologia = listaPatologie.getSelectionModel().getSelectedItem();
+			Patologia selectedPatologia = listaPatologie.getSelectionModel().getSelectedItem();
 			if(selectedPatologia != null) {
-				patologie.stream()
-					.filter(patologia -> patologia.getNome().equals(selectedPatologia))
-					.findFirst()
-					.ifPresent(patologia -> {
-						Sessione.getInstance().setPatologiaSelezionata(patologia);
-					});
-				
+				Sessione.getInstance().setPatologiaSelezionata(selectedPatologia);
 				try {
 					clearAll();
 					Navigator.getInstance().switchToMostraPatologia(e);
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				} catch (IOException ev) {
+					ev.printStackTrace();
 				}
 			}
 		});
 		
 		// TERAPIE CONCOMITANTI
-		listaTerapieConcomitantiAsObservable = FXCollections.observableArrayList(
-			terapieConcomitanti.stream()
-				.map(tc -> tc.getNome() + " (" + tc.getDataInizio().format(AdminService.dateFormatter) + ")")
-				.toList()
-		);
-		listaTerapieConcomitanti.setItems(listaTerapieConcomitantiAsObservable);
-		
-		// ENTRA IN UNA SPECIFICA TERAPIA CONCOMITANTE
+		listaTerapieConcomitanti.setItems(FXCollections.observableArrayList(terapieConcomitanti));
+		AdminService.setCustomCellFactory(listaTerapieConcomitanti, tc -> tc.getNome());
 		listaTerapieConcomitanti.setOnMouseClicked(e -> {
-			String selectedTerapiaConcomitante = listaTerapieConcomitanti.getSelectionModel().getSelectedItem();
+			TerapiaConcomitante selectedTerapiaConcomitante = listaTerapieConcomitanti.getSelectionModel().getSelectedItem();
 			if(selectedTerapiaConcomitante != null) {
-				terapieConcomitanti.stream()
-					.filter(tc -> (tc.getNome() + " (" + tc.getDataInizio().format(AdminService.dateFormatter) + ")").equals(selectedTerapiaConcomitante))
-					.findAny()
-					.ifPresent(tc -> {
-						Sessione.getInstance().setTerapiaConcomitanteSelezionata(tc);
-					});
-				
+				Sessione.getInstance().setTerapiaConcomitanteSelezionata(selectedTerapiaConcomitante);
 				try {
 					clearAll();
 					Navigator.getInstance().switchToMostraTerapiaConcomitante(e);
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				} catch (IOException ev) {
+					ev.printStackTrace();
 				}
 			}
 		});
 		
 		// LISTA QUESTIONARI
-		listaQuestionariAsObservable.addAll(
-			questionari.stream()
-				.filter(quest -> quest.getCf().equals(p.getCf()))
-				.map(quest -> quest.getNomeFarmaco() + " (" + quest.getGiornoCompilazione().format(AdminService.dateFormatter) + ")")
-				.toList()
-			);
-		listaQuestionari.setItems(listaQuestionariAsObservable);
-		
-		// ENTRA IN UNO SPECIFICO QUESTIONARIO
+		listaQuestionari.setItems(FXCollections.observableArrayList(questionari));
+		AdminService.setCustomCellFactory(listaQuestionari, q -> q.getNomeFarmaco() + " (" + q.getGiornoCompilazione() + ")");
 		listaQuestionari.setOnMouseClicked(e -> {
-			String selectedQuestionario = listaQuestionari.getSelectionModel().getSelectedItem();
+			Questionario selectedQuestionario = listaQuestionari.getSelectionModel().getSelectedItem();
 			if(selectedQuestionario != null) {
-				questionari.stream()
-					.filter(quest -> (quest.getNomeFarmaco() + " (" + quest.getGiornoCompilazione().format(AdminService.dateFormatter) + ")").equals(selectedQuestionario))
-					.findAny()
-					.ifPresent(quest -> {
-						Sessione.getInstance().setQuestionarioSelezionato(quest);
-					});
-				
+				Sessione.getInstance().setQuestionarioSelezionato(selectedQuestionario);
 				try {
 					clearAll();
 					Navigator.getInstance().switchVediQuestionario(e);
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				} catch (IOException ev) {
+					ev.printStackTrace();
 				}	
 			}
 		});
+
+		// GRAFICO PESO
+		XYChart.Series<String, Number> misurazioni = new XYChart.Series<>();
+		graficoPeso.getData().clear();
+		misurazioni.getData().clear();
+		misurazioni.getData().addAll(
+			peso.stream()
+				.map(p -> new XYChart.Data<String, Number>(p.getGiorno().format(AdminService.dateFormatter), p.getValore()))
+				.toList()
+		);	
+		graficoPeso.getData().add(misurazioni);
 	}
 	
 	public enum SceltaResult {
@@ -264,7 +224,6 @@ public class MostraDatiPazienteController {
 		DATE_IN_FUTURE,
 		OK
 	}
-
 	public SceltaResult tryScelta(String scelta, LocalDate date) {
 		if(date == null || scelta == null) {
 			return SceltaResult.EMPTY_FIELD;
@@ -273,7 +232,6 @@ public class MostraDatiPazienteController {
 		}
 		return SceltaResult.OK;
 	}
-
 	@FXML
 	private void handleScelta() throws IOException {
 		SceltaResult result = tryScelta(sceltaVisualizza.getValue(), dataVisualizza.getValue());
@@ -288,26 +246,66 @@ public class MostraDatiPazienteController {
 					date2 = date.plusDays(7);
 					if(date2.isAfter(LocalDate.now()))
 						date2 = LocalDate.now();
+
+					grafico.getData().clear(); // svuota il grafico
+					XYChart.Series<String, Number> serie = new XYChart.Series<>();
+					for(Glicemia g : glicemia) {
+						if(!g.getGiorno().isBefore(date) && !g.getGiorno().isAfter(date2)) {
+							final int valore = g.getValore();
+							final String giorno = g.getGiorno().format(DateTimeFormatter.ofPattern("dd/MM")) + "\n" + g.getOrario();
+							final String indicazioni = g.getIndicazioni();
+
+							XYChart.Data<String, Number> punto = new XYChart.Data<>(giorno, valore);
+							punto = AdminService.proprietàPunto(punto, valore, indicazioni);
+							serie.getData().add(punto);
+						}
+					}
+					grafico.getData().add(serie);
+
 				} else if("Mese".equals(scelta)) {
 					date2 = date.plusMonths(1);
 					if(date2.isAfter(LocalDate.now()))
 						date2 = LocalDate.now();
+				
+					grafico.getData().clear();
+					XYChart.Series<String, Number> serieMax = new XYChart.Series<>();
+					XYChart.Series<String, Number> serieMin = new XYChart.Series<>();
+
+					LocalDate giornoCorrente = null;
+					int min = Integer.MAX_VALUE;
+					int max = Integer.MIN_VALUE;
+
+					for (Glicemia g : glicemia) {
+						if(g.getGiorno().isBefore(date) || g.getGiorno().isAfter(date2)) continue;
+
+						if (giornoCorrente != null && !g.getGiorno().equals(giornoCorrente)) {
+							// ATTENZIONE: Usiamo giornoCorrente per l'etichetta, non g.getGiorno()!
+							String etichetta = giornoCorrente.format(DateTimeFormatter.ofPattern("dd/MM"));
+							
+							serieMax.getData().add(new XYChart.Data<>(etichetta, max));
+							serieMin.getData().add(new XYChart.Data<>(etichetta, min));
+							
+							// Reset per il nuovo giorno corrente
+							min = Integer.MAX_VALUE;
+							max = Integer.MIN_VALUE;
+						}
+
+						// Aggiorniamo il giorno corrente e i valori min/max
+						giornoCorrente = g.getGiorno();
+						if (g.getValore() > max) max = g.getValore();
+						if (g.getValore() < min) min = g.getValore();
+					}
+
+					if (giornoCorrente != null) {
+						String etichetta = giornoCorrente.format(DateTimeFormatter.ofPattern("dd/MM"));
+						
+						serieMax.getData().add(new XYChart.Data<>(etichetta, max));
+						serieMin.getData().add(new XYChart.Data<>(etichetta, min));
+					}
+
+					grafico.getData().add(serieMax);
+					grafico.getData().add(serieMin);
 				}
-					
-				grafico.getData().clear(); // svuota il grafico
-				serie.getData().clear();   // svuota la serie
-				
-				serie.getData().addAll(
-					glicemia.stream()
-					.filter(g -> g.getCf().equals(p.getCf())
-								&& g.getGiorno().isAfter(date.minusDays(1))
-								&& g.getGiorno().isBefore(date2.plusDays(1)))
-					.sorted(Comparator.comparing(Glicemia::getGiorno))
-					.map(g -> new XYChart.Data<String, Number>(g.getGiorno().toString(), g.getValore()))
-					.toList()
-				);
-				
-				grafico.getData().add(serie);
 			}
 		}
 	}
@@ -320,6 +318,7 @@ public class MostraDatiPazienteController {
 		fattoriComorbiditàAllergie.clear();
 		patologie.clear();
 		terapieConcomitanti.clear();
+		peso.clear();
 	}
 
 	// NAVIGAZIONE
@@ -333,7 +332,7 @@ public class MostraDatiPazienteController {
 	@FXML
 	private void switchToNuovaTerapia(ActionEvent event) throws IOException {
 		clearAll();
-		Navigator.getInstance().switchToNuovaTerapia(event);
+		Navigator.getInstance().switchToTerapia(event);
 	}
 	
 	@FXML

@@ -218,7 +218,7 @@ public class DiabetologoController {
 
 			if (result.isPresent()) {
 				if (result.get() == MessageUtils.BTN_VISTO) {
-					boolean ok = AdminService.questDAO.segnaComeControllato(selectedQuest);
+					boolean ok = AdminService.segnaComeControllato(selectedQuest);
 					
 					if (ok) {
 						selectedQuest.setControllato(true);

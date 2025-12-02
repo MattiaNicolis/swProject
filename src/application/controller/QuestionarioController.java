@@ -84,7 +84,7 @@ public class QuestionarioController {
 
     private List<Terapia> terapieDaCompletare() {
         return terapieAttive.stream()
-                .filter(terapia -> !AdminService.questDAO.esisteQuestionarioOggi(terapia.getId()))
+                .filter(terapia -> !AdminService.esisteQuestionarioOggi(terapia.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -120,7 +120,7 @@ public class QuestionarioController {
 
         // Creazione questionario
         Questionario quest = new Questionario(0, p.getCf(), LocalDate.now(), nomeFarmaco, this.dose, this.quantità, sintomi, false, t.getId());
-        boolean ok = AdminService.questDAO.creaQuestionario(quest);
+        boolean ok = AdminService.creaQuestionario(quest);
         
         if(ok) return QuestionarioResult.SUCCESS;
         else return QuestionarioResult.FAILURE;

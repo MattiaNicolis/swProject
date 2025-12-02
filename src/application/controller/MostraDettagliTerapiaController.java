@@ -76,14 +76,14 @@ public class MostraDettagliTerapiaController {
 	
 	@FXML
 	private void switchToModificaTerapia(ActionEvent event) throws IOException {
-		Navigator.getInstance().switchToModificaTerapia(event);
+		Navigator.getInstance().switchToTerapia(event);
 	}
 
 	@FXML
 	private void eliminaTerapia(ActionEvent event) throws IOException {
 		Optional<ButtonType> result = MessageUtils.showConferma("Eliminazione terapia", "Sei sicuro di voler eliminare questa terapia?");
 		if (result.isPresent() && result.get() == ButtonType.OK) {
-			boolean ok = AdminService.terapiaDAO.eliminaTerapia(t);
+			boolean ok = AdminService.eliminaTerapia(t);
 
 			if (ok) {
 				Sessione.getInstance().setTerapiaSelezionata(null);

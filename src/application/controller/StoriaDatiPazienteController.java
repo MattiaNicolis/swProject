@@ -85,11 +85,11 @@ public class StoriaDatiPazienteController {
 		
 		FattoriComorbiditàAllergie fca = new FattoriComorbiditàAllergie(
 				p.getCf(),
-				tipologia.getValue(),
-				nomeField.getText(),
+				tipo,
+				nome,
 				u.getCf()
 			);
-		boolean ok = AdminService.fattoriComorbiditàAllergieDAO.creaFattoreComorbiditàAllergia(fca);
+		boolean ok = AdminService.creaFattoreComorbiditàAllergia(fca);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
 		} else {
@@ -120,11 +120,11 @@ public class StoriaDatiPazienteController {
 		
 		FattoriComorbiditàAllergie fca = new FattoriComorbiditàAllergie(
 				p.getCf(),
-				tipologia.getValue(),
-				nomeField.getText(),
+				tipo,
+				nome,
 				u.getCf()
 			);
-		boolean ok = AdminService.fattoriComorbiditàAllergieDAO.eliminaFattoreComorbiditàAllergia(fca);
+		boolean ok = AdminService.eliminaFattoreComorbiditàAllergia(fca);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
 		} else {
@@ -168,7 +168,7 @@ public class StoriaDatiPazienteController {
 				indicazioni,
 				u.getCf()
 			);
-		boolean ok = AdminService.patologiaDAO.creaPatologia(patologia);
+		boolean ok = AdminService.creaPatologia(patologia);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
 		} else {
@@ -207,7 +207,7 @@ public class StoriaDatiPazienteController {
 				indicazioni,
 				u.getCf()
 			);
-		boolean ok = AdminService.patologiaDAO.eliminaPatologia(patologia);
+		boolean ok = AdminService.eliminaPatologia(patologia);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
 		} else {
@@ -256,7 +256,7 @@ public class StoriaDatiPazienteController {
 				dataFine,
 				u.getCf()
 			);
-		boolean ok = AdminService.terapiaConcomitanteDAO.creaTerapiaConcomitante(terapiaConcomitante);
+		boolean ok = AdminService.creaTerapiaConcomitante(terapiaConcomitante);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
 		} else {
@@ -298,7 +298,7 @@ public class StoriaDatiPazienteController {
 				dataFine,
 				u.getCf()
 			);
-		boolean ok = AdminService.terapiaConcomitanteDAO.eliminaTerapiaConcomitante(terapiaConcomitante);
+		boolean ok = AdminService.eliminaTerapiaConcomitante(terapiaConcomitante);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
 		} else {
