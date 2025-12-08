@@ -1,26 +1,63 @@
-.border-pane{
-    -fx-background-color: #FFFAFA;
+#mainPane{
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #1874CD;
+    -fx-border-width: 4pt;
 }
 
-.label{
-    -fx-font-size: 32px;
+#subPane{
+    -fx-background-color: #1874CD;
+    -fx-border-color: #F5F5F5;
+    -fx-border-width: 4pt;
+    
+}
+
+#firstLabel{
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #1e90ff, #00c8ff);
+    -fx-text-border-color: #1874CD; 
+    -fx-text-align: center;
+    -fx-text-shadow: 1pt;
+    -fx-font-size: 78px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     -fx-font-weight: bold;
 }
 
-.text-field{
-    -fx-padding: 12 15;
-    -fx-border-color: dodgerblue;
-    -fx-border-width: 1;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-font-size: 14px;
+/* Card */
+.card {
+    -fx-background-color: white;
+    -fx-padding: 25px;
+    -fx-spacing: 15px;
+    -fx-alignment: center;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 5);
 }
 
-.button{
-    -fx-background-color: #00BFFF;
+/* Titolo */
+.card-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e90ff;
+}
+
+/* TextField */
+.input-field {
+    -fx-pref-width: 220px;
+    -fx-padding: 10px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #1e90ff;
+    -fx-background-color: #f8f8f8;
+}
+
+/* Bottone accedi */
+.login-button {
+    -fx-pref-width: 220px;
+    -fx-padding: 10px;
+    -fx-background-color: #1e90ff;
+    -fx-background-radius: 6px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 16px;
-    -fx-padding: 12 15;
-    -fx-background-radius: 6;
+}
+
+.login-button:hover {
+    -fx-background-color: #0a75d1;
 }

@@ -1,35 +1,149 @@
-#welcomeLabel{
-    -fx-font-size: 32pt;
-    -fx-font-weight: bold;
-    -fx-text-fill: dodgerblue;
+/* Colori Globali e Font */
+* {
+    -fx-font-family: "Segoe UI", "Helvetica", sans-serif;
 }
 
-#mailButton{
-    -fx-background-color: #fff;
-    -fx-font-weight: bold;
-    -fx-font-size: 14pt;
-    -fx-text-fill: dodgerblue;
+.main-background {
+    -fx-background-color: #f0f4f8; /* Grigio chiarissimo per lo sfondo */
 }
 
-#logoutButton{
+/* --- NAVBAR STYLES --- */
+.navbar {
+    -fx-background-color: #2D3447; /* Blu scuro professionale */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 2);
+}
+
+.brand-label {
+    -fx-text-fill: #B0B5C1;
+    -fx-font-size: 12px;
+}
+
+.welcome-sublabel {
+    -fx-text-fill: white; /* Grigio chiaro */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* --- BUTTONS --- */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 5px;
+    -fx-alignment: center; /* CENTRA IL TESTO NEL BOTTONE */
+}
+
+.btn-action {
+    -fx-background-color: #4A90E2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.btn-action:hover {
+    -fx-background-color: #357ABD;
+}
+
+.btn-logout {
+    -fx-background-color: transparent;
+    -fx-border-color: #ff6666;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ff6666;
+    -fx-font-weight: bold;
+}
+.btn-logout:hover {
     -fx-background-color: #ff6666;
-    -fx-font-weight: bold;
-    -fx-font-size: 14pt;
+    -fx-text-fill: white;
 }
 
-#listaPazientiLabel{
-    -fx-font-size: 16pt;
-    -fx-font-weight: bold;
+/* --- CARDS (Contenitori Bianchi) --- */
+.card, .card-warning, .card-info {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-padding: 20px;
 }
 
-#glicemieFuoriRangeLabel{
-    -fx-font-size: 16pt;
-    -fx-font-weight: bold;
-    -fx-text-fill: #cc0000;
+/* Bordi colorati per alert e info */
+.card-warning {
+    -fx-border-color: transparent transparent transparent #FF6B6B;
+    -fx-border-width: 0 0 0 4;
 }
 
-#questionariNonConformiLabel{
-    -fx-font-size: 16pt;
+.card-info {
+    -fx-border-color: transparent transparent transparent #FFD93D;
+    -fx-border-width: 0 0 0 4;
+}
+
+/* --- TESTI SEZIONI --- */
+.section-title {
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: #ff9900;
+    -fx-text-fill: #333;
+}
+.section-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666;
+    -fx-padding: 0 0 10 0;
+}
+.section-title-warning {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D32F2F;
+}
+.section-title-info {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #F57C00;
+}
+.icon-label {
+    -fx-font-size: 20px;
+}
+
+/* --- LIST VIEW --- */
+.modern-list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 4px;
+}
+.modern-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: #333;
+}
+.modern-list-view .list-cell:filled:selected, .modern-list-view .list-cell:filled:hover {
+    -fx-background-color: #E3F2FD; /* Blu chiarissimo al passaggio */
+    -fx-text-fill: #1976D2;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    -fx-background-color: white;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 0 1; /* Solo bordo sinistro */
+}
+.sidebar-title {
+    -fx-text-fill: #999;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 1px;
+}
+.profile-image {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+.profile-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D3447;
+}
+.profile-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #777;
+}
+.profile-value {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+.scroll-pane-transparent {
+    -fx-background-color: transparent;
+}
+.scroll-pane-transparent > .viewport {
+    -fx-background-color: transparent;
 }
