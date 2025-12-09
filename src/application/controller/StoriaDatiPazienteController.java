@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.model.FattoriComorbiditàAllergie;
+import application.model.Dato;
 import application.model.Patologia;
 import application.model.TerapiaConcomitante;
 import application.model.Utente;
@@ -25,7 +25,9 @@ public class StoriaDatiPazienteController {
 	// VARIABILI
 	private Utente u;
 	private Utente p;
-	private List<FattoriComorbiditàAllergie> fattoriComorbiditàAllergie = new ArrayList<>();
+	private List<Dato> fattori = new ArrayList<>();
+	private List<Dato> comorbidità = new ArrayList<>();
+	private List<Dato> allergie = new ArrayList<>();
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
 	
@@ -49,7 +51,9 @@ public class StoriaDatiPazienteController {
 	}
 
 	private void caricaDati() {
-		fattoriComorbiditàAllergie = AdminService.loadFattoriComorbiditàAllergieByPaziente(p);
+		fattori = AdminService.loadFattoriByPaziente(p);
+		comorbidità = AdminService.loadComorbiditàByPaziente(p);
+		allergie = AdminService.loadAllergieByPaziente(p);
 		terapieConcomitanti = AdminService.loadTerapieConcomitantiByPaziente(p);
 		patologie = AdminService.loadPatologieByPaziente(p);
 	}
@@ -62,38 +66,45 @@ public class StoriaDatiPazienteController {
 		EMPTY_FIELDS,
 	}
 
-	// GESTIONE FATTORI DI RISCHIO, COMORBIDITÀ E ALLERGIE
+	// GESTIONE FATTORI DI RISCHIO, COMORBIDITÀ E ALLERGIE ----------------------------------------
 	public StoriaDatiPazienteResult tryCreateFattoreComorbiditàAllergie(String tipo, String nome) {
 		if(nome == null || nome.isBlank() || tipo == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
-		else if (tipo.equals("Fattore Di Rischio") && 
-				fattoriComorbiditàAllergie.stream()
-					.anyMatch(f -> f.getNome().equalsIgnoreCase(nome))) {
-			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
+
+		Dato dato = new Dato(p.getCf(), nome, u.getCf());
+
+		boolean esisteGia = false;
+    	boolean operazioneRiuscita = false;
+
+		switch(tipo) {
+			case "Fattore Di Rischio":
+				esisteGia = fattori.stream().anyMatch(f -> f.getNome().equalsIgnoreCase(nome));
+				if(!esisteGia) {
+					operazioneRiuscita = AdminService.creaFattore(dato);
+				}
+				break;
+			case "Comorbidità":
+				esisteGia = comorbidità.stream().anyMatch(c -> c.getNome().equalsIgnoreCase(nome));
+				if(!esisteGia) {
+					operazioneRiuscita = AdminService.creaComorbidità(dato);
+				}
+				break;
+			case "Allergia":
+				esisteGia = allergie.stream().anyMatch(a -> a.getNome().equalsIgnoreCase(nome));
+				if(!esisteGia) {
+					operazioneRiuscita = AdminService.creaAllergia(dato);
+				}
+				break;
+			default:
+				return StoriaDatiPazienteResult.FAILURE;
 		}
-		else if(tipo.equals("Comorbidità") && 
-				fattoriComorbiditàAllergie.stream()
-					.anyMatch(c -> c.getNome().equalsIgnoreCase(nome))) {
+
+		if(esisteGia) {
 			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
-		}
-		else if(tipo.equals("Allergia") && 
-				fattoriComorbiditàAllergie.stream()
-					.anyMatch(a -> a.getNome().equalsIgnoreCase(nome))) {
-			return StoriaDatiPazienteResult.DATA_ALREADY_EXISTS;
-		}
-		
-		FattoriComorbiditàAllergie fca = new FattoriComorbiditàAllergie(
-				p.getCf(),
-				tipo,
-				nome,
-				u.getCf()
-			);
-		boolean ok = AdminService.creaFattoreComorbiditàAllergia(fca);
-		if(ok) {
+		} else if(operazioneRiuscita) {
 			return StoriaDatiPazienteResult.SUCCESS;
 		} else {
-			MessageUtils.showError("Errore nell'inserimento del dato.");
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
@@ -107,7 +118,6 @@ public class StoriaDatiPazienteController {
 			case FAILURE -> MessageUtils.showError("Errore nell'inserimento del dato.");
 			case INVALID_DATE -> {} // Caso non interessante per questo dato
 			case SUCCESS -> {
-				AdminService.loadFattoriComorbiditàAllergieByPaziente(p);
 				MessageUtils.showSuccess("Dato paziente inserito.");
 				switchToMostraDatiPaziente(event);
 			}
@@ -118,17 +128,27 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
 		
-		FattoriComorbiditàAllergie fca = new FattoriComorbiditàAllergie(
-				p.getCf(),
-				tipo,
-				nome,
-				u.getCf()
-			);
-		boolean ok = AdminService.eliminaFattoreComorbiditàAllergia(fca);
-		if(ok) {
-			return StoriaDatiPazienteResult.SUCCESS;
-		} else {
+		Dato dato = new Dato(p.getCf(), nome, u.getCf());
+		boolean operazioneRiuscita = false;
+
+		switch(tipo) {
+			case "Fattore Di Rischio":
+				operazioneRiuscita = AdminService.eliminaFattore(dato);
+				break;
+			case "Comorbidità":
+				operazioneRiuscita = AdminService.eliminaComorbidità(dato);
+				break;
+			case "Allergia":
+				operazioneRiuscita = AdminService.eliminaAllergia(dato);
+				break;
+			default:
+				return StoriaDatiPazienteResult.FAILURE;
+		}
+
+		if(!operazioneRiuscita) {
 			return StoriaDatiPazienteResult.FAILURE;
+		} else {
+			return StoriaDatiPazienteResult.SUCCESS;
 		}
 	}
 	@FXML
@@ -141,14 +161,13 @@ public class StoriaDatiPazienteController {
 			case DATA_ALREADY_EXISTS -> {} // Caso non interessante per la rimozione
 			case INVALID_DATE -> {} // Caso non interessante per questo dato
 			case SUCCESS -> {
-				AdminService.loadFattoriComorbiditàAllergieByPaziente(p);
 				MessageUtils.showSuccess("Dato paziente rimosso.");
 				switchToMostraDatiPaziente(event);
 			}
 		}
 	}
 	
-	// GESTIONE PATOLOGIE PREGRESSE
+	// GESTIONE PATOLOGIE PREGRESSE ---------------------------------------------------------------------------
 	public StoriaDatiPazienteResult tryCreatePatologia(String nome, LocalDate dataInizio, String indicazioni) {
 		if(nome == null || nome.isBlank() || indicazioni == null || indicazioni.isBlank() || dataInizio == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -235,7 +254,7 @@ public class StoriaDatiPazienteController {
 		}
 	}
 
-	// GESTIONE TERAPIE CONCOMITANTI
+	// GESTIONE TERAPIE CONCOMITANTI ------------------------------------------------------------------------------------
 	public StoriaDatiPazienteResult tryCreateTerapiaConcomitante(String nome, LocalDate dataInizio, LocalDate dataFine) {
 		if(nome == null || nome.isBlank() || dataInizio == null || dataFine == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -330,7 +349,9 @@ public class StoriaDatiPazienteController {
 	private void clearAll() {
 		terapieConcomitanti.clear();
 		patologie.clear();
-		fattoriComorbiditàAllergie.clear();
+		fattori.clear();
+		comorbidità.clear();
+		allergie.clear();
 	}
 
 	// NAVIGAZIONE
