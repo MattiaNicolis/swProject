@@ -11,7 +11,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -166,7 +165,6 @@
             
             <VBox prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1); -fx-padding: 20;">
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <ImageView fx:id="fotoProfilo" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);" />
                     <VBox alignment="CENTER_LEFT" spacing="2">
                         <Label fx:id="nomeLabel" text="Nome Cognome" textFill="#333">
                             <font><Font name="System Bold" size="18.0" /></font>
@@ -177,18 +175,21 @@
                 <Separator style="-fx-padding: 15 0;" />
                 <GridPane hgap="10.0" vgap="10.0">
                     <columnConstraints>
-                        <ColumnConstraints minWidth="90" />
-                        <ColumnConstraints hgrow="ALWAYS" />
+                        <ColumnConstraints maxWidth="101.0" minWidth="90.0" prefWidth="101.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="205.0" minWidth="199.0" prefWidth="199.0" />
                     </columnConstraints>
-                    <Label text="Nascita:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label fx:id="ddnLabel" style="-fx-font-weight: bold;" text="--" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="Data di nascita:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="ddnLabel" style="-fx-font-weight: bold;" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     
-                    <Label text="Sesso:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label fx:id="sessoLabel" style="-fx-font-weight: bold;" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Sesso:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="sessoLabel" style="-fx-font-weight: bold;" text="--" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     
-                    <Label text="Medico:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Label fx:id="diabetologoLabel" style="-fx-font-weight: bold;" text="--" textFill="#2196f3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Medico:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="diabetologoLabel" style="-fx-font-weight: bold;" text="--" textFill="#2196f3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               <Label text="Luogo di nascita:" />
+               <Label fx:id="luogoLabel" text="--" GridPane.columnIndex="1" />
                <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
                   <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />

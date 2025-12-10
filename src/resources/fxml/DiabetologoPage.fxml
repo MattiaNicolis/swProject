@@ -99,8 +99,6 @@
             <children>
                 <Label styleClass="sidebar-title" text="PROFILO PERSONALE" />
                 
-                <ImageView fx:id="fotoProfilo" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
-                
                 <VBox alignment="CENTER" spacing="5.0">
                     <children>
                         <Label fx:id="nomeLabel" styleClass="profile-name" text="Dr. Mario Rossi" textAlignment="CENTER" wrapText="true" />
@@ -110,11 +108,15 @@
                             </VBox.margin>
                         </Separator>
                         <HBox alignment="CENTER" spacing="5.0">
-                            <Label styleClass="profile-label" text="Data di Nascita:" />
+                            <Label styleClass="profile-label" />
                             <Label fx:id="ddnLabel" styleClass="profile-value" text="01/01/1980" />
                         </HBox>
                         <HBox alignment="CENTER" spacing="5.0">
-                            <Label styleClass="profile-label" text="Sesso:" />
+                            <Label styleClass="profile-label" />
+                            <Label fx:id="luogoLabel" styleClass="profile-value" text="M" />
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="5.0">
+                            <Label styleClass="profile-label" />
                             <Label fx:id="sessoLabel" styleClass="profile-value" text="M" />
                         </HBox>
                     </children>

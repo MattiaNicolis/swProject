@@ -255,7 +255,13 @@ public class MailController {
 		destinatarioField.clear();
 		destinatarioField.setText(mail);
 		oggettoField.clear();
-		oggettoField.setText("Re: " + oggetto);
+		String nuovoOggetto = oggetto;
+    
+		if (nuovoOggetto != null && !nuovoOggetto.trim().toUpperCase().startsWith("RE:")) {
+			nuovoOggetto = "Re: " + nuovoOggetto;
+		}
+		
+		oggettoField.setText(nuovoOggetto);
 		showCompose();
     }
 

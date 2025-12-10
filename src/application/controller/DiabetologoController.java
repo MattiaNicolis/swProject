@@ -27,8 +27,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class DiabetologoController {
 		
@@ -52,7 +50,7 @@ public class DiabetologoController {
 	@FXML private Label nomeLabel;
 	@FXML private Label ddnLabel;
 	@FXML private Label sessoLabel;
-	@FXML private ImageView fotoProfilo;
+	@FXML private Label luogoLabel;
 
 	
 	@FXML
@@ -78,11 +76,10 @@ public class DiabetologoController {
 		welcomeLabel.setText("Ciao, " + d.getNomeCognome());
 		welcomeLabel.setFocusTraversable(true);
 
-		nomeLabel.setText(d.getNomeCognome());
-		ddnLabel.setText(d.getDataDiNascita().format(AdminService.dateFormatter));
-		sessoLabel.setText(d.getSesso());
-		Image image = new Image(d.getFoto());
-		fotoProfilo.setImage(image);
+		nomeLabel.setText("Nome e cognome: " + d.getNomeCognome());
+		ddnLabel.setText("Data di nascita: " + d.getDataDiNascita().format(AdminService.dateFormatter));
+		sessoLabel.setText("Sesso: " + d.getSesso());
+		luogoLabel.setText("Luogo di nascita: " + d.getLuogoDiNascita());
 		
 		mailButton.setText(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? AdminService.contatoreMailNonLette(mailRicevute) + " Mail" : "Mail");
 		mailButton.setStyle(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? "-fx-text-fill: red;" : "-fx-text-fill: black;");

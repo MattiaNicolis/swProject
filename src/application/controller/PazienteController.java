@@ -31,8 +31,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class PazienteController {
 
@@ -71,7 +69,7 @@ public class PazienteController {
 	@FXML private Label ddnLabel;
 	@FXML private Label sessoLabel;
 	@FXML private Label diabetologoLabel;
-	@FXML private ImageView fotoProfilo;
+	@FXML private Label luogoLabel;
 
 	// TERAPIE CORRENTI
 	@FXML private Label terapiaCorrente;
@@ -109,10 +107,9 @@ public class PazienteController {
 
 		nomeLabel.setText(p.getNomeCognome());
 		ddnLabel.setText(p.getDataDiNascita().format(AdminService.dateFormatter));
+		luogoLabel.setText(p.getLuogoDiNascita());
 		sessoLabel.setText(p.getSesso());
 		diabetologoLabel.setText(AdminService.getNomeUtenteByCf(p.getDiabetologoRif()));
-		Image image = new Image(p.getFoto());
-		fotoProfilo.setImage(image);
 
 		mailButton.setText(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? AdminService.contatoreMailNonLette(mailRicevute) + " Mail" : "Mail");
 	    mailButton.setStyle(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? "-fx-text-fill: red;" : "-fx-text-fill: black;");

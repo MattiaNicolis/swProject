@@ -27,8 +27,8 @@ public class UtenteDAO implements application.dao.interfaces.UtenteDAOinterface 
                     rs.getString("ruolo"),
                     rs.getString("nomeCognome"),
                     rs.getDate("dataDiNascita").toLocalDate(),
+                    rs.getString("luogoDiNascita"),
                     rs.getString("sesso"),
-                    rs.getBlob("foto"),
                     rs.getString("mail"),
                     rs.getString("diabetologo_rif")
                 );

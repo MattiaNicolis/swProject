@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.model.FattoriComorbiditàAllergie;
+import application.model.Dato;
 import application.model.Glicemia;
 import application.model.Patologia;
 import application.model.Peso;
@@ -27,8 +27,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class MostraDatiPazienteController {
 
@@ -40,7 +38,9 @@ public class MostraDatiPazienteController {
 	private List<Glicemia> glicemia = new ArrayList<>();
 	private List<Terapia> terapie = new ArrayList<>();
 	private List<Questionario> questionari = new ArrayList<>();
-	private List<FattoriComorbiditàAllergie> fattoriComorbiditàAllergie = new ArrayList<>();
+	private List<Dato> fattori = new ArrayList<>();
+	private List<Dato> comorbidità = new ArrayList<>();
+	private List<Dato> allergie = new ArrayList<>();
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
 	private List<Peso> peso = new ArrayList<>();
@@ -60,13 +60,13 @@ public class MostraDatiPazienteController {
 	@FXML private Label medicoRifLabel;
 	@FXML private ComboBox<String> sceltaVisualizza;
 	@FXML private DatePicker dataVisualizza;
-	@FXML private ImageView fotoProfilo;
-	
+	@FXML private Label luogoLabel;
+
 	//LISTE
 	@FXML public ListView<Terapia> listaTerapiePaziente;
-	@FXML public ListView<FattoriComorbiditàAllergie> listaFattori;
-	@FXML public ListView<FattoriComorbiditàAllergie> listaComorbidità;
-	@FXML public ListView<FattoriComorbiditàAllergie> listaAllergie;
+	@FXML public ListView<Dato> listaFattori;
+	@FXML public ListView<Dato> listaComorbidità;
+	@FXML public ListView<Dato> listaAllergie;
 	@FXML public ListView<Patologia> listaPatologie;
 	@FXML public ListView<TerapiaConcomitante> listaTerapieConcomitanti;
 	@FXML public ListView<Questionario> listaQuestionari;
@@ -90,7 +90,9 @@ public class MostraDatiPazienteController {
 		glicemia = AdminService.loadGlicemiaByPaziente(p);
 		terapie = AdminService.loadTerapieByPaziente(p);
 		questionari = AdminService.loadQuestionariByPaziente(p);
-		fattoriComorbiditàAllergie = AdminService.loadFattoriComorbiditàAllergieByPaziente(p);
+		fattori = AdminService.loadFattoriByPaziente(p);
+		comorbidità = AdminService.loadComorbiditàByPaziente(p);
+		allergie = AdminService.loadAllergieByPaziente(p);
 		terapieConcomitanti = AdminService.loadTerapieConcomitantiByPaziente(p);
 		patologie = AdminService.loadPatologieByPaziente(p);
 		peso = AdminService.loadPesoByCf(p.getCf());
@@ -102,9 +104,7 @@ public class MostraDatiPazienteController {
 		dataDiNascitaDato.setText(p.getDataDiNascita().format(AdminService.dateFormatter));
 		sessoDato.setText(p.getSesso());
 		mailDato.setText(p.getMail());
-
-		Image image = new Image(p.getFoto());
-		fotoProfilo.setImage(image);
+		luogoLabel.setText(p.getLuogoDiNascita());
 		
 		medicoRifLabel.setText(AdminService.getNomeUtenteByCf(p.getDiabetologoRif()) + " (" + p.getDiabetologoRif() + ")");
 			
@@ -133,31 +133,19 @@ public class MostraDatiPazienteController {
 		});
 	
 		// FATTORI DI RISCHIO
-		listaFattori.setItems(FXCollections.observableArrayList(
-			fattoriComorbiditàAllergie.stream()
-				.filter(f -> f.getTipo().equals("Fattore Di Rischio"))
-				.toList()
-		));
+		listaFattori.setItems(FXCollections.observableArrayList(fattori));
 		AdminService.setCustomCellFactory(listaFattori, f -> 
-			f.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(f.getModificato()) + ")");
+			f.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(f.getModificato()));
 		
 		// COMORBIDITÀ
-		listaComorbidità.setItems(FXCollections.observableArrayList(
-			fattoriComorbiditàAllergie.stream()
-				.filter(c -> c.getTipo().equals("Comorbidità"))
-				.toList()
-		));
+		listaComorbidità.setItems(FXCollections.observableArrayList(comorbidità));
 		AdminService.setCustomCellFactory(listaComorbidità, c -> 
-			c.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(c.getModificato()) + ")");
+			c.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(c.getModificato()));
 		
 		// ALLERGIE
-		listaAllergie.setItems(FXCollections.observableArrayList(
-			fattoriComorbiditàAllergie.stream()
-				.filter(a -> a.getTipo().equals("Allergia"))
-				.toList()
-		));
+		listaAllergie.setItems(FXCollections.observableArrayList(allergie));
 		AdminService.setCustomCellFactory(listaAllergie, a -> 
-			a.getNome() + " Aggiunto da: " + AdminService.getNomeUtenteByCf(a.getModificato()) + ")");
+			a.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(a.getModificato()));
 		
 		// PATOLOGIE
 		listaPatologie.setItems(FXCollections.observableArrayList(patologie));
@@ -315,7 +303,9 @@ public class MostraDatiPazienteController {
 		terapie.clear();
 		glicemia.clear();
 		questionari.clear();
-		fattoriComorbiditàAllergie.clear();
+		fattori.clear();
+		comorbidità.clear();
+		allergie.clear();
 		patologie.clear();
 		terapieConcomitanti.clear();
 		peso.clear();

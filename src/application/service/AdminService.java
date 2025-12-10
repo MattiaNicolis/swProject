@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import application.dao.impl.FattoriComorbiditàAllergieDAO;
+import application.dao.impl.DatiDAO;
 import application.dao.impl.GlicemiaDAO;
 import application.dao.impl.MailDAO;
 import application.dao.impl.PatologiaDAO;
@@ -15,7 +15,7 @@ import application.dao.impl.QuestionarioDAO;
 import application.dao.impl.TerapiaConcomitanteDAO;
 import application.dao.impl.TerapiaDAO;
 import application.dao.impl.UtenteDAO;
-import application.model.FattoriComorbiditàAllergie;
+import application.model.Dato;
 import application.model.Glicemia;
 import application.model.Mail;
 import application.model.Patologia;
@@ -41,7 +41,7 @@ public class AdminService {
     // DAO
     private static final TerapiaDAO terapiaDAO = new TerapiaDAO();
     private static final UtenteDAO utenteDAO = new UtenteDAO();
-	private static final FattoriComorbiditàAllergieDAO fattoriComorbiditàAllergieDAO = new FattoriComorbiditàAllergieDAO();
+	private static final DatiDAO datiDAO = new DatiDAO();
 	private static final PatologiaDAO patologiaDAO = new PatologiaDAO();
 	private static final TerapiaConcomitanteDAO terapiaConcomitanteDAO = new TerapiaConcomitanteDAO();
 	private static final GlicemiaDAO glicemiaDAO = new GlicemiaDAO();
@@ -103,17 +103,45 @@ public class AdminService {
 	}
 
 	// -------------------------------------------------------------------------------------------------------
-	// CARICA STORIA DATI DAL DATABASE
-	public static List<FattoriComorbiditàAllergie> loadFattoriComorbiditàAllergieByPaziente(Utente paziente) {
-		return fattoriComorbiditàAllergieDAO.getFattoriComorbiditàAllergieByPaziente(paziente);
+	// CARICA FATTORI DAL DATABASE
+	public static List<Dato> loadFattoriByPaziente(Utente paziente) {
+		return datiDAO.getDatiByPaziente(paziente, "fattori");
 	}
-	// CREA DATO
-	public static boolean creaFattoreComorbiditàAllergia(FattoriComorbiditàAllergie fca) {
-		return fattoriComorbiditàAllergieDAO.creaFattoreComorbiditàAllergia(fca);
+	// CREA FATTORE
+	public static boolean creaFattore(Dato fattore) {
+		return datiDAO.creaDato(fattore, "fattori");
 	}
-	// ELIMINA DATO
-	public static boolean eliminaFattoreComorbiditàAllergia(FattoriComorbiditàAllergie fca) {
-		return fattoriComorbiditàAllergieDAO.eliminaFattoreComorbiditàAllergia(fca);
+	// ELIMINA FATTORE
+	public static boolean eliminaFattore(Dato fattore) {
+		return datiDAO.eliminaDato(fattore, "fattori");
+	}
+
+	// ------------------------------------------------------------------
+	// CARICA COMORBIDITA' DAL DATABASE
+	public static List<Dato> loadComorbiditàByPaziente(Utente paziente) {
+		return datiDAO.getDatiByPaziente(paziente, "comorbidità");
+	}
+	// CREA COMORBIDITA'
+	public static boolean creaComorbidità(Dato comorbidità) {
+		return datiDAO.creaDato(comorbidità, "comorbidità");
+	}
+	// ELIMINA COMORBIDITA'
+	public static boolean eliminaComorbidità(Dato comorbidità) {
+		return datiDAO.eliminaDato(comorbidità, "comorbidità");
+	}
+
+	// ----------------------------------------------------------------
+	// CARICA ALLERGIE DAL DATABASE
+	public static List<Dato> loadAllergieByPaziente(Utente paziente) {
+		return datiDAO.getDatiByPaziente(paziente, "allergie");
+	}
+	// CREA ALLERGIA
+	public static boolean creaAllergia(Dato allergia) {
+		return datiDAO.creaDato(allergia, "allergie");
+	}
+	// ELIMINA ALLERGIA
+	public static boolean eliminaAllergia(Dato allergia) {
+		return datiDAO.eliminaDato(allergia, "allergie");
 	}
 
 	// -------------------------------------------------------------------
