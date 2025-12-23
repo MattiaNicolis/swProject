@@ -2,7 +2,6 @@ package application.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -32,30 +31,43 @@ public class AdminService {
 	
 	public static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	
-	// LISTE
-	public static final List<Utente> utenti = new ArrayList<>();
-	public static List<Utente> pazienti = new ArrayList<>();
-	public static List<Utente> diabetologi = new ArrayList<>();
 
     // DAO
-    private static final TerapiaDAO terapiaDAO = new TerapiaDAO();
-    private static final UtenteDAO utenteDAO = new UtenteDAO();
+    private static TerapiaDAO terapiaDAO = new TerapiaDAO();
+    private static UtenteDAO utenteDAO = new UtenteDAO();
 	private static final DatiDAO datiDAO = new DatiDAO();
 	private static final PatologiaDAO patologiaDAO = new PatologiaDAO();
 	private static final TerapiaConcomitanteDAO terapiaConcomitanteDAO = new TerapiaConcomitanteDAO();
 	private static final GlicemiaDAO glicemiaDAO = new GlicemiaDAO();
-	private static final MailDAO mailDAO = new MailDAO();
-	private static final QuestionarioDAO questDAO = new QuestionarioDAO();
+	private static MailDAO mailDAO = new MailDAO();
+	private static QuestionarioDAO questDAO = new QuestionarioDAO();
 	private static final PesoDAO pesoDAO = new PesoDAO();
 
+	// DAO SETTER PER TEST
+	public static void setUtenteDAO(UtenteDAO dao) {
+        utenteDAO = dao;
+    }
+
+	public static void setTerapiaDAO(TerapiaDAO dao) {
+		terapiaDAO = dao;
+	}
+
+	public static void setQuestionarioDAO(QuestionarioDAO dao) {
+		questDAO = dao;
+	}
+
+	public static void setMailDAO(MailDAO dao) {
+		mailDAO = dao;
+	}
+
 	// ---------------------------------
-	// CARICA UTENTI DAL DATABASE
-	public static void loadAllUtenti() {
-	    utenti.clear();
-		utenti.addAll(utenteDAO.getAllUtenti());
-		//System.out.println("[Amministratore] Utenti caricati: " + utenti.size());
-		creaListe();
+	// CERCA UTENTE PER LOGIN
+	public static Utente login(String cf, String password) {
+		return utenteDAO.login(cf, password);
+	}
+	// CREA LISTE PAZIENTI E DIABETOLOGI
+	public static List<Utente> getPeopleByRole(String role) {
+		return utenteDAO.getPeopleByRole(role);
 	}
 	
 	// -------------------------------------------
@@ -87,7 +99,10 @@ public class AdminService {
 	public static int loadTerapieSoddisfatteByCfAndData(String cf, LocalDate data) {
 		return terapiaDAO.getTerapieSoddisfatte(cf, data);
 	}
-
+	// AGGIORNA NUMERO QUESTIONARI PER TERAPIA
+	public static boolean loadAggiornaNumQuestionari(Terapia t) {
+		return terapiaDAO.aggiornaNumQuestionari(t);
+	}
 	// -----------------------------------------------
 	// CARICA MISURAZIONI PESO DI UN PAZIENTE
 	public static List<Peso> loadPesoByCf(String cf) {
@@ -226,29 +241,12 @@ public class AdminService {
 		return questDAO.esisteQuestionarioOggi(terapiaId);
 	}
 
-	// ----------------------------
-	// LISTE PAZIENTI E DIABETOLOGI
-	public static void creaListe(){
-		pazienti = utenti.stream()
-				.filter(utente -> utente.isPaziente())
-				.toList();
-		diabetologi = utenti.stream()
-				.filter(utente -> utente.isDiabetologo())
-				.toList();
-	}
-
 	//---------------------------------------------
 	// METODI DI ACCESSO RAPIDO
-	//---------------------------------------------
-
-	// CONTROLLO ESISTENZA UTENTE
-	public static boolean utenteEsiste(String cf) {
-		return utenti.stream()
-			.anyMatch(utente -> utente.getCf().equals(cf));
-	}	
+	//---------------------------------------------	
 	
 	// RITORNA UTENTE
-	public static Utente getUtenteByCf(String cf) {
+	public static Utente getUtenteByCf(List<Utente> utenti, String cf) {
 		return utenti.stream()
 				.filter(utente -> utente.getCf().equals(cf))
 				.findFirst()
@@ -256,8 +254,8 @@ public class AdminService {
 	}
 	
 	// RITORNA NOME UTENTE
-	public static String getNomeUtenteByCf(String cf) {
-		Utente u = getUtenteByCf(cf);
+	public static String getNomeUtenteByCf(List<Utente> utenti, String cf) {
+		Utente u = getUtenteByCf(utenti, cf);
 		if(u != null) {
 			return u.getNomeCognome();
 		}
@@ -307,5 +305,4 @@ public class AdminService {
 			}
 		});
 	}
-
 }
