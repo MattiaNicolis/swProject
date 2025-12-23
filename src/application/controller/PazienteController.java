@@ -44,6 +44,7 @@ public class PazienteController {
 	private List<Questionario> questionari = new ArrayList<>();
 	private List<Mail> mailRicevute = new ArrayList<>();
 	private List<Peso> peso = new ArrayList<>();
+	private List<Utente> diabetologi = new ArrayList<>();
 	
 	// GRAFICO GLICEMIA
 	@FXML private LineChart<String, Number> graficoGlicemia;
@@ -99,6 +100,7 @@ public class PazienteController {
 		questionari = AdminService.loadQuestionariByPaziente(p);
 		mailRicevute = AdminService.loadMailRicevute(p);
 		peso = AdminService.loadPesoByCf(p.getCf());
+		diabetologi = AdminService.getPeopleByRole("diabetologo");
 	}
 
 	private void setUpInterfaccia() {
@@ -109,7 +111,7 @@ public class PazienteController {
 		ddnLabel.setText(p.getDataDiNascita().format(AdminService.dateFormatter));
 		luogoLabel.setText(p.getLuogoDiNascita());
 		sessoLabel.setText(p.getSesso());
-		diabetologoLabel.setText(AdminService.getNomeUtenteByCf(p.getDiabetologoRif()));
+		diabetologoLabel.setText(AdminService.getNomeUtenteByCf(diabetologi, p.getDiabetologoRif()));
 
 		mailButton.setText(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? AdminService.contatoreMailNonLette(mailRicevute) + " Mail" : "Mail");
 	    mailButton.setStyle(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? "-fx-text-fill: red;" : "-fx-text-fill: black;");
@@ -347,7 +349,7 @@ public class PazienteController {
 			valoreField.clear();
 			oraField.clear();
 			minutiField.clear();
-			glicemia.add(g); // aggiungo la glicemia appena creata alla lista, senza andare a richiamare il db per caricarle tutte nuovamente
+			glicemia = AdminService.loadGlicemiaByPaziente(p);
 			visualizzaGraficoGlicemia(1);
 			return GlicemiaResult.SUCCESS;
 		}

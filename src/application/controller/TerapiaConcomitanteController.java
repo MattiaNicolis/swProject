@@ -1,8 +1,11 @@
 package application.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import application.model.TerapiaConcomitante;
+import application.model.Utente;
 import application.service.AdminService;
 import application.utils.Sessione;
 import application.view.Navigator;
@@ -13,6 +16,7 @@ import javafx.scene.control.Label;
 public class TerapiaConcomitanteController {
 	
 	private TerapiaConcomitante tc;
+	private List<Utente> diabetologi = new ArrayList<>();
 	
 	@FXML private Label nomeLabel;
 	@FXML private Label dataInizioLabel;
@@ -23,11 +27,13 @@ public class TerapiaConcomitanteController {
 	private void initialize() {
 		tc = Sessione.getInstance().getTerapiaConcomitanteSelezionata();
 		
+		diabetologi = AdminService.getPeopleByRole("diabetologo");
+
 		nomeLabel.setText(tc.getNome());
 		dataInizioLabel.setText(tc.getDataInizio().format(AdminService.dateFormatter));
 		dataFineLabel.setText(tc.getDataFine().format(AdminService.dateFormatter));
 		
-		AdminService.diabetologi.stream()
+		diabetologi.stream()
 			.filter(d -> d.getCf().equals(tc.getModificato()))
 			.findFirst()
 			.ifPresent(d -> {

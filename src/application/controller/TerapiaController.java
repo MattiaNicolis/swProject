@@ -113,7 +113,7 @@ public class TerapiaController {
 		}
 
 		if(t != null) {
-			if(dataInizio.isBefore(t.getDataInizio())) {
+			if(dataInizio.isBefore(LocalDate.now())) {
 				return TerapiaResult.INVALID_DATA;
 			}
 		}
@@ -172,7 +172,8 @@ public class TerapiaController {
 				dataFine, 
 				indicazioniField.getText(), 
 				u.getCf(), 
-				false);
+				false,
+				0);
 			ok = AdminService.modificaTerapia(terapia);
 		}
 		else {
@@ -187,7 +188,8 @@ public class TerapiaController {
 				dataFine, 
 				indicazioni,
 				u.getCf(), 
-				false);
+				false,
+				0);
 			ok = AdminService.creaTerapia(terapia);
 		}
 

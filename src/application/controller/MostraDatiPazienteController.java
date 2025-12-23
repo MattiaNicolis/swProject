@@ -3,6 +3,7 @@ package application.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 public class MostraDatiPazienteController {
@@ -44,7 +46,7 @@ public class MostraDatiPazienteController {
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
 	private List<Peso> peso = new ArrayList<>();
-
+	private List<Utente> diabetologi = new ArrayList<>();
 	
 	// GRAFICO GLICEMIA
 	@FXML private LineChart<String, Number> grafico;
@@ -63,7 +65,7 @@ public class MostraDatiPazienteController {
 	@FXML private Label luogoLabel;
 
 	//LISTE
-	@FXML public ListView<Terapia> listaTerapiePaziente;
+	@FXML private ListView<Terapia> listaTerapiePaziente;
 	@FXML public ListView<Dato> listaFattori;
 	@FXML public ListView<Dato> listaComorbidità;
 	@FXML public ListView<Dato> listaAllergie;
@@ -96,6 +98,7 @@ public class MostraDatiPazienteController {
 		terapieConcomitanti = AdminService.loadTerapieConcomitantiByPaziente(p);
 		patologie = AdminService.loadPatologieByPaziente(p);
 		peso = AdminService.loadPesoByCf(p.getCf());
+		diabetologi = AdminService.getPeopleByRole("diabetologo");
 	}
 	
 	private void setUpInterfaccia() {
@@ -106,7 +109,7 @@ public class MostraDatiPazienteController {
 		mailDato.setText(p.getMail());
 		luogoLabel.setText(p.getLuogoDiNascita());
 		
-		medicoRifLabel.setText(AdminService.getNomeUtenteByCf(p.getDiabetologoRif()) + " (" + p.getDiabetologoRif() + ")");
+		medicoRifLabel.setText(AdminService.getNomeUtenteByCf(diabetologi, p.getDiabetologoRif()) + " (" + p.getDiabetologoRif() + ")");
 			
 		sceltaVisualizza.getItems().addAll("Settimana", "Mese");
 	}
@@ -114,11 +117,28 @@ public class MostraDatiPazienteController {
 	public void visualizzaDati() throws IOException {
 		// TERAPIE
 		listaTerapiePaziente.setItems(FXCollections.observableArrayList(terapie));
-		AdminService.setCustomCellFactory(listaTerapiePaziente, t -> 
-			t.getNomeFarmaco() + " (" + 
-			t.getDataInizio().format(AdminService.dateFormatter) + " - " + 
-			t.getDataFine().format(AdminService.dateFormatter) + ")"
-		);
+		listaTerapiePaziente.setCellFactory(e -> new ListCell<Terapia>() {
+			protected void updateItem(Terapia t, boolean empty) {
+				super.updateItem(t, empty);
+				
+				if (empty || t == null) {
+					setText(null);
+					setStyle("");
+				} else {
+					setText(t.getNomeFarmaco() + " - " + t.getDataInizio().format(AdminService.dateFormatter) + 
+						" - " + t.getDataFine().format(AdminService.dateFormatter));
+
+					if(t.getDataFine().isBefore(LocalDate.now())) {
+						long giorniDiDifferenza = ChronoUnit.DAYS.between(t.getDataInizio(), t.getDataFine()) + 1;
+						if(giorniDiDifferenza != t.getQuestionari()) {
+							setStyle("-fx-background-color: #e47171ff; -fx-font-weight: bold");
+						} else {
+							setStyle("");
+						}
+					}
+				}
+			}
+		});
 		listaTerapiePaziente.setOnMouseClicked(e -> {
 			Terapia selectedTerapia = listaTerapiePaziente.getSelectionModel().getSelectedItem();
 			if(selectedTerapia != null) {
@@ -135,17 +155,17 @@ public class MostraDatiPazienteController {
 		// FATTORI DI RISCHIO
 		listaFattori.setItems(FXCollections.observableArrayList(fattori));
 		AdminService.setCustomCellFactory(listaFattori, f -> 
-			f.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(f.getModificato()));
+			f.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(diabetologi, f.getModificato()));
 		
 		// COMORBIDITÀ
 		listaComorbidità.setItems(FXCollections.observableArrayList(comorbidità));
 		AdminService.setCustomCellFactory(listaComorbidità, c -> 
-			c.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(c.getModificato()));
+			c.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(diabetologi, c.getModificato()));
 		
 		// ALLERGIE
 		listaAllergie.setItems(FXCollections.observableArrayList(allergie));
 		AdminService.setCustomCellFactory(listaAllergie, a -> 
-			a.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(a.getModificato()));
+			a.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(diabetologi, a.getModificato()));
 		
 		// PATOLOGIE
 		listaPatologie.setItems(FXCollections.observableArrayList(patologie));

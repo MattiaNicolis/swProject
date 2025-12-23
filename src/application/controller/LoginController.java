@@ -2,6 +2,7 @@ package application.controller;
 
 import java.io.IOException;
 
+
 import application.model.Utente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
@@ -15,10 +16,8 @@ import javafx.scene.control.TextField;
 
 public class LoginController {
 
-	private Utente utente;
-
-	@FXML public TextField cfField;
-	@FXML public PasswordField passwordField;
+	@FXML private TextField cfField;
+	@FXML private PasswordField passwordField;
 	@FXML private Label firstLabel;
 	
 	@FXML
@@ -26,24 +25,20 @@ public class LoginController {
 		firstLabel.setFocusTraversable(true);
 	}
 	
-	public enum LoginResult {
+	private enum LoginResult {
 		SUCCESS_DIABETOLOGO,
 		SUCCESS_PAZIENTE,
-		USER_NOT_FOUND,
 		WRONG_CREDENTIALS,
 		EMPTY_FIELDS
 	}
 
-	public LoginResult tryLogin(String cf, String password) {
+	private LoginResult tryLogin(String cf, String password) {
 		if(cf == null || cf.isBlank() || password == null || password.isBlank())
 			return LoginResult.EMPTY_FIELDS;
 
-		if(!AdminService.utenteEsiste(cf))
-			return LoginResult.USER_NOT_FOUND;
+		Utente utente = AdminService.login(cf, password);
 
-		utente = AdminService.getUtenteByCf(cf);
-
-		if(utente.checkPw(password)) {
+		if(utente != null) {
 			Sessione.getInstance().setUtente(utente);
 
 			if(utente.isDiabetologo()) return LoginResult.SUCCESS_DIABETOLOGO;
@@ -61,7 +56,6 @@ public class LoginController {
 
 		switch(result) {
 			case EMPTY_FIELDS -> MessageUtils.showError("Inserire codice fiscale e password.");
-			case USER_NOT_FOUND -> MessageUtils.showError("Utente non esistente.");
 			case WRONG_CREDENTIALS -> MessageUtils.showError("Codice fiscale o password errati.");
 			case SUCCESS_DIABETOLOGO -> Navigator.getInstance().switchToDiabetologoPage(event);
 			case SUCCESS_PAZIENTE -> Navigator.getInstance().switchToPazientePage(event);

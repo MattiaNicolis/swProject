@@ -44,6 +44,9 @@ public class MostraDettagliTerapiaController {
 			modifyButton.setDisable(true);
 		}
 
+		if(t.getQuestionari() > 0)
+			deleteButton.setDisable(true);
+
 		setUpInterfaccia();
 	}
 	

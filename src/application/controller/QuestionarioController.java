@@ -122,7 +122,13 @@ public class QuestionarioController {
         Questionario quest = new Questionario(0, p.getCf(), LocalDate.now(), nomeFarmaco, this.dose, this.quantità, sintomi, false, t.getId());
         boolean ok = AdminService.creaQuestionario(quest);
         
-        if(ok) return QuestionarioResult.SUCCESS;
+        if(ok) {
+            boolean numQuest = AdminService.loadAggiornaNumQuestionari(t);
+            if(numQuest)
+                return QuestionarioResult.SUCCESS;
+
+            return QuestionarioResult.FAILURE;
+        } 
         else return QuestionarioResult.FAILURE;
     }
     @FXML
@@ -140,7 +146,7 @@ public class QuestionarioController {
                 doseField.clear();
                 quantitàField.clear();
                 sintomiArea.clear();
-
+                
                 listaTerapie.getItems().remove(t);
                 listaTerapie.getSelectionModel().clearSelection();
                 t = null;
