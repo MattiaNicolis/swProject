@@ -6,14 +6,12 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="main-background" stylesheets="@../css/DiabetoloPage.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.DiabetologoController">
-
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="80.0" styleClass="navbar" BorderPane.alignment="CENTER">
             <padding>
@@ -51,7 +49,7 @@
                         
                         <VBox styleClass="card">
                             <children>
-                                <Label styleClass="section-title" text="👤 I Tuoi Pazienti" />
+                                <Label styleClass="section-title" text="👤 Lista dei pazienti" />
                                 <Label styleClass="section-subtitle" text="Seleziona un paziente per accedere alla cartella clinica" />
                                 <ListView fx:id="listaNomiPazienti" prefHeight="200.0" styleClass="modern-list-view" />
                             </children>
@@ -64,7 +62,7 @@
                                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                                             <children>
                                                 <Label styleClass="icon-label" text="🚨" />
-                                                <Label styleClass="section-title-warning" text="Glicemie Fuori Range" />
+                                                <Label styleClass="section-title-warning" text="Glicemie fuori range" />
                                             </children>
                                         </HBox>
                                         <ListView fx:id="listaGlicemieSballate" prefHeight="150.0" styleClass="modern-list-view" />
@@ -76,7 +74,7 @@
                                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                                             <children>
                                                 <Label styleClass="icon-label" text="📝" />
-                                                <Label styleClass="section-title-info" text="Questionari da Revisionare" />
+                                                <Label styleClass="section-title-info" text="Questionari da revisionare" />
                                             </children>
                                         </HBox>
                                         <ListView fx:id="listaQuestNonConformi" prefHeight="150.0" styleClass="modern-list-view" />
@@ -124,5 +122,4 @@
             </children>
         </VBox>
     </right>
-
 </BorderPane>

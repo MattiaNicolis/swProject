@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="main-background" stylesheets="@../css/MailPage.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MailController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="main-background" stylesheets="@../css/MailPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MailController">
 
     <left>
         <VBox prefWidth="250.0" spacing="10" styleClass="sidebar">
@@ -39,6 +39,9 @@
             </HBox>
 
             <Button maxWidth="1.7976931348623157E308" onAction="#showMailInviate" styleClass="btn-nav" text="📤  Inviate" />
+         <Separator prefWidth="200.0" />
+         <Label fx:id="labelDiabetologo" text="Il tuo diabetologo:" />
+         <Label fx:id="mailDiabetologo" text="mail@diabetologo" />
             
             <Region VBox.vgrow="ALWAYS" /> 
             
