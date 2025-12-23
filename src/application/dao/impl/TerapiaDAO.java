@@ -16,7 +16,7 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 
     public boolean creaTerapia(Terapia t) {
         // Implementazione del metodo per creare una terapia nel database
-        String query = "INSERT INTO terapie (CF, nomeFarmaco, dosiGiornaliere, quantità, dataInizio, dataFine, indicazioni, diabetologo, visualizzata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO terapie (CF, nomeFarmaco, dosiGiornaliere, quantità, dataInizio, dataFine, indicazioni, diabetologo, visualizzata, questionari) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try (Connection conn = Database.getConnection(); 
 			PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -29,6 +29,7 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 			stmt.setString(7, t.getIndicazioni());
 			stmt.setString(8, t.getDiabetologo());
 			stmt.setBoolean(9, t.getVisualizzata());
+			stmt.setInt(10, 0);
 
 				
 			int rows = stmt.executeUpdate();
@@ -67,7 +68,7 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 
     public boolean modificaTerapia(Terapia t) {
         // Implementazione del metodo per modificare una terapia nel database
-        String query = "UPDATE terapie SET dosiGiornaliere = ?, quantità = ?, dataInizio = ?, dataFine = ?, indicazioni = ?, diabetologo = ?, visualizzata = ? WHERE id = ?";
+        String query = "UPDATE terapie SET dosiGiornaliere = ?, quantità = ?, dataInizio = ?, dataFine = ?, indicazioni = ?, diabetologo = ?, visualizzata = ?, questionari = ? WHERE id = ?";
 		try (Connection conn = Database.getConnection(); 
 			PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -78,7 +79,8 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 	        stmt.setString(5, t.getIndicazioni());
 	        stmt.setString(6, t.getDiabetologo());
 			stmt.setBoolean(7, false);
-	        stmt.setInt(8, t.getId());
+			stmt.setInt(8, 0);
+	        stmt.setInt(9, t.getId());
 	        
 	        int rows = stmt.executeUpdate();
 	        if (rows > 0) {
@@ -114,7 +116,8 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 						rs.getDate("dataFine") != null ? rs.getDate("dataFine").toLocalDate() : null,
 						rs.getString("indicazioni"),
 						rs.getString("diabetologo"),
-						rs.getBoolean("visualizzata")
+						rs.getBoolean("visualizzata"),
+						rs.getInt("questionari")
 					);
 					lista.add(terapia);
 				}
@@ -192,5 +195,46 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	public boolean aggiornaNumQuestionari(Terapia t) {
+		int count = 0;
+		String query = "SELECT questionari FROM terapie WHERE id = ?";
+		try (Connection conn = Database.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(query)) {
+
+			stmt.setInt(1, t.getId());
+			try(ResultSet rs = stmt.executeQuery()) {
+				count = rs.getInt("questionari");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}	
+
+
+		String query2 = "UPDATE terapie SET questionari = ? WHERE id = ?";
+		try (Connection conn = Database.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(query2)) {
+
+			stmt.setInt(1, count + 1);
+			stmt.setInt(2, t.getId());
+
+			int rows = stmt.executeUpdate();
+
+			if (rows > 0) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}	
 	}
 }

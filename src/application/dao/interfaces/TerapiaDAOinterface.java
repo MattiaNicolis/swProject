@@ -14,4 +14,5 @@ public interface TerapiaDAOinterface {
     public boolean notificaTerapia(Terapia terapia);
     public int getNumeroTerapieAttive(String cf, LocalDate data);
     public int getTerapieSoddisfatte(String cf, LocalDate data);
+    public boolean aggiornaNumQuestionari(Terapia terapia);
 }
