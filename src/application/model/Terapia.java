@@ -14,8 +14,9 @@ public class Terapia {
 	private String indicazioni;
 	private String diabetologo;
 	private boolean visualizzata;
+	private int questionari;
 	
-	public Terapia(int id, String cf, String nomeFarmaco, int dosiGiornaliere, int quantità, LocalDate dataInizio, LocalDate dataFine, String indicazioni, String diabetologo, boolean visualizzata) {
+	public Terapia(int id, String cf, String nomeFarmaco, int dosiGiornaliere, int quantità, LocalDate dataInizio, LocalDate dataFine, String indicazioni, String diabetologo, boolean visualizzata, int questionari) {
 		this.id = id;
 		this.cf = cf;
 		this.nomeFarmaco = nomeFarmaco;
@@ -26,6 +27,7 @@ public class Terapia {
 		this.indicazioni = indicazioni;
 		this.diabetologo = diabetologo;
 		this.visualizzata = visualizzata;
+		this.questionari = questionari;
 	}
 	
 	public int getId() {
@@ -70,5 +72,9 @@ public class Terapia {
 	
 	public boolean getVisualizzata() {
 		return visualizzata;
+	}
+
+	public int getQuestionari() {
+		return questionari;
 	}
 }
