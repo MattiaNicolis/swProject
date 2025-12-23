@@ -4,12 +4,13 @@
 }
 
 .main-background {
-    -fx-background-color: #f0f4f8; /* Grigio chiarissimo per lo sfondo */
+    /* PRIMA: #f0f4f8 */
+    -fx-background-color: #E0E5E9; /* Scurito leggermente per ridurre il riverbero */
 }
 
 /* --- NAVBAR STYLES --- */
 .navbar {
-    -fx-background-color: #2D3447; /* Blu scuro professionale */
+    -fx-background-color: #2D3447; 
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 2);
 }
 
@@ -19,7 +20,7 @@
 }
 
 .welcome-sublabel {
-    -fx-text-fill: white; /* Grigio chiaro */
+    -fx-text-fill: #F0F0F0; /* Bianco leggermente sporco per uniformità */
     -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
@@ -28,16 +29,20 @@
 .button {
     -fx-cursor: hand;
     -fx-background-radius: 5px;
-    -fx-alignment: center; /* CENTRA IL TESTO NEL BOTTONE */
+    -fx-alignment: center;
 }
 
 .btn-action {
-    -fx-background-color: #4A90E2;
-    -fx-text-fill: white;
+    -fx-background-color: transparent;
+    -fx-border-color: #4A90E2;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #FFFFFF; /* Qui il bianco va bene perché è su scuro */
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 .btn-action:hover {
-    -fx-background-color: #357ABD;
+    -fx-background-color: #4A90E2;
+    -fx-text-fill: white;
 }
 
 .btn-logout {
@@ -45,6 +50,7 @@
     -fx-border-color: #ff6666;
     -fx-border-radius: 5px;
     -fx-text-fill: #ff6666;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 .btn-logout:hover {
@@ -52,11 +58,12 @@
     -fx-text-fill: white;
 }
 
-/* --- CARDS (Contenitori Bianchi) --- */
+/* --- CARDS (Contenitori) --- */
+/* Modifica cruciale per la LIM: niente bianco puro */
 .card, .card-warning, .card-info {
-    -fx-background-color: white;
+    -fx-background-color: #F7F9FC; /* "Off-White" - riposante per gli occhi */
     -fx-background-radius: 8px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 5, 0, 0, 1); /* Ombra leggermente più marcata */
     -fx-padding: 20px;
 }
 
@@ -75,22 +82,22 @@
 .section-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333;
+    -fx-text-fill: #222; /* Nero leggermente più profondo per contrasto */
 }
 .section-subtitle {
     -fx-font-size: 12px;
-    -fx-text-fill: #666;
+    -fx-text-fill: #555; /* Scurito leggermente */
     -fx-padding: 0 0 10 0;
 }
 .section-title-warning {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #D32F2F;
+    -fx-text-fill: #C62828; /* Rosso leggermente più scuro per leggibilità */
 }
 .section-title-info {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #F57C00;
+    -fx-text-fill: #EF6C00; /* Arancio più scuro */
 }
 .icon-label {
     -fx-font-size: 20px;
@@ -99,7 +106,7 @@
 /* --- LIST VIEW --- */
 .modern-list-view {
     -fx-background-color: transparent;
-    -fx-border-color: #E0E0E0;
+    -fx-border-color: #D1D9E0; /* Bordo più visibile del vecchio E0E0E0 */
     -fx-border-radius: 4px;
 }
 .modern-list-view .list-cell {
@@ -108,18 +115,18 @@
     -fx-text-fill: #333;
 }
 .modern-list-view .list-cell:filled:selected, .modern-list-view .list-cell:filled:hover {
-    -fx-background-color: #E3F2FD; /* Blu chiarissimo al passaggio */
-    -fx-text-fill: #1976D2;
+    -fx-background-color: #D6EAF8; /* Blu un po' più carico rispetto al vecchio E3F2FD */
+    -fx-text-fill: #1565C0;
 }
 
 /* --- SIDEBAR --- */
 .sidebar {
-    -fx-background-color: white;
-    -fx-border-color: #E0E0E0;
-    -fx-border-width: 0 0 0 1; /* Solo bordo sinistro */
+    -fx-background-color: #F7F9FC; /* Coerente con le card */
+    -fx-border-color: #D1D9E0; /* Bordo più visibile */
+    -fx-border-width: 0 0 0 1; 
 }
 .sidebar-title {
-    -fx-text-fill: #999;
+    -fx-text-fill: #777; /* Più scuro del #999 per leggibilità */
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-letter-spacing: 1px;
@@ -134,16 +141,20 @@
 }
 .profile-label {
     -fx-font-size: 13px;
-    -fx-text-fill: #777;
+    -fx-text-fill: #666; /* Scurito leggermente */
 }
 .profile-value {
     -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #333;
+    -fx-text-fill: #222;
 }
 .scroll-pane-transparent {
     -fx-background-color: transparent;
 }
 .scroll-pane-transparent > .viewport {
     -fx-background-color: transparent;
+}
+
+/*---PROFILO PERSONALE---*/
+#nomeLabel{
+    -fx-text-fill: #357ABD; /* Blu leggermente più scuro per contrasto su sfondo non bianco puro */
 }

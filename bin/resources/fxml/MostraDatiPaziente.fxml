@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -63,23 +62,25 @@
             </padding>
             
             <HBox alignment="TOP_LEFT" spacing="30.0" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 8;">
-                <ImageView fx:id="fotoProfilo" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 40;" />
-                <GridPane hgap="15.0" vgap="5.0" HBox.hgrow="ALWAYS">
+                <GridPane hgap="15.0" prefHeight="113.0" prefWidth="830.0" vgap="5.0" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                         <ColumnConstraints hgrow="NEVER" prefWidth="110.0" />
                         <ColumnConstraints hgrow="ALWAYS" prefWidth="300.0" />
                     </columnConstraints>
                     <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Data di Nascita:" GridPane.rowIndex="0" />
                     <Label fx:id="dataDiNascitaDato" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Sesso:" GridPane.rowIndex="1" />
-                    <Label fx:id="sessoDato" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Email:" GridPane.rowIndex="2" />
-                    <Label fx:id="mailDato" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Medico Rif.:" GridPane.rowIndex="3" />
-                    <Label fx:id="medicoRifLabel" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Sesso:" GridPane.rowIndex="2" />
+                    <Label fx:id="sessoDato" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Email:" GridPane.rowIndex="3" />
+                    <Label fx:id="mailDato" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Medico Rif.:" GridPane.rowIndex="4" />
+                    <Label fx:id="medicoRifLabel" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               <Label text="Luogo di nascita:" GridPane.rowIndex="1" />
+               <Label fx:id="luogoLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <rowConstraints>
                         <RowConstraints />
-                        <RowConstraints />
+                  <RowConstraints maxHeight="16.0" minHeight="10.0" prefHeight="16.0" />
+                        <RowConstraints maxHeight="12.0" minHeight="11.0" prefHeight="11.0" />
                         <RowConstraints />
                         <RowConstraints />
                     </rowConstraints>

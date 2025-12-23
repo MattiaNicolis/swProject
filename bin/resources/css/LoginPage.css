@@ -1,63 +1,86 @@
-#mainPane{
-    -fx-background-color: #F5F5F5;
-    -fx-border-color: #1874CD;
+/* --- SFONDO PRINCIPALE --- */
+#mainPane {
+    /* PRIMA: #F5F5F5 (troppo luminoso) */
+    -fx-background-color: #E3E7ED; /* Grigio solido, non riflette la luce della LIM */
+    -fx-border-color: #1565C0;     /* Blu leggermente più scuro per definizione */
     -fx-border-width: 4pt;
 }
 
-#subPane{
-    -fx-background-color: #1874CD;
-    -fx-border-color: #F5F5F5;
+/* --- PANNELLO DECORATIVO (Banda laterale o superiore) --- */
+#subPane {
+    -fx-background-color: #1565C0; /* Blu meno "neon", più professionale */
+    -fx-border-color: #E3E7ED;     /* Deve coincidere con il colore di #mainPane per continuità */
     -fx-border-width: 4pt;
+}
+
+/* --- TITOLO GRANDE --- */
+#firstLabel {
+    /* I gradienti chiari si leggono male proiettati. Scuriamo i toni. */
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #1565C0, #0288D1);
     
-}
-
-#firstLabel{
-    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #1e90ff, #00c8ff);
-    -fx-text-border-color: #1874CD; 
-    -fx-text-align: center;
-    -fx-text-shadow: 1pt;
+    /* Nota: -fx-text-border-color non esiste in JavaFX standard, si usa -fx-stroke */
+    -fx-stroke: transparent; 
+    
+    -fx-text-alignment: center;
+    /* Ombra più scura per staccare il testo dallo sfondo */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 1, 1, 1);
     -fx-font-size: 78px;
     -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     -fx-font-weight: bold;
 }
 
-/* Card */
+/* --- CARD DI LOGIN --- */
 .card {
-    -fx-background-color: white;
+    /* PRIMA: white */
+    -fx-background-color: #F7F9FC; /* "Off-white" per non abbagliare */
     -fx-padding: 25px;
     -fx-spacing: 15px;
     -fx-alignment: center;
     -fx-background-radius: 15px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 5);
+    /* Ombra più marcata per dare profondità sulla LIM piatta */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0, 0, 5);
 }
 
-/* Titolo */
+/* --- TITOLO DELLA CARD ("Accedi" o simili) --- */
 .card-title {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e90ff;
+    -fx-text-fill: #1565C0; /* Blu scuro per leggibilità massima */
 }
 
-/* TextField */
+/* --- CAMPI DI TESTO --- */
 .input-field {
     -fx-pref-width: 220px;
     -fx-padding: 10px;
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
-    -fx-border-color: #1e90ff;
-    -fx-background-color: #f8f8f8;
+    
+    /* Il bordo è CRUCIALE sulla LIM: scurito per renderlo visibile */
+    -fx-border-color: #A0B0C0; 
+    
+    /* L'interno può rimanere bianco o quasi, per far capire che è editabile */
+    -fx-background-color: #FFFFFF; 
 }
 
-/* Bottone accedi */
+/* Focus state: quando l'utente clicca sul campo */
+.input-field:focused {
+    -fx-border-color: #1565C0;
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(21, 101, 192, 0.2), 5, 0, 0, 0);
+}
+
+/* --- BOTTONE ACCEDI --- */
 .login-button {
     -fx-pref-width: 220px;
     -fx-padding: 10px;
-    -fx-background-color: #1e90ff;
+    -fx-background-color: #1976D2; /* Blu materiale standard, meno acceso del #1e90ff */
     -fx-background-radius: 6px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-cursor: hand;
 }
 
 .login-button:hover {
-    -fx-background-color: #0a75d1;
+    -fx-background-color: #1565C0; /* Effetto hover più evidente */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
 }

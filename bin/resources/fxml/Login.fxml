@@ -21,7 +21,7 @@
          <children>
             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/logo-no-sfondo.png" />
+                  <Image url="@../logo-no-sfondo.png" />
                </image>
             </ImageView>
             
@@ -57,7 +57,10 @@
                </padding>
                <children>
                   <Label styleClass="card-title" text="Bentornato/a" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/profilo.jpg" />
+                     </image></ImageView>
                   <Label style="-fx-text-fill: #777;" text="Accedi al tuo account Glicocare" />
                   
                   <VBox spacing="15.0">
