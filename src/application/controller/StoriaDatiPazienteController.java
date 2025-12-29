@@ -58,7 +58,7 @@ public class StoriaDatiPazienteController {
 		patologie = AdminService.loadPatologieByPaziente(p);
 	}
 	
-	public enum StoriaDatiPazienteResult {
+	private enum StoriaDatiPazienteResult {
 		SUCCESS,
 		FAILURE,
 		DATA_ALREADY_EXISTS,
@@ -67,7 +67,7 @@ public class StoriaDatiPazienteController {
 	}
 
 	// GESTIONE FATTORI DI RISCHIO, COMORBIDITÀ E ALLERGIE ----------------------------------------
-	public StoriaDatiPazienteResult tryCreateFattoreComorbiditàAllergie(String tipo, String nome) {
+	private StoriaDatiPazienteResult tryCreateFattoreComorbiditàAllergie(String tipo, String nome) {
 		if(nome == null || nome.isBlank() || tipo == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
@@ -123,7 +123,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-	public StoriaDatiPazienteResult tryRemoveFattoreComorbiditàAllergie(String tipo, String nome) {
+	private StoriaDatiPazienteResult tryRemoveFattoreComorbiditàAllergie(String tipo, String nome) {
 		if(nome == null || nome.isBlank() || tipo == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
@@ -168,7 +168,7 @@ public class StoriaDatiPazienteController {
 	}
 	
 	// GESTIONE PATOLOGIE PREGRESSE ---------------------------------------------------------------------------
-	public StoriaDatiPazienteResult tryCreatePatologia(String nome, LocalDate dataInizio, String indicazioni) {
+	private StoriaDatiPazienteResult tryCreatePatologia(String nome, LocalDate dataInizio, String indicazioni) {
 		if(nome == null || nome.isBlank() || indicazioni == null || indicazioni.isBlank() || dataInizio == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
@@ -214,7 +214,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-	public StoriaDatiPazienteResult tryRemovePatologia(String nome, LocalDate dataInizio, String indicazioni) {
+	private StoriaDatiPazienteResult tryRemovePatologia(String nome, LocalDate dataInizio, String indicazioni) {
 		if(nome == null || nome.isBlank()) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
@@ -255,7 +255,7 @@ public class StoriaDatiPazienteController {
 	}
 
 	// GESTIONE TERAPIE CONCOMITANTI ------------------------------------------------------------------------------------
-	public StoriaDatiPazienteResult tryCreateTerapiaConcomitante(String nome, LocalDate dataInizio, LocalDate dataFine) {
+	private StoriaDatiPazienteResult tryCreateTerapiaConcomitante(String nome, LocalDate dataInizio, LocalDate dataFine) {
 		if(nome == null || nome.isBlank() || dataInizio == null || dataFine == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
@@ -302,7 +302,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-	public StoriaDatiPazienteResult tryRemoveTerapia(String nome, LocalDate dataInizio, LocalDate dataFine) {
+	private StoriaDatiPazienteResult tryRemoveTerapia(String nome, LocalDate dataInizio, LocalDate dataFine) {
 		if(nome == null || nome.isBlank() || dataInizio == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}

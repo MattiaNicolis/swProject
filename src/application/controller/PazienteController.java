@@ -319,13 +319,13 @@ public class PazienteController {
 	}
 
 	// GESTIONE GLICEMIA PAZIENTE
-	public enum GlicemiaResult {
+	private enum GlicemiaResult {
 		EMPTY_FIELDS,
 		INVALID_DATA,
 		SUCCESS,
 		FAILURE
 	}
-	public GlicemiaResult tryCreateGlicemia(String valore, String ora, String minuti, String indicazioni) {
+	private GlicemiaResult tryCreateGlicemia(String valore, String ora, String minuti, String indicazioni) {
 		if (valore.isEmpty() || ora.isEmpty() || minuti.isEmpty() || indicazioni == null) {
 	    	return GlicemiaResult.EMPTY_FIELDS;
 	    }
@@ -346,11 +346,6 @@ public class PazienteController {
 	    Glicemia g = new Glicemia(p.getCf(), valoreInt, LocalDate.now(), orario, indicazioni);
 		boolean ok = AdminService.creaGlicemia(g);
 		if(ok) {
-			valoreField.clear();
-			oraField.clear();
-			minutiField.clear();
-			glicemia = AdminService.loadGlicemiaByPaziente(p);
-			visualizzaGraficoGlicemia(1);
 			return GlicemiaResult.SUCCESS;
 		}
 		else {
@@ -366,20 +361,25 @@ public class PazienteController {
 			case INVALID_DATA -> MessageUtils.showError("Compila i dati correttamente.");
 			case FAILURE -> MessageUtils.showError("Errore durante l'inserimento della glicemia.");
 			case SUCCESS -> {
+				valoreField.clear();
+				oraField.clear();
+				minutiField.clear();
+				glicemia = AdminService.loadGlicemiaByPaziente(p);
+				visualizzaGraficoGlicemia(1);
 				MessageUtils.showSuccess("Glicemia aggiunta con successo!");
 			}
 		}
 	}
 
 	// GESTIONE PESO PAZIENTE
-	public enum PesoResult {
+	private enum PesoResult {
 		EMPTY_FIELDS,
 		INVALID_DATA,
 		ALREADY_INSERT,
 		SUCCESS,
 		FAILURE
 	}
-	public PesoResult tryCreatePeso(String pesoString, boolean aggiorna) {
+	private PesoResult tryCreatePeso(String pesoString, boolean aggiorna) {
 		if(pesoString == null || pesoString.isBlank()) {
 			return PesoResult.EMPTY_FIELDS;
 		}
@@ -390,6 +390,9 @@ public class PazienteController {
 		} catch (NumberFormatException e) {
 	        return PesoResult.INVALID_DATA;
 	    }
+
+		if(pesoDouble > 999.99 || pesoDouble <= 0)
+			return PesoResult.INVALID_DATA;
 
 		// posso inserire una misurazione alla settimana
 		Optional<Peso> misurazioneRecente = peso.stream()
@@ -411,8 +414,6 @@ public class PazienteController {
 			if (ok) {
 				peso.remove(peso.size() - 1);
 				peso.add(nuovoPeso);
-				pesoField.clear();
-				visualizzaGraficoPeso();
 				return PesoResult.SUCCESS;
 			} else {
 				return PesoResult.FAILURE;
@@ -424,8 +425,6 @@ public class PazienteController {
 
 			if(ok) {
 				peso.add(misurazione);
-				pesoField.clear();
-				visualizzaGraficoPeso();
 				return PesoResult.SUCCESS;
 			}
 			else return PesoResult.FAILURE; 
@@ -437,7 +436,7 @@ public class PazienteController {
 
 		switch(result) {
 			case EMPTY_FIELDS -> MessageUtils.showError("Per favore, inserisci la misurazione del peso corporeo.");
-			case INVALID_DATA -> MessageUtils.showError("Inserire come valore un numero con al massimo 2 cifre decimali.");
+			case INVALID_DATA -> MessageUtils.showError("Inserire come valore un numero compreso tra 0 e 1000 esclusi.");
 			case ALREADY_INSERT -> {
 				Optional<ButtonType> conferma = MessageUtils.showConferma("Aggiorna misurazione", "Hai già inserito una misurazione per questa settimana.\nVuoi aggiornarla?");
 				if(conferma.isPresent() && conferma.get() == ButtonType.OK) {
@@ -448,6 +447,8 @@ public class PazienteController {
 			}	
 			case FAILURE -> MessageUtils.showError("Errore durante l'inserimento del peso corporeo.");
 			case SUCCESS ->  {
+				pesoField.clear();
+				visualizzaGraficoPeso();
 				aggiorna = false;
 				MessageUtils.showSuccess("Peso aggiunto con successo!");
 			}

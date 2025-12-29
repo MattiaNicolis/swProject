@@ -96,13 +96,13 @@ public class QuestionarioController {
         formContainer.setVisible(true);
     }
 
-    public enum QuestionarioResult {
+    private enum QuestionarioResult {
         SUCCESS,
         FAILURE,
         EMPTY_FIELDS,
         INVALID_DATA
     }
-    public QuestionarioResult tryCreateQuestionario(String nomeFarmaco, String dose, String quantità, String sintomi) {
+    private QuestionarioResult tryCreateQuestionario(String nomeFarmaco, String dose, String quantità, String sintomi) {
         if(nomeFarmaco == null || nomeFarmaco.isBlank() ||
             dose == null || dose.isBlank() ||
             quantità == null || quantità.isBlank()) {

@@ -114,7 +114,7 @@ public class MostraDatiPazienteController {
 		sceltaVisualizza.getItems().addAll("Settimana", "Mese");
 	}
 
-	public void visualizzaDati() throws IOException {
+	private void visualizzaDati() throws IOException {
 		// TERAPIE
 		listaTerapiePaziente.setItems(FXCollections.observableArrayList(terapie));
 		listaTerapiePaziente.setCellFactory(e -> new ListCell<Terapia>() {
@@ -227,12 +227,12 @@ public class MostraDatiPazienteController {
 		graficoPeso.getData().add(misurazioni);
 	}
 	
-	public enum SceltaResult {
+	private enum SceltaResult {
 		EMPTY_FIELD,
 		DATE_IN_FUTURE,
 		OK
 	}
-	public SceltaResult tryScelta(String scelta, LocalDate date) {
+	private SceltaResult tryScelta(String scelta, LocalDate date) {
 		if(date == null || scelta == null) {
 			return SceltaResult.EMPTY_FIELD;
 		} else if(date.isAfter(LocalDate.now())) {
