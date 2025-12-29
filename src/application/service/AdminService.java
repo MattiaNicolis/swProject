@@ -35,13 +35,13 @@ public class AdminService {
     // DAO
     private static TerapiaDAO terapiaDAO = new TerapiaDAO();
     private static UtenteDAO utenteDAO = new UtenteDAO();
-	private static final DatiDAO datiDAO = new DatiDAO();
-	private static final PatologiaDAO patologiaDAO = new PatologiaDAO();
-	private static final TerapiaConcomitanteDAO terapiaConcomitanteDAO = new TerapiaConcomitanteDAO();
-	private static final GlicemiaDAO glicemiaDAO = new GlicemiaDAO();
+	private static DatiDAO datiDAO = new DatiDAO();
+	private static PatologiaDAO patologiaDAO = new PatologiaDAO();
+	private static TerapiaConcomitanteDAO terapiaConcomitanteDAO = new TerapiaConcomitanteDAO();
+	private static GlicemiaDAO glicemiaDAO = new GlicemiaDAO();
 	private static MailDAO mailDAO = new MailDAO();
 	private static QuestionarioDAO questDAO = new QuestionarioDAO();
-	private static final PesoDAO pesoDAO = new PesoDAO();
+	private static PesoDAO pesoDAO = new PesoDAO();
 
 	// DAO SETTER PER TEST
 	public static void setUtenteDAO(UtenteDAO dao) {
@@ -58,6 +58,26 @@ public class AdminService {
 
 	public static void setMailDAO(MailDAO dao) {
 		mailDAO = dao;
+	}
+
+	public static void setGlicemiaDAO(GlicemiaDAO dao) {
+		glicemiaDAO = dao;
+	}
+
+	public static void setPesoDAO(PesoDAO dao) {
+		pesoDAO = dao;
+	}
+
+	public static void setDatiDAO(DatiDAO dao) {
+		datiDAO = dao;
+	}
+
+	public static void setPatologiaDAO(PatologiaDAO dao) {
+		patologiaDAO = dao;
+	}
+
+	public static void setTerapiaConcomitanteDAO(TerapiaConcomitanteDAO dao) {
+		terapiaConcomitanteDAO = dao;
 	}
 
 	// ---------------------------------
@@ -305,4 +325,5 @@ public class AdminService {
 			}
 		});
 	}
+
 }
