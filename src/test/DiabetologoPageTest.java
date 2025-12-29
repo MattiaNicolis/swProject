@@ -130,12 +130,12 @@ class DiabetologoPageTest {
         int giorni = 0;
         Utente p = new Utente("a", null, null, null, null, null, null, null, null);
 
-        LocalDate dataInizio = LocalDate.of(2025, 12, 21);
-        LocalDate dataFine = LocalDate.of(2025, 12, 31);
+        LocalDate dataInizio = LocalDate.now().minusDays(2);
+        LocalDate dataFine = LocalDate.now().plusDays(10);
         Terapia t = new Terapia(0, "a", "testFarmaco", 1, 1, dataInizio, dataFine, "", "", false, 0);
         boolean creata = AdminService.creaTerapia(t);
 
-        LocalDate dataCompilazione = LocalDate.of(2025, 12, 21);
+        LocalDate dataCompilazione = LocalDate.now().minusDays(2);
         Questionario q = new Questionario(0, "a", dataCompilazione, "testFarmaco", 1, 1, null, false, 0);
         boolean creato = AdminService.creaQuestionario(q);
         if(creata && creato) {
