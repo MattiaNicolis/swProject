@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class Navigator {
 	
-	// Singleton
+	// --- SINGLETON ---
     private static Navigator instance;
 
     private Stage stage; // riferimento alla finestra principale
@@ -32,7 +32,7 @@ public class Navigator {
     public void setStage(Stage stage) {
         this.stage = stage;
 		stage.setTitle("Software per pazienti diabetici");
-		Image icon = new Image(getClass().getResourceAsStream("/resources/logo.png"));
+		Image icon = new Image(getClass().getResourceAsStream("/resources/images/logo.png"));
 		stage.getIcons().add(icon);
     }
 	
