@@ -11,4 +11,4 @@ public interface QuestionarioDAOinterface {
     public List<Questionario> getQuestionariNonConformi();
     public boolean segnaComeControllato(Questionario questionario);
     public boolean esisteQuestionarioOggi(int terapiaId);
-} 
+}
