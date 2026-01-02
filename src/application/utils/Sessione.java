@@ -8,6 +8,7 @@ import application.model.TerapiaConcomitante;
 import application.model.Utente;
 
 public class Sessione {
+
 	private static Sessione instance;
 	
 	private Utente utente;
@@ -48,6 +49,7 @@ public class Sessione {
 		setMailSelezionata(null);
 		setQuestionarioSelezionato(null);
 	}
+
 	//---------------------------------------------------
 	public void setPazienteSelezionato(Utente pazienteSelezionato) {
 		this.pazienteSelezionato = pazienteSelezionato;
@@ -56,6 +58,7 @@ public class Sessione {
 	public Utente getPazienteSelezionato() {
 		return pazienteSelezionato;
 	}
+
 	//--------------------------------------------------
 	public void setTerapiaSelezionata(Terapia terapia) {
 		this.terapiaSelezionata = terapia;
@@ -64,6 +67,7 @@ public class Sessione {
 	public Terapia getTerapiaSelezionata() {
 		return terapiaSelezionata;
 	}
+
 	//--------------------------------------------------------------------------------------
 	public void setTerapiaConcomitanteSelezionata(TerapiaConcomitante terapiaConcomitante) {
 		this.terapiaConcomitanteSelezionata = terapiaConcomitante;
@@ -72,6 +76,7 @@ public class Sessione {
 	public TerapiaConcomitante getTerapiaConcomitanteSelezionata() {
 		return terapiaConcomitanteSelezionata;
 	}
+
 	//--------------------------------------------------------
 	public void setPatologiaSelezionata(Patologia patologia) {
 		this.patologiaSelezionata = patologia;
@@ -80,6 +85,7 @@ public class Sessione {
 	public Patologia getPatologiaSelezionata() {
 		return patologiaSelezionata;
 	}
+
 	//-----------------------------------------
 	public void setMailSelezionata(Mail mail) {
 		this.mailSelezionata = mail;

@@ -3,6 +3,8 @@ package application.utils;
 import java.util.Optional;
 
 import application.model.Questionario;
+import application.model.Terapia;
+import application.service.AdminService;
 import javafx.animation.PauseTransition;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -32,7 +34,7 @@ public class MessageUtils {
         alert.show();
 
         // Dopo tot secondi chiude automaticamente la finestra
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
         delay.setOnFinished(e -> alert.close());
         delay.play();
     }
@@ -45,13 +47,19 @@ public class MessageUtils {
         return alert.showAndWait();
     }
 
-    public static Optional<ButtonType> showAlertQuest(Questionario q, String nomePaziente) {
+    public static Optional<ButtonType> showAlertQuest(Questionario q, Terapia t, String nomePaziente) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Gestione Non Conformità");
-        alert.setHeaderText("Questionario di " + nomePaziente + " del " + q.getGiornoCompilazione());
-        alert.setContentText("Il paziente ha segnalato valori non conformi alla terapia.\n\nCosa vuoi fare?");
+        alert.setTitle("Gestione Conformità");
+        alert.setHeaderText("Questionario di " + nomePaziente + " del " + q.getGiornoCompilazione().format(AdminService.dateFormatter));
+        alert.setContentText("Il paziente ha segnato valori non conformi alla terapia.\n" +
+            "\nQuestionario:\n\t- Farmaco: " + q.getNomeFarmaco() + "\n\t- Dosi: " + q.getDosiGiornaliere() + "\n\t- Quantità: " + q.getQuantità() +
+            "\n\nTerapia:\n\t- Farmaco: " + t.getNomeFarmaco() + "\n\t- Dosi: " + t.getDosiGiornaliere() + "\n\t- Quantità: " + t.getQuantità() +                
+            "\n\nCosa vuoi fare?");
 
-        alert.getButtonTypes().setAll(BTN_VISTO, BTN_MAIL, BTN_ANNULLA);
+        if(!q.getControllato())
+            alert.getButtonTypes().setAll(BTN_VISTO, BTN_MAIL, BTN_ANNULLA);
+        else
+            alert.getButtonTypes().setAll(BTN_MAIL, BTN_ANNULLA);
 
         return alert.showAndWait();
     }
