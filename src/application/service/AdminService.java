@@ -28,11 +28,12 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 public class AdminService {
-	
+
+	// --- DORMATTAZIONE DATE E TEMPO ---	
 	public static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    // DAO
+    // --- DAO ---
     private static TerapiaDAO terapiaDAO = new TerapiaDAO();
     private static UtenteDAO utenteDAO = new UtenteDAO();
 	private static DatiDAO datiDAO = new DatiDAO();
@@ -43,7 +44,7 @@ public class AdminService {
 	private static QuestionarioDAO questDAO = new QuestionarioDAO();
 	private static PesoDAO pesoDAO = new PesoDAO();
 
-	// DAO SETTER PER TEST
+	// --- DAO SETTER PER TEST ---
 	public static void setUtenteDAO(UtenteDAO dao) {
         utenteDAO = dao;
     }
@@ -95,43 +96,58 @@ public class AdminService {
 	public static boolean creaTerapia(Terapia t) {
 		return terapiaDAO.creaTerapia(t);
 	}
+
 	// MODIFICA TERAPIA
 	public static boolean modificaTerapia(Terapia t) {
 		return terapiaDAO.modificaTerapia(t);
 	}
+	
 	// ELIMINA TERAPIA
 	public static boolean eliminaTerapia(Terapia t) {
 		return terapiaDAO.eliminaTerapia(t);
 	}
+
 	// NOTIFICA TERAPIA
 	public static boolean notificaTerapia(Terapia t) {
 		return terapiaDAO.notificaTerapia(t);
 	}
+
 	// CARICA TERAPIE DI UN PAZIENTE DAL DATABASE
 	public static List<Terapia> loadTerapieByPaziente(Utente paziente) {
 		return terapiaDAO.getTerapieByPaziente(paziente);
 	}
+
 	// CARICA NUMERO DI TERAPIE ATTIVE PER PAZIENTE IN UNA CERTA DATA
 	public static int loadTerapieAttiveByCfAndData(String cf, LocalDate data) {
 		return terapiaDAO.getNumeroTerapieAttive(cf, data);
 	}
+
 	// CARICA NUMERO DI TERAPIE SODDISFATTE PER PAZIENTE IN UNA CERTA DATA
 	public static int loadTerapieSoddisfatteByCfAndData(String cf, LocalDate data) {
 		return terapiaDAO.getTerapieSoddisfatte(cf, data);
 	}
+
 	// AGGIORNA NUMERO QUESTIONARI PER TERAPIA
 	public static boolean loadAggiornaNumQuestionari(Terapia t) {
 		return terapiaDAO.aggiornaNumQuestionari(t);
 	}
+
+	// GET TERAPIA CON ID
+	public static Terapia getTerapiaById(int id) {
+		return terapiaDAO.getTerapiaById(id);
+	}
+
 	// -----------------------------------------------
 	// CARICA MISURAZIONI PESO DI UN PAZIENTE
 	public static List<Peso> loadPesoByCf(String cf) {
 		return pesoDAO.getPesoByCf(cf);
 	}
+
 	// AGGIORNA PESO
 	public static boolean aggiornaPeso(Peso p) {
 		return pesoDAO.aggiornaPeso(p);
 	}
+
 	// CREA PESO
 	public static boolean creaPeso(Peso p) {
 		return pesoDAO.creaPeso(p);
@@ -142,10 +158,12 @@ public class AdminService {
 	public static List<Dato> loadFattoriByPaziente(Utente paziente) {
 		return datiDAO.getDatiByPaziente(paziente, "fattori");
 	}
+	
 	// CREA FATTORE
 	public static boolean creaFattore(Dato fattore) {
 		return datiDAO.creaDato(fattore, "fattori");
 	}
+
 	// ELIMINA FATTORE
 	public static boolean eliminaFattore(Dato fattore) {
 		return datiDAO.eliminaDato(fattore, "fattori");
@@ -156,10 +174,12 @@ public class AdminService {
 	public static List<Dato> loadComorbiditàByPaziente(Utente paziente) {
 		return datiDAO.getDatiByPaziente(paziente, "comorbidità");
 	}
+	
 	// CREA COMORBIDITA'
 	public static boolean creaComorbidità(Dato comorbidità) {
 		return datiDAO.creaDato(comorbidità, "comorbidità");
 	}
+
 	// ELIMINA COMORBIDITA'
 	public static boolean eliminaComorbidità(Dato comorbidità) {
 		return datiDAO.eliminaDato(comorbidità, "comorbidità");
@@ -170,10 +190,12 @@ public class AdminService {
 	public static List<Dato> loadAllergieByPaziente(Utente paziente) {
 		return datiDAO.getDatiByPaziente(paziente, "allergie");
 	}
+
 	// CREA ALLERGIA
 	public static boolean creaAllergia(Dato allergia) {
 		return datiDAO.creaDato(allergia, "allergie");
 	}
+
 	// ELIMINA ALLERGIA
 	public static boolean eliminaAllergia(Dato allergia) {
 		return datiDAO.eliminaDato(allergia, "allergie");
@@ -184,10 +206,12 @@ public class AdminService {
 	public static List<Glicemia> loadGlicemiaByPaziente(Utente paziente) {
 		return glicemiaDAO.getGlicemiaByPaziente(paziente);
 	}
+
 	// CREA GLICEMIA
 	public static boolean creaGlicemia(Glicemia g) {
 		return glicemiaDAO.creaGlicemia(g);
 	}
+
 	// CARICA TUTTE LE GLICEMIE DAL DATABASE
 	public static List<Glicemia> loadAllGlicemia() {
 		return glicemiaDAO.getAllGlicemia();
@@ -198,14 +222,17 @@ public class AdminService {
 	public static List<Mail> loadMailRicevute(Utente utente) {
 		return mailDAO.getMailRicevute(utente);
 	}
+
 	// CARICA MAIL INVIATE DAL DATABASE
 	public static List<Mail> loadMailInviate(Utente utente) {
 		return mailDAO.getMailInviate(utente);
 	}
+
 	// SEGNA MAIL COME LETTA
 	public static boolean vediMail(Mail m) {
 		return mailDAO.vediMail(m);
 	}
+
 	// SCRIVI MAIL
 	public static boolean scriviMail(Mail m) {
 		return mailDAO.scriviMail(m);
@@ -216,10 +243,12 @@ public class AdminService {
 	public static List<Patologia> loadPatologieByPaziente(Utente paziente) {
 		return patologiaDAO.getPatologieByPaziente(paziente);
 	}
+
 	// CREA PATOLOGIA
 	public static boolean creaPatologia(Patologia p) {
 		return patologiaDAO.creaPatologia(p);
 	}
+
 	// ELIMINA PATOLOGIA
 	public static boolean eliminaPatologia(Patologia p) {
 		return patologiaDAO.eliminaPatologia(p);
@@ -230,10 +259,12 @@ public class AdminService {
 	public static List<TerapiaConcomitante> loadTerapieConcomitantiByPaziente(Utente paziente) {
 		return terapiaConcomitanteDAO.getTerapieConcomitantiByPaziente(paziente);
 	}
+
 	// CREA TERAPIA CONCOMITANTE
 	public static boolean creaTerapiaConcomitante(TerapiaConcomitante tc) {
 		return terapiaConcomitanteDAO.creaTerapiaConcomitante(tc);
 	}
+
 	// ELIMINA TERAPIA CONCOMITANTE
 	public static boolean eliminaTerapiaConcomitante(TerapiaConcomitante tc) {
 		return terapiaConcomitanteDAO.eliminaTerapiaConcomitante(tc);
@@ -244,18 +275,22 @@ public class AdminService {
 	public static List<Questionario> loadQuestionariByPaziente(Utente paziente) {
 		return questDAO.getQuestionariByPaziente(paziente);
 	}
+
 	// CARICA TUTTI I QUESTIONARI NON CONFORMI DAL DATABASE
 	public static List<Questionario> loadQuestionariNonConformi() {
 		return questDAO.getQuestionariNonConformi();
 	}
+
 	// SEGNA QUESTIONARIO COME CONTROLLATO
 	public static boolean segnaComeControllato(Questionario q) {
 		return questDAO.segnaComeControllato(q);
 	}
+
 	// CREA QUESTIONARIO
 	public static boolean creaQuestionario(Questionario q) {
 		return questDAO.creaQuestionario(q);
 	}
+
 	// ESISTE QUESTIONARIO OGGI
 	public static boolean esisteQuestionarioOggi(int terapiaId) {
 		return questDAO.esisteQuestionarioOggi(terapiaId);
@@ -325,5 +360,4 @@ public class AdminService {
 			}
 		});
 	}
-
 }
