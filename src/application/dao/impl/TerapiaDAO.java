@@ -198,43 +198,51 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 	}
 
 	public boolean aggiornaNumQuestionari(Terapia t) {
-		int count = 0;
-		String query = "SELECT questionari FROM terapie WHERE id = ?";
+		String query = "UPDATE terapie SET questionari = questionari + 1 WHERE id = ?";
+
 		try (Connection conn = Database.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(query)) {
 
 			stmt.setInt(1, t.getId());
-			try(ResultSet rs = stmt.executeQuery()) {
-				count = rs.getInt("questionari");
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}	
-
-
-		String query2 = "UPDATE terapie SET questionari = ? WHERE id = ?";
-		try (Connection conn = Database.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(query2)) {
-
-			stmt.setInt(1, count + 1);
-			stmt.setInt(2, t.getId());
 
 			int rows = stmt.executeUpdate();
-
-			if (rows > 0) {
-				return true;
-			} else {
-				return false;
-			}
+			
+			return rows > 0;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		}	
+		}
+	}
+
+	public Terapia getTerapiaById(int id) {
+		String query = "SELECT * FROM terapie WHERE id = ?";
+		try (Connection conn = Database.getConnection(); 
+			PreparedStatement stmt = conn.prepareStatement(query)) {
+
+			stmt.setInt(1, id);
+			
+			try(ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					Terapia terapia = new Terapia(
+						rs.getInt("id"),
+						rs.getString("CF"),
+						rs.getString("nomeFarmaco"),
+						rs.getInt("dosiGiornaliere"),
+						rs.getInt("quantità"),
+						rs.getDate("dataInizio") != null ? rs.getDate("dataInizio").toLocalDate() : null,
+						rs.getDate("dataFine") != null ? rs.getDate("dataFine").toLocalDate() : null,
+						rs.getString("indicazioni"),
+						rs.getString("diabetologo"),
+						rs.getBoolean("visualizzata"),
+						rs.getInt("questionari")
+					);
+					return terapia;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
