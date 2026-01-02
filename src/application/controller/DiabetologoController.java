@@ -33,7 +33,7 @@ import javafx.scene.text.TextFlow;
 
 public class DiabetologoController {
 		
-	// VARIABILI
+	// --- VARIABILI LOCALI ---
 	private Utente d;
 	private List<Glicemia> glicemia = new ArrayList<>();
 	private List<Terapia> terapie = new ArrayList<>();
@@ -42,21 +42,24 @@ public class DiabetologoController {
 	private List<Utente> pazienti = new ArrayList<>();
 	private Map<String, Integer> pazientiNonCompilano = new HashMap<>();
 	
-	// FXML
+	// --- FXML ---
 	@FXML private Label welcomeLabel;
+
+	// --- LIST VIEW ---
 	@FXML private ListView<Utente> listaNomiPazienti;
 	@FXML private ListView<Questionario> listaNotificheQuestionario;
 	@FXML private ListView<Glicemia> listaGlicemieSballate;
 	@FXML private ListView<Questionario> listaQuestNonConformi;
+
+	// --- BOTTONI ---
 	@FXML private Button mailButton;
 
-	// LABEL - PROFILO
+	// --- LABEL - PROFILO ---
 	@FXML private Label nomeLabel;
 	@FXML private Label ddnLabel;
 	@FXML private Label sessoLabel;
 	@FXML private Label luogoLabel;
 
-	
 	@FXML
 	private void initialize() {
 		d = Sessione.getInstance().getUtente();
@@ -86,42 +89,25 @@ public class DiabetologoController {
 		else if("F".equals(d.getSesso()))
 			nomeLabel.setText("Dr.ssa " + d.getNomeCognome());
 
-		//Creo la label ddnLabel fatta da "Data di nascita" (in grassetto) + d.getDataDiNascita (normale)
-		Text textDataNascita = new Text("Data di nascita:");
-		textDataNascita.setStyle("-fx-font-weight: bold;");
-		Text dataNascita = new Text(" " + d.getDataDiNascita().format(AdminService.dateFormatter));
-		TextFlow ddn = new TextFlow(textDataNascita, dataNascita);
-
-		ddnLabel.setText(null);
-		ddnLabel.setGraphic(ddn);
-
-		//Creo la label luogoLabel fatta da "Luogo di nascita" (in grassetto) + d.getLuogoDiNascita (normale)
-		Text textLuogoNascita = new Text("Luogo di nascita:");
-		textLuogoNascita.setStyle("-fx-font-weight: bold;");
-		Text luogoNascita = new Text(" " + d.getLuogoDiNascita());
-		TextFlow luogo = new TextFlow(textLuogoNascita, luogoNascita);
-
-		luogoLabel.setText(null);
-		luogoLabel.setGraphic(luogo);
-
-		//Creo la label sessoLabel fatta da "Sesso" (in grassetto) + d.getSesso (normale)
-		Text textSesso = new Text("Sesso:");
-		textSesso.setStyle("-fx-font-weight: bold;");
-		Text sesso = new Text(" " + d.getSesso());
-		TextFlow sex = new TextFlow(textSesso, sesso);
-
-		sessoLabel.setText(null);
-		sessoLabel.setGraphic(sex);
+		ddnLabel.setText(d.getDataDiNascita().format(AdminService.dateFormatter));
+		luogoLabel.setText(d.getLuogoDiNascita());
+		sessoLabel.setText(d.getSesso());
 
 		mailButton.setText(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? AdminService.contatoreMailNonLette(mailRicevute) + " Mail" : "🖂 Mail");
-		mailButton.setStyle(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? "-fx-text-fill: red;" : "-fx-text-fill: white;");
+
+		mailButton.getStyleClass().removeAll("btn-mail", "btn-mail-alert");
+
+		if (AdminService.contatoreMailNonLette(mailRicevute) > 0) {
+			mailButton.getStyleClass().add("btn-mail-alert");
+		} else {
+			mailButton.getStyleClass().add("btn-mail");
+		}
 	}
 
 	private void setupListaPazienti(){
 		for(Utente p : pazienti) {
 			pazientiNonCompilano.put(p.getCf(), DiabetologoUtils.calcolaGiorniNonCompilati(p));
 		}
-
 
 		ObservableList<Utente> listaNomiPazientiAsObservable = FXCollections.observableArrayList(
 				pazienti.stream()
@@ -141,15 +127,15 @@ public class DiabetologoController {
 		        	int giorni = pazientiNonCompilano.get(paziente.getCf());
 
 					if(giorni >= 3) {
-						setText(paziente.getNomeCognome() + "\n" + paziente.getCf() + "\n(Non compila da 3 + giorni!)");
+						setText(paziente.getNomeCognome() + " (" + paziente.getCf() + ")\n(Non compila da 3+ giorni!)");
 						// Rosso vivo + Grassetto
 						setStyle("-fx-background-color: #ffcccc; -fx-text-fill: black; -fx-font-weight: bold;");
 					}
 					else {
-						Text nomeCognomePaziente = new Text(paziente.getNomeCognome() + "\n");
+						Text nomeCognomePaziente = new Text(paziente.getNomeCognome());
 						nomeCognomePaziente.setStyle("-fx-font-weight: bold;");
 
-						Text cfPaziente = new Text(paziente.getCf());
+						Text cfPaziente = new Text(" (" + paziente.getCf() + ")");
 
 						TextFlow cellFactoryPaziente = new TextFlow(nomeCognomePaziente, cfPaziente);
 
@@ -219,7 +205,6 @@ public class DiabetologoController {
 	}
 	
 	private void setupListaQuestionariNonConformi() {
-
     	listaQuestNonConformi.setItems(FXCollections.observableArrayList(questNonConformi));
     
 		listaQuestNonConformi.setCellFactory(e -> new ListCell<Questionario>() {
@@ -251,7 +236,8 @@ public class DiabetologoController {
 			if (selectedQuest == null) return; 
 
 			String nomePaziente = AdminService.getNomeUtenteByCf(pazienti, selectedQuest.getCf());
-			Optional<ButtonType> result = MessageUtils.showAlertQuest(selectedQuest, nomePaziente);
+			Terapia terapia = AdminService.getTerapiaById(selectedQuest.getTerapiaId());
+			Optional<ButtonType> result = MessageUtils.showAlertQuest(selectedQuest, terapia, nomePaziente);
 
 			if (result.isPresent()) {
 				if (result.get() == MessageUtils.BTN_VISTO) {
@@ -270,7 +256,7 @@ public class DiabetologoController {
 					Utente paziente = AdminService.getUtenteByCf(pazienti, selectedQuest.getCf());
 
 					try {
-						Navigator.getInstance().switchToRispondi(e, paziente.getMail(), "Questionario del " + selectedQuest.getGiornoCompilazione() + " non conforme");
+						Navigator.getInstance().switchToRispondi(e, paziente.getMail(), "Questionario del " + selectedQuest.getGiornoCompilazione().format(AdminService.dateFormatter) + " non conforme");
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}

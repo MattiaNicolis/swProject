@@ -14,16 +14,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class VediMailController {
-	
+
+	// --- VARIABILI LOCALI ---	
 	private Utente u;
 	private Mail m;
 	
-	// FXML
+	// --- LABEL ---
 	@FXML private Label mittenteLabel;
 	@FXML private Label destinatarioLabel;
 	@FXML private Label oggettoLabel;
 	@FXML private Label corpoLabel;
 	@FXML private Label giornoOraLabel;
+
+	// --- BOTTONI ---
 	@FXML Button rispondiButton;
 	
 	@FXML

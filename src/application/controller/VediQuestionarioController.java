@@ -13,14 +13,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 public class VediQuestionarioController {
-    
+
+    // VARIABILI LOCALI ---    
     private Questionario q;
     private Utente u;
 
-    // --- SEZIONE BOTTONI ---
+    // --- BOTTONI ---
 	@FXML private Button bottoneIndietro;
 
-    // LABEL
+    // --- LABEL ---
     @FXML private Label nomeFarmacoLabel;
     @FXML private Label dosiGiornaliereLabel;
     @FXML private Label quantitàLabel;

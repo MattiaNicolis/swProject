@@ -65,7 +65,7 @@ public class TerapiaController {
 			farmacoField.setVisible(false);
 			nomeFarmacoLabel.setVisible(true);
 			nomeFarmacoLabel.setText(t.getNomeFarmaco());
-			conferma.setText("✔️ Salva Modifiche");
+			conferma.setText("Salva Modifiche");
 
 			dosiGiornaliereField.setText(String.valueOf(t.getDosiGiornaliere()));
 			quantitàField.setText(String.valueOf(t.getQuantità()));
@@ -77,7 +77,7 @@ public class TerapiaController {
 		}
 	}
 
-	public enum TerapiaResult {
+	private enum TerapiaResult {
 		SUCCESS,
 		FAILURE,
 		INVALID_DATA,
@@ -85,7 +85,7 @@ public class TerapiaController {
 		EMPTY_FIELDS,
 	}
 
-	public TerapiaResult manageTerapia(String nomeFarmaco, String dosiGiornaliere, String quantità, LocalDate dataInizio, LocalDate dataFine, String indicazioni) {
+	private TerapiaResult manageTerapia(String nomeFarmaco, String dosiGiornaliere, String quantità, LocalDate dataInizio, LocalDate dataFine, String indicazioni) {
 		if(t == null) {
 			if(nomeFarmaco == null || nomeFarmaco.isBlank())
 				return TerapiaResult.EMPTY_FIELDS;

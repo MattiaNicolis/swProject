@@ -15,9 +15,13 @@ import javafx.scene.control.Label;
 
 public class PatologiaController {
 	
+	// --- VARIABILI LOCALI ---
 	private Patologia patologia;
+
+	// --- LIST VIEW ---
 	private List<Utente> diabetologi = new ArrayList<>();
-	
+
+	// --- LABEL ---	
 	@FXML private Label nomeLabel;
 	@FXML private Label dataLabel;
 	@FXML private Label indicazioniLabel;

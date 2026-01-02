@@ -14,10 +14,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class TerapiaConcomitanteController {
-	
+
+	// --- VARIABILI LOCALI ---	
 	private TerapiaConcomitante tc;
+
+	// --- LIST VIEW ---
 	private List<Utente> diabetologi = new ArrayList<>();
-	
+
+	// ---- LABEL FXML ---	
 	@FXML private Label nomeLabel;
 	@FXML private Label dataInizioLabel;
 	@FXML private Label dataFineLabel;

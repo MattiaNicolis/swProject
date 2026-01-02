@@ -32,11 +32,13 @@ import javafx.scene.control.ListView;
 
 public class MostraDatiPazienteController {
 
-	//VARIABILI
+	// --- VARIABILI LOCALI ---
 	private Utente p;
 	private String scelta;
 	private LocalDate date;
 	private LocalDate date2;
+
+	// --- LIST VIEW - INTERNE ---
 	private List<Glicemia> glicemia = new ArrayList<>();
 	private List<Terapia> terapie = new ArrayList<>();
 	private List<Questionario> questionari = new ArrayList<>();
@@ -47,14 +49,23 @@ public class MostraDatiPazienteController {
 	private List<Patologia> patologie = new ArrayList<>();
 	private List<Peso> peso = new ArrayList<>();
 	private List<Utente> diabetologi = new ArrayList<>();
+
+	// --- LIST VIEW - FXML ---
+	@FXML private ListView<Terapia> listaTerapiePaziente;
+	@FXML public ListView<Dato> listaFattori;
+	@FXML public ListView<Dato> listaComorbidità;
+	@FXML public ListView<Dato> listaAllergie;
+	@FXML public ListView<Patologia> listaPatologie;
+	@FXML public ListView<TerapiaConcomitante> listaTerapieConcomitanti;
+	@FXML public ListView<Questionario> listaQuestionari;
 	
-	// GRAFICO GLICEMIA
+	// --- GRAFICO GLICEMIA ---
 	@FXML private LineChart<String, Number> grafico;
 
-	// GRAFICO PESO
+	// --- GRAFICO PESO ---
 	@FXML private LineChart<String, Number> graficoPeso;
 	
-	//LABEL
+	// --- LABEL ---
 	@FXML private Label labelPaziente;
 	@FXML private Label dataDiNascitaDato;
 	@FXML private Label sessoDato;
@@ -64,15 +75,6 @@ public class MostraDatiPazienteController {
 	@FXML private DatePicker dataVisualizza;
 	@FXML private Label luogoLabel;
 
-	//LISTE
-	@FXML private ListView<Terapia> listaTerapiePaziente;
-	@FXML public ListView<Dato> listaFattori;
-	@FXML public ListView<Dato> listaComorbidità;
-	@FXML public ListView<Dato> listaAllergie;
-	@FXML public ListView<Patologia> listaPatologie;
-	@FXML public ListView<TerapiaConcomitante> listaTerapieConcomitanti;
-	@FXML public ListView<Questionario> listaQuestionari;
-	
 	@FXML
 	private void initialize() {
 		p = Sessione.getInstance().getPazienteSelezionato();
@@ -125,7 +127,7 @@ public class MostraDatiPazienteController {
 					setText(null);
 					setStyle("");
 				} else {
-					setText(t.getNomeFarmaco() + " - " + t.getDataInizio().format(AdminService.dateFormatter) + 
+					setText(t.getNomeFarmaco() + ": " + t.getDataInizio().format(AdminService.dateFormatter) + 
 						" - " + t.getDataFine().format(AdminService.dateFormatter));
 
 					if(t.getDataFine().isBefore(LocalDate.now())) {
@@ -139,6 +141,7 @@ public class MostraDatiPazienteController {
 				}
 			}
 		});
+
 		listaTerapiePaziente.setOnMouseClicked(e -> {
 			Terapia selectedTerapia = listaTerapiePaziente.getSelectionModel().getSelectedItem();
 			if(selectedTerapia != null) {
@@ -174,8 +177,9 @@ public class MostraDatiPazienteController {
 			Patologia selectedPatologia = listaPatologie.getSelectionModel().getSelectedItem();
 			if(selectedPatologia != null) {
 				Sessione.getInstance().setPatologiaSelezionata(selectedPatologia);
+				//System.out.println("Nome patologia: " + selectedPatologia.getNome());
 				try {
-					clearAll();
+					//clearAll();
 					Navigator.getInstance().switchToMostraPatologia(e);
 				} catch (IOException ev) {
 					ev.printStackTrace();
@@ -191,7 +195,7 @@ public class MostraDatiPazienteController {
 			if(selectedTerapiaConcomitante != null) {
 				Sessione.getInstance().setTerapiaConcomitanteSelezionata(selectedTerapiaConcomitante);
 				try {
-					clearAll();
+					//clearAll();
 					Navigator.getInstance().switchToMostraTerapiaConcomitante(e);
 				} catch (IOException ev) {
 					ev.printStackTrace();
@@ -201,13 +205,13 @@ public class MostraDatiPazienteController {
 		
 		// LISTA QUESTIONARI
 		listaQuestionari.setItems(FXCollections.observableArrayList(questionari));
-		AdminService.setCustomCellFactory(listaQuestionari, q -> q.getNomeFarmaco() + " (" + q.getGiornoCompilazione() + ")");
+		AdminService.setCustomCellFactory(listaQuestionari, q -> q.getNomeFarmaco() + " (" + q.getGiornoCompilazione().format(AdminService.dateFormatter) + ")");
 		listaQuestionari.setOnMouseClicked(e -> {
 			Questionario selectedQuestionario = listaQuestionari.getSelectionModel().getSelectedItem();
 			if(selectedQuestionario != null) {
 				Sessione.getInstance().setQuestionarioSelezionato(selectedQuestionario);
 				try {
-					clearAll();
+					//clearAll();
 					Navigator.getInstance().switchVediQuestionario(e);
 				} catch (IOException ev) {
 					ev.printStackTrace();
@@ -232,6 +236,7 @@ public class MostraDatiPazienteController {
 		DATE_IN_FUTURE,
 		OK
 	}
+
 	private SceltaResult tryScelta(String scelta, LocalDate date) {
 		if(date == null || scelta == null) {
 			return SceltaResult.EMPTY_FIELD;
@@ -240,6 +245,7 @@ public class MostraDatiPazienteController {
 		}
 		return SceltaResult.OK;
 	}
+
 	@FXML
 	private void handleScelta() throws IOException {
 		SceltaResult result = tryScelta(sceltaVisualizza.getValue(), dataVisualizza.getValue());
@@ -334,20 +340,20 @@ public class MostraDatiPazienteController {
 	// NAVIGAZIONE
 	@FXML
 	private void switchToDiabetologoPage(ActionEvent event) throws IOException {
-		clearAll();
+		//clearAll();
 		Sessione.getInstance().setPazienteSelezionato(null);
 		Navigator.getInstance().switchToDiabetologoPage(event);
 	}
 	
 	@FXML
 	private void switchToNuovaTerapia(ActionEvent event) throws IOException {
-		clearAll();
+		//clearAll();
 		Navigator.getInstance().switchToTerapia(event);
 	}
 	
 	@FXML
 	private void switchToStoriaDatiPaziente(ActionEvent event) throws IOException {
-		clearAll();
+		//clearAll();
 		Navigator.getInstance().switchToStoriaDatiPaziente(event);
 	}
 }

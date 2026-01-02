@@ -21,26 +21,31 @@ import application.view.Navigator;
 
 public class QuestionarioController {
 
-    // --- Componenti FXML ---
+    // --- LIST VIEW ---
     @FXML private ListView<Terapia> listaTerapie;
-    
+    private List<Terapia> terapie = new ArrayList<>();
+    private List<Terapia> terapieAttive = new ArrayList<>();
+    private List<Terapia> terapieMancanti = new ArrayList<>();
+
+    // --- LABEL ---    
     @FXML private Label lblPlaceholder;
+
+    // --- SEZIONI COMPONENTI ---
     @FXML private VBox formContainer;
+
+    // --- TEXT FIELD ---
     
     @FXML private TextField nomeFarmacoField;
     @FXML private TextField doseField;
     @FXML private TextField quantitàField;
+
+    // --- TEXT AREA ---
     @FXML private TextArea sintomiArea;
 
-    // --- Dati ---
+    // --- VARIBILI LOCALI ---
     private Terapia t; // Terapia selezionata
     private Utente p;
     private int dose, quantità;
-    
-    // Liste
-    private List<Terapia> terapie = new ArrayList<>();
-    private List<Terapia> terapieAttive = new ArrayList<>();
-    private List<Terapia> terapieMancanti = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -131,6 +136,7 @@ public class QuestionarioController {
         } 
         else return QuestionarioResult.FAILURE;
     }
+    
     @FXML
     private void handleQuestionario() {
         if (t == null) return;

@@ -26,38 +26,37 @@ import javafx.scene.layout.VBox;
 
 public class MailController {
 	
-	// --- SEZIONE VARIABILI LOCALI ---	
+	// --- VARIABILI LOCALI ---	
 	private Utente u;
+
+	// --- LIST VIEW - MAPPE ---
 	private List<Mail> mailRicevute = new ArrayList<>();
 	private List<Mail> mailInviate = new ArrayList<>();
 	private List<Utente> diabetologi = new ArrayList<>();
 	private List<Utente> pazienti = new ArrayList<>();
-
+	@FXML private ListView<Mail> listaMail;
 	private Map<String, String> emailToNameMap = new HashMap<>();
-
 	private FilteredList<Mail> currentFilteredList;
 
-	// --- SEZIONE PAGINE ---
+	// --- PAGINE ---
 	@FXML private VBox scriviPanel;
 	
-	// --- SEZIONE BOTTONI ---
+	// --- BOTTONI ---
 	@FXML private Button bottoneIndietro;
 	
-	// --- SEZIONE TEXTFIELD ---
+	// --- TEXTFIELD ---
 	@FXML private TextField searchMailBar;
 	@FXML private TextField destinatarioField;
 	@FXML private TextField oggettoField;
 	
-	// --- SEZIONE TEXTAREA ---
+	// --- TEXTAREA ---
 	@FXML private TextArea corpoArea;
-	
-	// --- SEZIONI LISTEVIEW ---
-	@FXML private ListView<Mail> listaMail;
 	
 	// LABEL
 	@FXML private Label mailNonLette;
 	@FXML private Label mailDiabetologo;
 	@FXML private Label labelDiabetologo;
+	@FXML private Label headerLabel;
 	
 	@FXML public void initialize() throws IOException{
 		u = Sessione.getInstance().getUtente();
@@ -163,17 +162,18 @@ public class MailController {
 				hideCompose();
 			}
 		}
-		
 	}
 	
 	@FXML
     private void showMailRicevute(ActionEvent e) {
         setupListView(mailRicevute, false);
+		headerLabel.setText("Posta arrivata");
     }
 
     @FXML
     private void showMailInviate(ActionEvent e) {
         setupListView(mailInviate, true);
+		headerLabel.setText("Posta inviata");
     }
 
 	private void setupListView(List<Mail> listaSorgente, boolean isInviata) {
@@ -200,12 +200,13 @@ public class MailController {
                     String stato = "";
                     String stile = "";
 
-                    if (!mail.getLetta()) {
+                    if (!mail.getLetta() && !isInviata) {
                         stile = "-fx-font-weight: bold; -fx-background-color: #f0f8ff;";
-                        stato = " (Non letta)";
-                    } else if (isInviata) {
-                        stato = " (Letta)";
-                    }
+                    } else if (isInviata && !mail.getLetta()) {
+                        stato = " (Non Letta)";
+                    } else if (isInviata && mail.getLetta()) {
+						stato = " (Letta)";
+					}
 
                     setText(displayName + "\nOggetto: " + mail.getOggetto() + "\n" + preview + stato);
                     setStyle(stile);

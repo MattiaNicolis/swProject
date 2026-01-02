@@ -1,6 +1,8 @@
 package application.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import application.model.Terapia;
@@ -17,11 +19,12 @@ import javafx.scene.control.Label;
 
 public class MostraDettagliTerapiaController {
 	
-	// VARIABILI
+	// --- VARIABILI LOCALI ---
 	private Utente u;
 	private Terapia t;
+	private List<Utente> diabetologi = new ArrayList<>();
 
-	// LABEL
+	// --- LABEL ---
 	@FXML private Label nomeFarmacoLabel;
 	@FXML private Label dosiGiornaliereLabel;
 	@FXML private Label quantitàLabel;
@@ -30,7 +33,7 @@ public class MostraDettagliTerapiaController {
 	@FXML private Label indicazioniLabel;
 	@FXML private Label modificatoDaLabel;
 
-	// BUTTON
+	// --- BOTTONI ---
 	@FXML private Button deleteButton;
 	@FXML private Button modifyButton;
 	
@@ -62,7 +65,9 @@ public class MostraDettagliTerapiaController {
 		else
 			indicazioniLabel.setText("Nessuna indicazione.");
 		
-		modificatoDaLabel.setText(t.getDiabetologo());
+		diabetologi = AdminService.getPeopleByRole("diabetologo");
+
+		modificatoDaLabel.setText(AdminService.getNomeUtenteByCf(diabetologi, t.getDiabetologo()) + " (" + t.getDiabetologo() + ")");
 	}
 
 	// NAVIGAZIONE

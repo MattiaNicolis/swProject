@@ -34,19 +34,26 @@ import javafx.scene.control.TextField;
 
 public class PazienteController {
 
-	// VARIABILI
+	// --- VARIABILI LOCALI ---
 	private Utente p;
 	private int compilato = 0;
 	private int terapieAttive = 0;
 	private boolean aggiorna = false;
+
+	// --- LIST VIEW - INTERNE ---
 	private List<Glicemia> glicemia = new ArrayList<>();
 	private List<Terapia> terapie = new ArrayList<>();
 	private List<Questionario> questionari = new ArrayList<>();
 	private List<Mail> mailRicevute = new ArrayList<>();
 	private List<Peso> peso = new ArrayList<>();
 	private List<Utente> diabetologi = new ArrayList<>();
+
+	// --- LIST VIEW - FXML ---
+	@FXML private ListView<Terapia> terapieCorrenti;
+	@FXML private ListView<Questionario> listaQuestionari;
+
 	
-	// GRAFICO GLICEMIA
+	// --- GRAFICO GLICEMIA ---
 	@FXML private LineChart<String, Number> graficoGlicemia;
 	@FXML private TextField valoreField;
 	@FXML private TextField oraField;
@@ -56,28 +63,22 @@ public class PazienteController {
 	@FXML private Button settimanaGlicemia;
 	@FXML private Button meseGlicemia;
 
-	// GRAFICO PESO
+	// --- GRAFICO PESO ---
 	@FXML private LineChart<String, Number> graficoPeso;
 	@FXML private TextField pesoField;
 
-	// FXML PAGINA
+	// --- LABEL ---
 	@FXML private Label welcomeLabel;
-	@FXML private Button mailButton;
-	@FXML private Button questButton;
-
-	// PROFILO
 	@FXML private Label nomeLabel;
 	@FXML private Label ddnLabel;
 	@FXML private Label sessoLabel;
 	@FXML private Label diabetologoLabel;
 	@FXML private Label luogoLabel;
-
-	// TERAPIE CORRENTI
 	@FXML private Label terapiaCorrente;
-	@FXML private ListView<Terapia> terapieCorrenti;
 
-	// QUESTIONARI
-	@FXML private ListView<Questionario> listaQuestionari;
+	// --- BOTTONI ---
+	@FXML private Button mailButton;
+	@FXML private Button questButton;
 	
 	@FXML 
 	private void initialize() throws IOException {
@@ -113,8 +114,14 @@ public class PazienteController {
 		sessoLabel.setText(p.getSesso());
 		diabetologoLabel.setText(AdminService.getNomeUtenteByCf(diabetologi, p.getDiabetologoRif()));
 
-		mailButton.setText(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? AdminService.contatoreMailNonLette(mailRicevute) + " Mail" : "Mail");
-	    mailButton.setStyle(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? "-fx-text-fill: red;" : "-fx-text-fill: black;");
+		mailButton.setText(AdminService.contatoreMailNonLette(mailRicevute) > 0 ? AdminService.contatoreMailNonLette(mailRicevute) + " Mail" : "🖂 Mail");
+	    mailButton.getStyleClass().removeAll("btn-mail", "btn-mail-alert");
+
+		if (AdminService.contatoreMailNonLette(mailRicevute) > 0) {
+			mailButton.getStyleClass().add("btn-mail-alert");
+		} else {
+			mailButton.getStyleClass().add("btn-mail");
+		}
 	    
 		indicazioniBox.getItems().addAll("Pre pasto", "Post pasto");
 
@@ -171,6 +178,7 @@ public class PazienteController {
 					serie.getData().add(punto);
 				}
 			}
+			
 			graficoGlicemia.getData().add(serie);
 		}
 		else if(giorni == 7) {
@@ -253,6 +261,7 @@ public class PazienteController {
 			XYChart.Data<String, Number> punto = new XYChart.Data<>(giorno, valore);
 			serie.getData().add(punto);
 		}
+
 		graficoPeso.getData().add(serie);
 	}
 
@@ -266,6 +275,7 @@ public class PazienteController {
 			"\nData inizio: " + t.getDataInizio().format(AdminService.dateFormatter) +
 			"\nData fine: " + t.getDataFine().format(AdminService.dateFormatter)
 		);
+
 		terapieCorrenti.setOnMouseClicked(e -> {
 			Terapia selectedTerapia = terapieCorrenti.getSelectionModel().getSelectedItem();
 			if(selectedTerapia != null) {

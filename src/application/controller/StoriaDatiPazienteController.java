@@ -17,20 +17,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class StoriaDatiPazienteController {
 	
-	// VARIABILI
+	// --- VARIABILI LOCALI ---
 	private Utente u;
 	private Utente p;
+
+	// --- LIST VIEW ---
 	private List<Dato> fattori = new ArrayList<>();
 	private List<Dato> comorbidità = new ArrayList<>();
 	private List<Dato> allergie = new ArrayList<>();
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
 	
+	// --- SEZIONE TERAPIA E PATOLOGIA ---
 	@FXML private ComboBox<String> tipologia;
 	@FXML private TextField nomeField;
 	@FXML private TextField nomePatologiaField;
@@ -39,6 +43,7 @@ public class StoriaDatiPazienteController {
 	@FXML private TextField nomeTerapiaField;
 	@FXML private DatePicker dataInizioTerapiaField;
 	@FXML private DatePicker dataFineTerapiaField;
+	@FXML private Label label;
 	
 	@FXML
 	private void initialize() {
@@ -47,6 +52,7 @@ public class StoriaDatiPazienteController {
 
 		caricaDati();
 		
+		label.setFocusTraversable(true);
 		tipologia.getItems().addAll("Fattore Di Rischio", "Comorbidità", "Allergia");
 	}
 
@@ -108,6 +114,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void aggiungiFattoreComorbiditàAllergia(ActionEvent event) throws IOException { 
 		StoriaDatiPazienteResult result = tryCreateFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
@@ -123,6 +130,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
+
 	private StoriaDatiPazienteResult tryRemoveFattoreComorbiditàAllergie(String tipo, String nome) {
 		if(nome == null || nome.isBlank() || tipo == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -151,6 +159,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.SUCCESS;
 		}
 	}
+
 	@FXML
 	private void rimuoviFattoreComorbiditàAllergia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemoveFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
@@ -194,6 +203,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void aggiungiPatologia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryCreatePatologia(
@@ -214,6 +224,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
+
 	private StoriaDatiPazienteResult tryRemovePatologia(String nome, LocalDate dataInizio, String indicazioni) {
 		if(nome == null || nome.isBlank()) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -233,6 +244,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void rimuoviPatologia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemovePatologia(
@@ -282,6 +294,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void aggiungiTerapia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryCreateTerapiaConcomitante(
@@ -302,6 +315,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
+
 	private StoriaDatiPazienteResult tryRemoveTerapia(String nome, LocalDate dataInizio, LocalDate dataFine) {
 		if(nome == null || nome.isBlank() || dataInizio == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -317,6 +331,7 @@ public class StoriaDatiPazienteController {
 				dataFine,
 				u.getCf()
 			);
+
 		boolean ok = AdminService.eliminaTerapiaConcomitante(terapiaConcomitante);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
@@ -324,6 +339,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void rimuoviTerapia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemoveTerapia(

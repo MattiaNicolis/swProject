@@ -2,7 +2,6 @@ package application.controller;
 
 import java.io.IOException;
 
-
 import application.model.Utente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
@@ -16,8 +15,11 @@ import javafx.scene.control.TextField;
 
 public class LoginController {
 
+	// --- FIELD ---
 	@FXML private TextField cfField;
 	@FXML private PasswordField passwordField;
+
+	// --- LABEL ---
 	@FXML private Label firstLabel;
 	
 	@FXML
@@ -48,10 +50,8 @@ public class LoginController {
 		return LoginResult.WRONG_CREDENTIALS;
 	}
 
-
 	@FXML 
 	private void handleLogin(ActionEvent event) throws IOException {
-		
 		LoginResult result = tryLogin(cfField.getText(), passwordField.getText());
 
 		switch(result) {
