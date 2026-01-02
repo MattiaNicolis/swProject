@@ -1,6 +1,5 @@
 package application.model;
 
-
 public class Dato {
 
 	private String cf;
