@@ -1,51 +1,51 @@
 /* --- SFONDO PRINCIPALE --- */
 #mainPane {
-    /* PRIMA: #F5F5F5 (troppo luminoso) */
-    -fx-background-color: #E3E7ED; /* Grigio solido, non riflette la luce della LIM */
-    -fx-border-color: #1565C0;     /* Blu leggermente più scuro per definizione */
+    -fx-background-color: #E3E7ED;
+    -fx-border-color: #4A90E2;  
     -fx-border-width: 4pt;
 }
 
-/* --- PANNELLO DECORATIVO (Banda laterale o superiore) --- */
-#subPane {
-    -fx-background-color: #1565C0; /* Blu meno "neon", più professionale */
-    -fx-border-color: #E3E7ED;     /* Deve coincidere con il colore di #mainPane per continuità */
+#subPane, #stackPane {
+    -fx-background-color: #f0f4f8; 
+    -fx-border-color: #f0f4f8;    
     -fx-border-width: 4pt;
 }
 
 /* --- TITOLO GRANDE --- */
 #firstLabel {
-    /* I gradienti chiari si leggono male proiettati. Scuriamo i toni. */
     -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #1565C0, #0288D1);
-    
-    /* Nota: -fx-text-border-color non esiste in JavaFX standard, si usa -fx-stroke */
     -fx-stroke: transparent; 
-    
     -fx-text-alignment: center;
-    /* Ombra più scura per staccare il testo dallo sfondo */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 1, 1, 1);
     -fx-font-size: 78px;
     -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     -fx-font-weight: bold;
 }
 
+#secondLabel {
+    -fx-font-style: italic;
+    -fx-font-size: 15px;
+}
+
 /* --- CARD DI LOGIN --- */
 .card {
-    /* PRIMA: white */
-    -fx-background-color: #F7F9FC; /* "Off-white" per non abbagliare */
+    -fx-background-color: #F7F9FC;
     -fx-padding: 25px;
     -fx-spacing: 15px;
     -fx-alignment: center;
     -fx-background-radius: 15px;
-    /* Ombra più marcata per dare profondità sulla LIM piatta */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0, 0, 5);
+}
+
+#accediLabel {
+    -fx-text-fill: #777;
 }
 
 /* --- TITOLO DELLA CARD ("Accedi" o simili) --- */
 .card-title {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1565C0; /* Blu scuro per leggibilità massima */
+    -fx-text-fill: #4A90E2;
 }
 
 /* --- CAMPI DI TESTO --- */
@@ -54,17 +54,12 @@
     -fx-padding: 10px;
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
-    
-    /* Il bordo è CRUCIALE sulla LIM: scurito per renderlo visibile */
     -fx-border-color: #A0B0C0; 
-    
-    /* L'interno può rimanere bianco o quasi, per far capire che è editabile */
     -fx-background-color: #FFFFFF; 
 }
 
-/* Focus state: quando l'utente clicca sul campo */
 .input-field:focused {
-    -fx-border-color: #1565C0;
+    -fx-border-color: #4A90E2;
     -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(21, 101, 192, 0.2), 5, 0, 0, 0);
 }
@@ -73,7 +68,7 @@
 .login-button {
     -fx-pref-width: 220px;
     -fx-padding: 10px;
-    -fx-background-color: #1976D2; /* Blu materiale standard, meno acceso del #1e90ff */
+    -fx-background-color: #4A90E2; 
     -fx-background-radius: 6px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -81,6 +76,6 @@
 }
 
 .login-button:hover {
-    -fx-background-color: #1565C0; /* Effetto hover più evidente */
+    -fx-background-color: #4A90E2;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
 }
