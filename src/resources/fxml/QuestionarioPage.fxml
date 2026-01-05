@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.QuestionarioController">
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/QuestionarioPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.QuestionarioController">
    <children>
       <SplitPane dividerPositions="0.35" layoutX="200.0" layoutY="120.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -22,18 +22,18 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <Label text="Terapie da completare" textFill="#2c3e50">
+                        <Label fx:id="terapieDaCompletare" text="Terapie da completare">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label text="Seleziona un farmaco dalla lista:" textFill="#7f8c8d">
+                        <Label fx:id="rightSentence" text="Seleziona un farmaco dalla lista:">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </Label>
-                        <ListView fx:id="listaTerapie" prefHeight="200.0" prefWidth="424.0" VBox.vgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#switchToPazientePage" text="Indietro" />
+                        <ListView fx:id="listaTerapie" prefHeight="200.0" prefWidth="424.0" styleClass="modern-list-view" VBox.vgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#switchToPazientePage" prefHeight="30.0" prefWidth="118.0" styleClass="btn-back" text="⬅ Indietro" />
                      </children>
                   </VBox>
                </children>
@@ -41,7 +41,7 @@
             
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="lblPlaceholder" alignment="CENTER" text="Seleziona una terapia a sinistra per iniziare" textFill="#95a5a6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label fx:id="lblPlaceholder" alignment="CENTER" text="Seleziona una terapia a sinistra per iniziare" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -52,7 +52,7 @@
                         <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
                      </padding>
                      <children>
-                        <Label text="Dettagli Assunzione">
+                        <Label fx:id="dettagli" text="Dettagli Assunzione">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -61,32 +61,32 @@
                         <VBox spacing="5.0">
                            <children>
                               <Label text="Farmaco assunto:" />
-                              <TextField fx:id="nomeFarmacoField" style="-fx-background-color: #ecf0f1; -fx-font-weight: bold;" />
+                              <TextField fx:id="nomeFarmacoField" styleClass="compilazione" />
                            </children>
                         </VBox>
                         
                         <VBox spacing="5.0">
                            <children>
                               <Label text="Dosi:" />
-                              <TextField fx:id="doseField" style="-fx-background-color: #ecf0f1;" />
+                              <TextField fx:id="doseField" styleClass="compilazione" />
                            </children>
                         </VBox>
 
                         <VBox spacing="5.0">
                            <children>
                               <Label text="Quantità per dose:" />
-                              <TextField fx:id="quantitàField" promptText="Es. 1 compressa" style="-fx-background-color: #ecf0f1;" />
+                              <TextField fx:id="quantitàField" promptText="Es. 1 compressa" styleClass="compilazione" />
                            </children>
                         </VBox>
 
                         <VBox spacing="5.0" VBox.vgrow="ALWAYS">
                            <children>
                               <Label text="Eventuali Sintomi o Note:" />
-                              <TextArea fx:id="sintomiArea" prefHeight="100.0" promptText="Scrivi qui se hai avuto effetti collaterali..." wrapText="true" style="-fx-background-color: #ecf0f1;" />
+                              <TextArea fx:id="sintomiArea" prefHeight="100.0" promptText="Scrivi qui se hai avuto effetti collaterali..." styleClass="compilazione" wrapText="true" />
                            </children>
                         </VBox>
 
-                        <Button mnemonicParsing="false" onAction="#handleQuestionario" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;" text="CONFERMA E SALVA">
+                        <Button fx:id="conferma" mnemonicParsing="false" onAction="#handleQuestionario" prefHeight="40.0" prefWidth="150.0" text="CONFERMA E SALVA">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>

@@ -15,14 +15,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.StoriaDatiPazienteController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" stylesheets="@../css/StoriaDatiPaziente.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.StoriaDatiPazienteController">
 
     <top>
-        <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
-            <Label text="⚙️ Gestione Dati Storici Paziente" BorderPane.alignment="CENTER" style="-fx-text-fill: #64B5F6; -fx-font-weight: bold;">
-                <font>
-                    <Font size="32.0" />
-                </font>
+        <VBox alignment="CENTER" styleClass="topBox">
+            <Label fx:id="label" styleClass="topLabel" text="Gestione Dati Storici Paziente" BorderPane.alignment="CENTER">
                 <padding>
                     <Insets bottom="10.0" top="15.0" />
                 </padding>
@@ -36,9 +33,9 @@
                 <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
             </padding>
             
-            <Label text="Aggiungi o Rimuovi elementi alla storia clinica del paziente" style="-fx-font-size: 16px; -fx-text-fill: #555;" />
+            <Label styleClass="label2" text="Aggiungi o Rimuovi elementi alla storia clinica del paziente" />
 
-            <GridPane hgap="30.0" vgap="20.0" alignment="TOP_CENTER">
+            <GridPane alignment="TOP_CENTER" hgap="30.0" vgap="20.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" /> <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" /> <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" /> </columnConstraints>
                 <rowConstraints>
@@ -46,35 +43,35 @@
                 </rowConstraints>
                 
                 
-                <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0.0, 0, 2);" GridPane.columnIndex="0">
-                    <Label text="🏥 Patologie Pregresse" style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #0078d4;" />
-                    <TextField fx:id="nomePatologiaField" promptText="Nome patologia" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" />
-                    <DatePicker fx:id="dataPatologiaField" promptText="Data di inizio" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" />
-                    <TextArea fx:id="indicazioniPatologiaArea" prefHeight="70.0" promptText="Stato/Indicazioni" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" wrapText="true" />
-                    <HBox spacing="10.0" alignment="CENTER_LEFT">
-                        <Button onAction="#aggiungiPatologia" text="➕ Aggiungi" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;" />
-                        <Button onAction="#rimuoviPatologia" text="❌ Rimuovi" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;" />
+                <VBox spacing="15.0" styleClass="centerBox" GridPane.columnIndex="0">
+                    <Label styleClass="title" text="Patologie Pregresse" />
+                    <TextField fx:id="nomePatologiaField" promptText="Nome patologia" styleClass="components" />
+                    <DatePicker fx:id="dataPatologiaField" promptText="Data di inizio" styleClass="components" />
+                    <TextArea fx:id="indicazioniPatologiaArea" prefHeight="70.0" promptText="Stato/Indicazioni" styleClass="components" wrapText="true" />
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Button onAction="#aggiungiPatologia" styleClass="add" text="➕ Aggiungi" />
+                        <Button onAction="#rimuoviPatologia" styleClass="remove" text="❌ Rimuovi" />
                     </HBox>
                 </VBox>
                 
-                <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0.0, 0, 2);" GridPane.columnIndex="1">
-                    <Label text="⚠️ Fattori, Comorbidità &amp; Allergie" style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #A00;" />
-                    <ComboBox fx:id="tipologia" prefWidth="1.7976931348623157E308" promptText="Tipologia (Fattore, Comorbidità, Allergia)" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" visibleRowCount="3" />
-                    <TextField fx:id="nomeField" promptText="Nome (Es. Fumo, Asma, Ipertensione)" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" />
-                    <VBox prefHeight="70.0" /> <HBox spacing="10.0" alignment="CENTER_LEFT">
-                        <Button onAction="#aggiungiFattoreComorbiditàAllergia" text="➕ Aggiungi" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;" />
-                        <Button onAction="#rimuoviFattoreComorbiditàAllergia" text="❌ Rimuovi" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;" />
+                <VBox spacing="15.0" styleClass="centerBox" GridPane.columnIndex="1">
+                    <Label styleClass="title" text="Fattori, Comorbidità &amp; Allergie" />
+                    <ComboBox fx:id="tipologia" prefWidth="Infinity" promptText="Tipologia (Fattore, Comorbidità, Allergia)" styleClass="components" visibleRowCount="3" />
+                    <TextField fx:id="nomeField" promptText="Nome (Es. Fumo, Asma, Ipertensione)" styleClass="components" />
+                    <VBox prefHeight="70.0" /> <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Button onAction="#aggiungiFattoreComorbiditàAllergia" styleClass="add" text="➕ Aggiungi" />
+                        <Button onAction="#rimuoviFattoreComorbiditàAllergia" styleClass="remove" text="❌ Rimuovi" />
                     </HBox>
                 </VBox>
 
-                <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0.0, 0, 2);" GridPane.columnIndex="2">
-                    <Label text="💊 Terapie Concomitanti" style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #4CAF50;" />
-                    <TextField fx:id="nomeTerapiaField" promptText="Nome farmaco/trattamento" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" />
-                    <DatePicker fx:id="dataInizioTerapiaField" promptText="Data di inizio" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" />
-                    <DatePicker fx:id="dataFineTerapiaField" promptText="Data di fine (Opzionale)" style="-fx-padding: 8; -fx-border-color: #ccc; -fx-border-radius: 4;" />
-                    <HBox spacing="10.0" alignment="CENTER_LEFT">
-                        <Button onAction="#aggiungiTerapia" text="➕ Aggiungi" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;" />
-                        <Button onAction="#rimuoviTerapia" text="❌ Rimuovi" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;" />
+                <VBox spacing="15.0" styleClass="centerBox" GridPane.columnIndex="2">
+                    <Label styleClass="title" text="Terapie Concomitanti" />
+                    <TextField fx:id="nomeTerapiaField" promptText="Nome farmaco/trattamento" styleClass="components" />
+                    <DatePicker fx:id="dataInizioTerapiaField" promptText="Data di inizio" styleClass="components" />
+                    <DatePicker fx:id="dataFineTerapiaField" promptText="Data di fine (Opzionale)" styleClass="components" />
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Button onAction="#aggiungiTerapia" styleClass="add" text="➕ Aggiungi" />
+                        <Button onAction="#rimuoviTerapia" styleClass="remove" text="❌ Rimuovi" />
                     </HBox>
                 </VBox>
                 
@@ -83,9 +80,7 @@
     </center>
 
     <bottom>
-        <Button onAction="#switchToMostraDatiPaziente" text="⬅ Salva e Torna ai Dati Paziente" 
-                style="-fx-background-color: #64B5F6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 4;" 
-                BorderPane.alignment="CENTER">
+        <Button onAction="#switchToMostraDatiPaziente" styleClass="btn-back" text="⬅ Salva e Torna ai Dati Paziente" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="30.0" top="20.0" />
             </BorderPane.margin>

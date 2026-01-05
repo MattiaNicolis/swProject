@@ -8,62 +8,61 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.TerapiaConcomitanteController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/TerapiaConcomitante.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.TerapiaConcomitanteController">
     
     <top>
-        <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
-            <Label text="💊 Dettagli Terapia Concomitante" BorderPane.alignment="CENTER" style="-fx-text-fill: #4CAF50; -fx-font-weight: bold;">
-                <font>
-                    <Font size="32.0" />
-                </font>
+        <VBox alignment="CENTER" styleClass="topBox">
+            <Label styleClass="topLabel" text="Dettagli Terapia Concomitante" BorderPane.alignment="CENTER">
                 <padding>
-                    <Insets bottom="10.0" top="15.0" />
+                    <Insets bottom="20.0" top="20.0" />
                 </padding>
             </Label>
         </VBox>
     </top>
     
     <center>
-        <VBox alignment="CENTER" spacing="20.0">
+        <VBox alignment="TOP_CENTER" spacing="20.0">
             <padding>
                 <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
             </padding>
             
-            <GridPane hgap="20.0" vgap="20.0" maxWidth="650.0" 
-                      style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.0, 0, 4);">
+            <GridPane hgap="20.0" maxWidth="700.0" styleClass="gridPane" vgap="15.0">
                 
                 <columnConstraints>
-                    <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="150.0" />
-                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" prefWidth="500.0" />
+                    <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="150.0" prefWidth="180.0" />
+                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
                 </columnConstraints>
+                
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" /> </rowConstraints>
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                </rowConstraints>
                 
-                <Label text="Nome farmaco/trattamento:" style="-fx-font-weight: bold; -fx-text-fill: #333;" />
-                <Label fx:id="nomeLabel" GridPane.columnIndex="1" style="-fx-font-size: 14px; -fx-font-weight: bold;" wrapText="true" />
+                <Label styleClass="form-label" text="Nome farmaco:" />
+                <Label fx:id="nomeLabel" styleClass="form-value-bold" wrapText="true" GridPane.columnIndex="1" />
                 
-                <Label text="Data di inizio:" GridPane.rowIndex="1" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
-                <Label fx:id="dataInizioLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 14px;" wrapText="true" />
+                <Label styleClass="form-label" text="Data di inizio:" GridPane.rowIndex="1" />
+                <Label fx:id="dataInizioLabel" styleClass="form-value" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 
-                <Label text="Data di fine (Opz.):" GridPane.rowIndex="2" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
-                <Label fx:id="dataFineLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-size: 14px;" wrapText="true" />
+                <Label styleClass="form-label" text="Data di fine (Opz.):" GridPane.rowIndex="2" />
+                <Label fx:id="dataFineLabel" styleClass="form-value" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                <Label text="Registrato da:" GridPane.rowIndex="3" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
-                <Label fx:id="modificatoLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-font-size: 14px; -fx-font-style: italic;" wrapText="true" />
+                <Label styleClass="form-label" text="Registrato da:" GridPane.rowIndex="3" />
+                <Label fx:id="modificatoLabel" styleClass="form-value-italic" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 
             </GridPane>
         </VBox>
     </center>
     
     <bottom>
-        <Button onAction="#switchToMostraDatiPaziente" text="⬅ Indietro" 
-                style="-fx-background-color: #ccc; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 4;" 
-                BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-                <Insets bottom="20.0" top="10.0" />
-            </BorderPane.margin>
-        </Button>
+        <VBox alignment="CENTER">
+            <padding>
+                <Insets bottom="30.0" top="10.0" />
+            </padding>
+            <Button onAction="#switchToMostraDatiPaziente" styleClass="btn-back" text="⬅ Indietro" />
+        </VBox>
     </bottom>
 </BorderPane>

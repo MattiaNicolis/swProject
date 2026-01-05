@@ -18,35 +18,28 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #f4f6f8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PazienteController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/PazientePage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PazienteController">
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); -fx-padding: 15 30;">
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="top-bar">
             <children>
                 <VBox>
-                    <Label text="Portale Paziente" textFill="#888888">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </Label>
-                    <Label fx:id="welcomeLabel" text="Bentornato, Paziente">
-                        <font>
-                            <Font name="System Bold" size="24.0" />
-                        </font>
-                    </Label>
+                    <Label styleClass="brand-label" text="Portale Paziente" />
+                    <Label fx:id="welcomeLabel" text="Bentornato, Paziente" />
                 </VBox>
                 
-                <Region HBox.hgrow="ALWAYS" /> <HBox alignment="CENTER" spacing="10.0">
-                    <Button fx:id="mailButton" onAction="#switchToMailPage" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;" text="✉️ Mail" textFill="#333333">
+                <Region HBox.hgrow="ALWAYS" /> 
+                
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Button fx:id="mailButton" onAction="#switchToMailPage" styleClass="btn-action" text="Mail">
                         <padding><Insets bottom="8" left="15" right="15" top="8" /></padding>
                     </Button>
-                    <Button fx:id="questButton" onAction="#switchToQuestionarioPage" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5; -fx-cursor: hand;" text="📝 Questionari" textFill="#333333">
+                    <Button fx:id="questButton" onAction="#switchToQuestionarioPage" styleClass="btn-action" text="Questionari">
                         <padding><Insets bottom="8" left="15" right="15" top="8" /></padding>
                     </Button>
                     <Separator orientation="VERTICAL" />
-                    <Button onAction="#switchToLogin" style="-fx-background-color: #ffebee; -fx-text-fill: #d32f2f; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="🚪 Logout">
+                    <Button onAction="#switchToLogin" styleClass="btn-logout" text="🚪 Logout">
                         <padding><Insets bottom="8" left="15" right="15" top="8" /></padding>
                     </Button>
                 </HBox>
@@ -55,103 +48,81 @@
     </top>
 
     <center>
-        <VBox prefHeight="448.0" prefWidth="1280.0" spacing="20.0" style="-fx-padding: 30;">
+        <VBox prefHeight="474.0" prefWidth="1280.0" spacing="20.0" styleClass="content-area">
             <children>
-            <ScrollPane prefHeight="390.0" prefWidth="1220.0">
+            <ScrollPane fitToWidth="true" prefHeight="390.0" prefWidth="1219.0" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox prefHeight="500.0">
+                  <VBox spacing="20.0">
                      <children>
-                        <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2); -fx-padding: 20;" VBox.vgrow="ALWAYS">
+                         
+                        <VBox styleClass="card" VBox.vgrow="ALWAYS">
                             <children>
                                 <HBox alignment="CENTER_LEFT" spacing="15.0">
-                                    <Label text="📉 Andamento Glicemico" textFill="#333333">
-                                        <font>
-                                    <Font name="System Bold" size="18.0" />
-                                </font>
-                                    </Label>
+                                    <Label styleClass="section-title" text="📉 Andamento Glicemico" />
                                     <Region HBox.hgrow="ALWAYS" />
-                                    
-                                                <HBox spacing="0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 5;">
-                                        <Button fx:id="oggiGlicemia" style="-fx-background-color: transparent; -fx-text-fill: #555; -fx-cursor: hand;" text="Oggi" />
+                                    <HBox spacing="0">
+                                        <Button fx:id="oggiGlicemia" styleClass="btn-filter" text="Oggi" />
                                         <Separator orientation="VERTICAL" />
-                                        <Button fx:id="settimanaGlicemia" style="-fx-background-color: transparent; -fx-text-fill: #555; -fx-cursor: hand;" text="7 Giorni" />
+                                        <Button fx:id="settimanaGlicemia" styleClass="btn-filter" text="7 Giorni" />
                                         <Separator orientation="VERTICAL" />
-                                        <Button fx:id="meseGlicemia" style="-fx-background-color: transparent; -fx-text-fill: #555; -fx-cursor: hand;" text="30 Giorni" />
+                                        <Button fx:id="meseGlicemia" styleClass="btn-filter" text="30 Giorni" />
                                     </HBox>
                                 </HBox>
-                                
-                                <Separator style="-fx-opacity: 0.5; -fx-padding: 10 0;" />
-        
-                                <LineChart fx:id="graficoGlicemia" legendVisible="false" VBox.vgrow="ALWAYS">
+                                <Separator />
+                                <LineChart fx:id="graficoGlicemia" legendVisible="false" VBox.vgrow="ALWAYS" prefHeight="350">
                                     <xAxis>
-                                        <CategoryAxis label="Data / Ora" side="BOTTOM" tickLabelFill="#666" />
+                                        <CategoryAxis label="Data / Ora" side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis label="mg/dL" side="LEFT" tickLabelFill="#666" />
+                                        <NumberAxis label="mg/dL" side="LEFT" />
                                     </yAxis>
                                 </LineChart>
                             </children>
                         </VBox>
-                        <Separator prefHeight="10.0" prefWidth="1205.0" />
-            
-                            <HBox spacing="20.0">
-                                <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1); -fx-padding: 15;" HBox.hgrow="ALWAYS">
-                                    <Label text="➕ Nuova Misurazione:" textFill="#2e7d32">
-                                        <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                                    </Label>
-                                    <TextField fx:id="valoreField" prefWidth="100.0" promptText="Valore" style="-fx-background-radius: 4;" />
-                                    <ComboBox fx:id="indicazioniBox" prefWidth="130.0" promptText="Momento" style="-fx-background-radius: 4;" />
-                                    <HBox alignment="CENTER" spacing="5">
-                                        <TextField fx:id="oraField" alignment="CENTER" prefWidth="50.0" promptText="HH" style="-fx-background-radius: 4;" />
-                                        <Label text=":" />
-                                        <TextField fx:id="minutiField" alignment="CENTER" prefWidth="50.0" promptText="MM" style="-fx-background-radius: 4;" />
-                                    </HBox>
-                                    <Region HBox.hgrow="ALWAYS" />
-                                    <Button onAction="#handleGlicemia" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Registra Valore">
-                                         <padding>
-                                    <Insets bottom="8" left="20" right="20" top="8" />
-                                 </padding>
-                                    </Button>
+                        
+                        <HBox spacing="20.0">
+                            <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                <Label styleClass="section-title" text="➕ Nuova Misurazione:" />
+                                <TextField fx:id="valoreField" prefWidth="100.0" promptText="Valore" />
+                                <ComboBox fx:id="indicazioniBox" prefWidth="130.0" promptText="Momento" />
+                                <HBox alignment="CENTER" spacing="5">
+                                    <TextField fx:id="oraField" alignment="CENTER" prefWidth="50.0" promptText="HH" />
+                                    <Label text=":" />
+                                    <TextField fx:id="minutiField" alignment="CENTER" prefWidth="50.0" promptText="MM" />
                                 </HBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button onAction="#handleGlicemia" styleClass="btn-success" text="Registra Valore">
+                                     <padding><Insets bottom="8" left="20" right="20" top="8" /></padding>
+                                </Button>
                             </HBox>
-                        <Separator prefHeight="10.0" prefWidth="1205.0" />
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        </HBox>
+                        
+                        <VBox styleClass="card">
                            <children>
-                              <Label text="Andamento peso corporeo">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
+                              <Label styleClass="section-title" text="Andamento peso corporeo" />
                               <Separator prefWidth="200.0" />
-                              <LineChart fx:id="graficoPeso">
+                              <LineChart fx:id="graficoPeso" legendVisible="false" prefHeight="350">
                                 <xAxis>
-                                    <CategoryAxis label="Data" side="BOTTOM" tickLabelFill="#666" />
+                                    <CategoryAxis label="Data" side="BOTTOM" />
                                 </xAxis>
                                 <yAxis>
-                                    <NumberAxis label="Kg" side="LEFT" tickLabelFill="#666" />
+                                    <NumberAxis label="Kg" side="LEFT" />
                                 </yAxis>
                               </LineChart>
                            </children>
                         </VBox>
-                        <Separator prefWidth="200.0" />
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <HBox prefHeight="25.0" prefWidth="1210.0">
-                                 <children>
-                                    <Label prefHeight="20.0" prefWidth="181.0" text="+ Nuova Misurazione:">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="pesoField" prefHeight="25.0" prefWidth="177.0" promptText="Valore" />
-                                    <Region prefHeight="25.0" prefWidth="680.0" />
-                                    <Button mnemonicParsing="false" onAction="#handlePeso" prefHeight="25.0" prefWidth="143.0" text="Registra Valore" />
-                                 </children>
-                              </HBox>
-                           </children>
+                        
+                        <HBox spacing="20.0">
+                            <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                <Label styleClass="section-title" text="➕ Nuova Misurazione:" />
+                                <TextField fx:id="pesoField" prefWidth="100.0" promptText="Valore (Kg)" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button onAction="#handlePeso" styleClass="btn-success" text="Registra Valore">
+                                    <padding><Insets bottom="8" left="20" right="20" top="8" /></padding>
+                                </Button>
+                            </HBox>
                         </HBox>
+
                      </children>
                   </VBox>
                </content>
@@ -161,58 +132,56 @@
     </center>
 
     <bottom>
-        <HBox prefHeight="267.0" prefWidth="1280.0" spacing="20.0" style="-fx-padding: 0 30 30 30;">
+        <HBox fx:id="hBoxBottom" prefHeight="267.0" prefWidth="1280.0" spacing="20.0">
             
-            <VBox prefWidth="350.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1); -fx-padding: 20;">
+            <VBox prefWidth="350.0" styleClass="card">
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
                     <VBox alignment="CENTER_LEFT" spacing="2">
-                        <Label fx:id="nomeLabel" text="Nome Cognome" textFill="#333">
-                            <font><Font name="System Bold" size="18.0" /></font>
-                        </Label>
-                        <Label text="Profilo Paziente" textFill="#888" />
+                        <Label fx:id="nomeLabel" text="Nome Cognome" />
+                        <Label styleClass="profile-label" text="Profilo Paziente" />
                     </VBox>
                 </HBox>
-                <Separator style="-fx-padding: 15 0;" />
+                <Separator />
                 <GridPane hgap="10.0" vgap="10.0">
                     <columnConstraints>
-                        <ColumnConstraints maxWidth="101.0" minWidth="90.0" prefWidth="101.0" />
+                        <ColumnConstraints maxWidth="110.0" minWidth="90.0" prefWidth="110.0" />
                         <ColumnConstraints hgrow="ALWAYS" maxWidth="205.0" minWidth="199.0" prefWidth="199.0" />
                     </columnConstraints>
-                    <Label text="Data di nascita:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label fx:id="ddnLabel" style="-fx-font-weight: bold;" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     
-                    <Label text="Sesso:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Label fx:id="sessoLabel" style="-fx-font-weight: bold;" text="--" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label styleClass="profile-label" text="Data di nascita:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="ddnLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     
-                    <Label text="Medico:" textFill="#777" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label fx:id="diabetologoLabel" style="-fx-font-weight: bold;" text="--" textFill="#2196f3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-               <Label text="Luogo di nascita:" />
-               <Label fx:id="luogoLabel" text="--" GridPane.columnIndex="1" />
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <Label styleClass="profile-label" text="Sesso:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="sessoLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    
+                    <Label styleClass="profile-label" text="Medico:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="diabetologoLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    
+                    <Label styleClass="profile-label" text="Luogo di nascita:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="luogoLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
                 </GridPane>
             </VBox>
 
-            <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1); -fx-padding: 20;" HBox.hgrow="ALWAYS">
+            <VBox spacing="10.0" styleClass="card" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="💊 Terapie Attive" textFill="#333">
-                        <font><Font name="System Bold" size="16.0" /></font>
-                    </Label>
+                    <Label styleClass="section-title" text="💊 Terapie Attive" />
                 </HBox>
-                <ListView fx:id="terapieCorrenti" style="-fx-background-color: transparent; -fx-border-color: #eee; -fx-border-radius: 5;" VBox.vgrow="ALWAYS" />
+                <ListView fx:id="terapieCorrenti" styleClass="modern-list-view" VBox.vgrow="ALWAYS" />
             </VBox>
 
-            <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1); -fx-padding: 20;" HBox.hgrow="ALWAYS">
+            <VBox spacing="10.0" styleClass="card" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="📋 Storico Questionari" textFill="#333">
-                        <font><Font name="System Bold" size="16.0" /></font>
-                    </Label>
+                    <Label styleClass="section-title" text="📋 Storico Questionari" />
                 </HBox>
-                <ListView fx:id="listaQuestionari" style="-fx-background-color: transparent; -fx-border-color: #eee; -fx-border-radius: 5;" VBox.vgrow="ALWAYS" />
+                <ListView fx:id="listaQuestionari" styleClass="modern-list-view" VBox.vgrow="ALWAYS" />
             </VBox>
         </HBox>
     </bottom>

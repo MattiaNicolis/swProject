@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="main-background" stylesheets="@../css/MailPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MailController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="main-background" stylesheets="@../css/MailPage.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MailController">
 
     <left>
         <VBox prefWidth="250.0" spacing="10" styleClass="sidebar">
@@ -21,9 +21,7 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
             
-            <Label styleClass="app-title" text="MESSAGGISTICA" />
-            
-            <Button maxWidth="1.7976931348623157E308" onAction="#showCompose" styleClass="btn-compose" text="✍️  Nuova Email" />
+            <Button maxWidth="Infinity" onAction="#showCompose" styleClass="btn-compose" text="✍ Nuova email" />
             
             <Separator prefWidth="200.0">
                 <VBox.margin>
@@ -31,21 +29,21 @@
                 </VBox.margin>
             </Separator>
             
-            <Label styleClass="sidebar-section-label" text="CARTELLE" />
+            <Label styleClass="sidebar-section-label" text="CATEGORIE" />
             
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-item">
-                <Button maxWidth="1.7976931348623157E308" onAction="#showMailRicevute" styleClass="btn-nav" text="📥  Inbox" HBox.hgrow="ALWAYS" />
+                <Button maxWidth="Infinity" onAction="#showMailRicevute" styleClass="btn-nav" text="📫 Posta arrivata" HBox.hgrow="ALWAYS" />
                 <Label fx:id="mailNonLette" styleClass="badge" text="3" />
             </HBox>
 
-            <Button maxWidth="1.7976931348623157E308" onAction="#showMailInviate" styleClass="btn-nav" text="📤  Inviate" />
+            <Button maxWidth="Infinity" onAction="#showMailInviate" styleClass="btn-nav" text="📨 Posta inviata" />
          <Separator prefWidth="200.0" />
-         <Label fx:id="labelDiabetologo" text="Il tuo diabetologo:" />
+         <Label fx:id="labelDiabetologo" styleClass="sidebar-section-label" text="MAIL DIABETOLOGO" />
          <Label fx:id="mailDiabetologo" text="mail@diabetologo" />
             
             <Region VBox.vgrow="ALWAYS" /> 
             
-            <Button fx:id="bottoneIndietro" maxWidth="1.7976931348623157E308" onAction="#indietro" styleClass="btn-back" text="⬅ Torna alla Home" />
+            <Button fx:id="bottoneIndietro" maxWidth="Infinity" onAction="#indietro" styleClass="btn-back" text="⬅ Torna alla Home" />
         </VBox>
     </left>
 
@@ -64,12 +62,12 @@
     </center>
 
     <right>
-        <StackPane prefWidth="600.0" style="-fx-background-color: white;">
+        <StackPane fx:id="stackPaneRight" prefWidth="600.0">
             <VBox fx:id="letturaPanel" spacing="20.0" styleClass="content-panel">
                 <padding>
                     <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                 </padding>
-                <Label alignment="CENTER" maxHeight="Infinity" styleClass="placeholder-text" text="Seleziona un'email per leggerla" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
+                <Label alignment="CENTER" maxHeight="Infinity" styleClass="placeholder-text" text="Clicca Nuova Email per scrivere un nuovo messaggio" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
             </VBox>
 
             <VBox fx:id="scriviPanel" spacing="15.0" styleClass="content-panel" visible="false">
@@ -81,7 +79,7 @@
                 
                 <VBox spacing="5.0">
                     <Label styleClass="field-label" text="A:" />
-                    <TextField fx:id="destinatarioField" promptText="indirizzo@email.com" styleClass="input-field" />
+                    <TextField fx:id="destinatarioField" promptText="nome.cognome@glicocare.it" styleClass="input-field" />
                 </VBox>
                 
                 <VBox spacing="5.0">
@@ -93,7 +91,7 @@
                 
                 <HBox alignment="CENTER_RIGHT" spacing="15.0">
                     <Button onAction="#hideCompose" styleClass="btn-secondary" text="Annulla" />
-                    <Button onAction="#handleMail" styleClass="btn-primary" text="Invia Messaggio ✈️" />
+                    <Button onAction="#handleMail" styleClass="btn-primary" text="Invia" />
                 </HBox>
             </VBox>
         </StackPane>
