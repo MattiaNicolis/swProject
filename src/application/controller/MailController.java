@@ -262,15 +262,9 @@ public class MailController {
 		showCompose();
     }
 
-	private void clearAll() {
-		mailInviate.clear();
-		mailRicevute.clear();
-	}
-
 	// NAVIGAZIONE
 	@FXML
 	private void indietro(ActionEvent event) throws IOException {
-		clearAll();
 		if (u.isDiabetologo()) {
 			Navigator.getInstance().switchToDiabetologoPage(event);
         } else if (u.isPaziente()) {

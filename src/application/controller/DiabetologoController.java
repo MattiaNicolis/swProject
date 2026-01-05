@@ -36,7 +36,6 @@ public class DiabetologoController {
 	// --- VARIABILI LOCALI ---
 	private Utente d;
 	private List<Glicemia> glicemia = new ArrayList<>();
-	private List<Terapia> terapie = new ArrayList<>();
 	private List<Questionario> questNonConformi = new ArrayList<>();
 	private List<Mail> mailRicevute = new ArrayList<>();
 	private List<Utente> pazienti = new ArrayList<>();
@@ -264,25 +263,16 @@ public class DiabetologoController {
 			}
 		});
 	}
-		
-	private void clearAll() {
-		glicemia.clear();
-		terapie.clear();
-		questNonConformi.clear();
-		mailRicevute.clear();
-	}
 
 	// NAVIGAZIONE
 	@FXML
 	private void switchToLogin(ActionEvent event) throws IOException {
-		clearAll();
 		Sessione.getInstance().logout();
 		Navigator.getInstance().switchToLogin(event);
 	}
 	
 	@FXML
 	private void switchToMailPage(ActionEvent event) throws IOException {
-		clearAll();
 		Navigator.getInstance().switchToMailPage(event);
 	}
 }

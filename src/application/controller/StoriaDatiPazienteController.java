@@ -360,20 +360,10 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-	
-	// SVUOTA LISTE
-	private void clearAll() {
-		terapieConcomitanti.clear();
-		patologie.clear();
-		fattori.clear();
-		comorbidità.clear();
-		allergie.clear();
-	}
 
 	// NAVIGAZIONE
 	@FXML
 	private void switchToMostraDatiPaziente(ActionEvent event) throws IOException {
-		clearAll();
 		Navigator.getInstance().switchToMostraDatiPaziente(event);
 	}
 }

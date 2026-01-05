@@ -465,32 +465,20 @@ public class PazienteController {
 		}
 	}
 
-	// SVUOTA LISTE
-	private void clearAll() {
-		glicemia.clear();
-		terapie.clear();
-		questionari.clear();
-		mailRicevute.clear();
-		peso.clear();
-	}
-
 	// NAVIGAZIONE
 	@FXML
 	private void switchToLogin(ActionEvent event) throws IOException {
-		clearAll();
 		Sessione.getInstance().logout();
 		Navigator.getInstance().switchToLogin(event);
 	}
 	
 	@FXML
 	private void switchToMailPage(ActionEvent event) throws IOException {
-		clearAll();
 		Navigator.getInstance().switchToMailPage(event);
 	}
 	
 	@FXML
 	private void switchToQuestionarioPage(ActionEvent event) throws IOException {
-		clearAll();
 		Navigator.getInstance().switchToQuestionarioPage(event);
 	}
 }

@@ -147,7 +147,6 @@ public class MostraDatiPazienteController {
 			if(selectedTerapia != null) {
 				Sessione.getInstance().setTerapiaSelezionata(selectedTerapia);
 				try {
-					clearAll();
 					Navigator.getInstance().switchToMostraDettagliTerapia(e);
 				} catch (IOException ev) {
 					ev.printStackTrace();
@@ -324,36 +323,20 @@ public class MostraDatiPazienteController {
 		}
 	}
 	
-	// SVUOTA LISTE
-	private void clearAll() {
-		terapie.clear();
-		glicemia.clear();
-		questionari.clear();
-		fattori.clear();
-		comorbidità.clear();
-		allergie.clear();
-		patologie.clear();
-		terapieConcomitanti.clear();
-		peso.clear();
-	}
-
 	// NAVIGAZIONE
 	@FXML
 	private void switchToDiabetologoPage(ActionEvent event) throws IOException {
-		//clearAll();
 		Sessione.getInstance().setPazienteSelezionato(null);
 		Navigator.getInstance().switchToDiabetologoPage(event);
 	}
 	
 	@FXML
 	private void switchToNuovaTerapia(ActionEvent event) throws IOException {
-		//clearAll();
 		Navigator.getInstance().switchToTerapia(event);
 	}
 	
 	@FXML
 	private void switchToStoriaDatiPaziente(ActionEvent event) throws IOException {
-		//clearAll();
 		Navigator.getInstance().switchToStoriaDatiPaziente(event);
 	}
 }
