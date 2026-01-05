@@ -1,0 +1,63 @@
+/* --- IMPOSTAZIONI GLOBALI --- */
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica", sans-serif;
+    -fx-background-color: #E0E5E9;
+}
+
+/* --- HEADER --- */
+.topBox {
+    -fx-background-color: white; 
+    -fx-border-color: #E0E0E0; 
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0.0, 0, 1);
+}
+
+.topLabel {
+    -fx-text-fill: #4A90E2;
+    -fx-font-weight: bold;
+    -fx-font-size: 32px; 
+}
+
+/* --- CARD CENTRALE --- */
+.gridPane {
+    -fx-background-color: white; 
+    -fx-padding: 40; 
+    -fx-background-radius: 8; 
+    -fx-border-radius: 8; 
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0.0, 0, 5);
+}
+
+.form-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold; 
+    -fx-text-fill: #7F8C8D; 
+}
+
+/* --- VALORI DEL FORM --- */
+.form-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2C3E50;
+}
+
+.form-value-bold {
+    -fx-font-size: 14px; 
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A90E2; 
+}
+
+.form-value-italic {
+    -fx-font-size: 14px; 
+    -fx-font-style: italic;
+    -fx-text-fill: #95A5A6;
+}
+
+/* --- BOTTONE INDIETRO --- */
+.btn-back {
+    -fx-background-color: #ccc;
+    -fx-text-fill: #333;
+    -fx-padding: 8 15; 
+    -fx-background-radius: 4;
+}
+.btn-back:hover {
+    -fx-background-color: #bbb;
+}

@@ -1,0 +1,58 @@
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica", sans-serif;
+    -fx-background-color: #E0E5E9; 
+}
+
+#terapieDaCompletare {
+    -fx-text-fill: #2c3e50;
+}
+
+#rightSentence {
+    -fx-text-fill: #7f8c8d;
+}
+
+#lblPlaceholder {
+    -fx-text-fill: #95a5a6;
+}
+
+.compilazione {
+    -fx-background-color: #ecf0f1;
+}
+
+/* --- LIST VIEW --- */
+.modern-list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #D1D9E0;
+    -fx-border-radius: 4px;
+}
+.modern-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8px;
+    -fx-text-fill: #333;
+    -fx-border-color: transparent transparent #EEE transparent;
+}
+.modern-list-view .list-cell:filled:selected, 
+.modern-list-view .list-cell:filled:hover {
+    -fx-background-color: #D6EAF8;
+    -fx-text-fill: #4A90E2;
+}
+
+#dettagli {
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+#conferma {
+    -fx-background-color: #4A90E2; 
+    -fx-text-fill: white; 
+    -fx-cursor: hand;
+}
+
+/* BOTTONE INDIETRO */
+.btn-back {
+    -fx-background-color: #ccc;
+    -fx-text-fill: #333;
+}
+.btn-back:hover {
+    -fx-background-color: #bbb;
+}

@@ -1,0 +1,147 @@
+
+/* --- IMPOSTAZIONI GLOBALI --- */
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica", sans-serif;
+    -fx-background-color: #E0E5E9;
+}
+
+.scroll-pane, .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- TOP BAR --- */
+.top-bar {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-padding: 15 30;
+    -fx-border-color: #D1D9E0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.page-title {
+    -fx-text-fill: #4A90E2; 
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+}
+
+/* --- SIDEBAR --- */
+.sidebar-container {
+    -fx-background-color: #F7F9FC;
+    -fx-border-color: #D1D9E0;
+    -fx-border-width: 0 0 0 1;
+    -fx-padding: 20;
+}
+
+/* --- CARDS (CONTENITORI) --- */
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-padding: 15px;
+}
+
+.section-title {
+    -fx-text-fill: #333;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* --- PULSANTI --- */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8 15;
+}
+
+.btn-action, .btn-info {
+    -fx-background-color: #4A90E2;
+    -fx-text-fill: white;
+}
+.btn-action:hover, .btn-info:hover {
+    -fx-background-color: #0063B1;
+}
+
+.btn-back {
+    -fx-background-color: #ccc;
+    -fx-text-fill: #333;
+}
+.btn-back:hover {
+    -fx-background-color: #bbb;
+}
+
+.btn-add {
+    -fx-background-color: #4A90E2;
+    -fx-text-fill: white;
+}
+.btn-add:hover {
+    -fx-background-color: #0063B1;
+}
+
+/* --- LIST VIEW --- */
+.list-view {
+    -fx-background-color: #FFFFFF; 
+    -fx-border-color: #D1D9E0;
+    -fx-border-radius: 4px;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8px;
+    -fx-text-fill: #333;
+}
+.list-cell:filled:selected, .list-cell:filled:hover {
+    -fx-background-color: #D6EAF8;
+    -fx-text-fill: #4A90E2;
+}
+
+/* --- INPUT FIELDS --- */
+/* --- COMBO BOX & DATE PICKER - STILE BASE --- */
+.combo-box, .date-picker {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D9E0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 0; 
+}
+
+/* --- DATE PICKER SPECIFICI --- */
+.date-picker > .text-field {
+    -fx-background-color: transparent;
+    -fx-padding: 6px 8px;
+}
+
+/* --- COMBO BOX SPECIFICI --- */
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333;
+    -fx-padding: 6px 8px; 
+}
+
+/* --- LABEL STYLES --- */
+.label-bold {
+    -fx-font-weight: bold;
+    -fx-text-fill: #555;
+}
+.label-value {
+    -fx-text-fill: #222;
+}
+
+.text-fattori { -fx-text-fill: #4A90E2; -fx-font-weight: bold; } 
+.text-allergie { -fx-text-fill: #4A90E2; -fx-font-weight: bold; }
+.text-comorbidita { -fx-text-fill: #4A90E2; -fx-font-weight: bold; }
+.text-tc { -fx-text-fill: #4A90E2; -fx-font-weight: bold; }
+.text-patologie { -fx-text-fill: #4A90E2; -fx-font-weight: bold; }
+
+/* --- GRAFICI --- */
+.chart-plot-background { -fx-background-color: transparent; }
+.axis { -fx-tick-label-fill: #666; }
+
+#filter {
+    -fx-font-weight: bold;
+}
+
+#storiaClinica {
+    -fx-background-color: transparent;
+}

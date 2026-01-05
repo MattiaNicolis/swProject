@@ -1,6 +1,4 @@
-/* --- VEDI MAIL (Lettura Singola) STYLES --- */
 
-/* Header (in alto) */
 .view-header {
     -fx-background-color: white;
     -fx-border-color: #E0E0E0;
@@ -22,30 +20,15 @@
     -fx-cursor: hand;
 }
 .btn-reply:hover {
-    -fx-background-color: #357ABD;
+    -fx-background-color: #0063B1;
 }
 
-.btn-delete {
-    -fx-background-color: transparent;
-    -fx-text-fill: #E74C3C;
-    -fx-border-color: #E74C3C;
-    -fx-border-radius: 5px;
-    -fx-padding: 8 15;
-    -fx-cursor: hand;
-}
-.btn-delete:hover {
-    -fx-background-color: #E74C3C;
-    -fx-text-fill: white;
-}
-
-.btn-back-main {
-    -fx-background-color: transparent;
-    -fx-text-fill: #666;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
-}
-.btn-back-main:hover {
+.btn-back {
+    -fx-background-color: #ccc;
     -fx-text-fill: #333;
+}
+.btn-back:hover {
+    -fx-background-color: #bbb;
 }
 
 /* Contenitore Centrale */
@@ -53,25 +36,22 @@
     -fx-background-color: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
     -fx-background-radius: 8px;
-    -fx-margin: 30px; /* Spazio intorno al corpo della mail */
+    -fx-margin: 30px;
 }
 
-/* Oggetto */
 .mail-subject {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
     -fx-text-fill: #2C3E50;
 }
 
-/* Separatore */
 .section-separator {
     -fx-background-color: #EEE;
     -fx-pref-height: 1px;
 }
 
-/* Dettagli (Da, A, Data) */
 .mail-details-box {
-    -fx-background-color: #F9F9F9; /* Sfondo leggermente grigio per il blocco info */
+    -fx-background-color: #F9F9F9; 
     -fx-padding: 15px;
     -fx-background-radius: 4px;
 }
@@ -99,5 +79,5 @@
 .body-content {
     -fx-font-size: 15px;
     -fx-text-fill: #333;
-    -fx-line-spacing: 1.4; /* Migliora la leggibilità del testo lungo */
+    -fx-line-spacing: 1.4;
 }

@@ -12,14 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MostraDettagliTerapiaController">
+<BorderPane styleClass="main-background" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/MostraDettagliTerapia.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MostraDettagliTerapiaController">
     
     <top>
-        <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
-            <Label style="-fx-text-fill: #4CAF50; -fx-font-weight: bold;" text="💊 Dettagli Terapia" BorderPane.alignment="CENTER">
-                <font>
-                    <Font size="32.0" />
-                </font>
+        <VBox alignment="CENTER" styleClass="top">
+            <Label fx:id="topLabel" text="💊 Dettagli Terapia" BorderPane.alignment="CENTER">
                 <padding>
                     <Insets bottom="10.0" top="15.0" />
                 </padding>
@@ -28,13 +25,13 @@
     </top>
     
     <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
+        <ScrollPane fitToWidth="true" styleClass="center" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" spacing="30.0">
                 <padding>
                     <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
                 </padding>
                 
-                <GridPane hgap="20.0" maxWidth="700.0" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.0, 0, 4);" vgap="15.0">
+                <GridPane hgap="20.0" maxWidth="700.0" styleClass="gridPane" vgap="15.0">
                     
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" hgrow="NEVER" prefWidth="150.0" />
@@ -42,29 +39,36 @@
                     </columnConstraints>
                     
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" /> <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> </rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> 
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> 
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> 
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> 
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> 
+                        <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" /> 
+                    </rowConstraints>
                     
                     <children>
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #333;" text="Nome farmaco:" />
-                        <Label fx:id="nomeFarmacoLabel" style="-fx-font-size: 14px; -fx-font-weight: bold;" wrapText="true" GridPane.columnIndex="1" />
+                        <Label styleClass="dettagli" text="Nome farmaco:" />
+                        <Label fx:id="nomeFarmacoLabel" wrapText="true" GridPane.columnIndex="1" />
                         
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Dosi giornaliere:" GridPane.rowIndex="1" />
-                        <Label fx:id="dosiGiornaliereLabel" style="-fx-font-size: 14px;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label styleClass="dettagli" text="Dosi giornaliere:" GridPane.rowIndex="1" />
+                        <Label fx:id="dosiGiornaliereLabel" styleClass="label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Quantità per dose:" GridPane.rowIndex="2" />
-                        <Label fx:id="quantitàLabel" style="-fx-font-size: 14px;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label styleClass="dettagli" text="Quantità per dose:" GridPane.rowIndex="2" />
+                        <Label fx:id="quantitàLabel" styleClass="label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Data di inizio:" GridPane.rowIndex="3" />
-                        <Label fx:id="dataInizioLabel" style="-fx-font-size: 14px;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label styleClass="dettagli" text="Data di inizio:" GridPane.rowIndex="3" />
+                        <Label fx:id="dataInizioLabel" styleClass="label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Data di fine:" GridPane.rowIndex="4" />
-                        <Label fx:id="dataFineLabel" style="-fx-font-size: 14px;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label styleClass="dettagli" text="Data di fine:" GridPane.rowIndex="4" />
+                        <Label fx:id="dataFineLabel" styleClass="label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Indicazioni:" GridPane.rowIndex="5" GridPane.valignment="TOP" />
-                        <Label fx:id="indicazioniLabel" style="-fx-font-size: 14px; -fx-padding: 10; -fx-border-color: #ddd; -fx-border-width: 1; -fx-background-color: #fcfcfc;" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="TOP" />
+                        <Label styleClass="dettagli" text="Indicazioni:" GridPane.rowIndex="5" GridPane.valignment="TOP" />
+                        <Label fx:id="indicazioniLabel" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="TOP" />
                         
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="Modificato da:" GridPane.rowIndex="6" />
-                        <Label fx:id="modificatoDaLabel" style="-fx-font-size: 14px; -fx-font-style: italic;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label styleClass="dettagli" text="Modificato da:" GridPane.rowIndex="6" />
+                        <Label fx:id="modificatoDaLabel" styleClass="labelModificato" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                     </children>
                 </GridPane>
             </VBox>
@@ -72,14 +76,14 @@
     </center>
     
     <bottom>
-        <ButtonBar style="-fx-border-color: #ddd; -fx-border-width: 1 0 0 0; -fx-background-color: white;" BorderPane.alignment="CENTER">
+        <ButtonBar fx:id="buttonBar" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
             </padding>
             <buttons>
-                <Button mnemonicParsing="false" onAction="#indietro" style="-fx-background-color: #ccc; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4;" text="⬅ Indietro" />
-                <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#switchToModificaTerapia" style="-fx-background-color: #64B5F6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4;" text="✏️ Modifica Terapia" />
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#eliminaTerapia" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 4;" text="❌ Elimina Terapia" />
+                <Button mnemonicParsing="false" onAction="#indietro" styleClass="btn-back" text="⬅ Indietro" />
+                <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#switchToModificaTerapia" text="Modifica Terapia" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#eliminaTerapia" text="Elimina Terapia" />
             </buttons>
         </ButtonBar>
     </bottom>

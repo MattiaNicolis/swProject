@@ -1,7 +1,7 @@
 /* Colori base */
 * {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-primary-color: #0078D4;
+    -fx-primary-color: #4A90E2;
     -fx-bg-color: #F3F3F3;
     -fx-text-color: #333;
 }
@@ -70,14 +70,11 @@
 }
 
 .btn-back {
-    -fx-background-color: transparent;
-    -fx-text-fill: #666;
-    -fx-border-color: #ddd;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
+    -fx-background-color: #ccc;
+    -fx-text-fill: #333;
 }
 .btn-back:hover {
-    -fx-background-color: #eee;
+    -fx-background-color: #bbb;
 }
 
 /* --- CENTER LIST --- */
@@ -123,6 +120,10 @@
 }
 
 /* --- RIGHT PANEL (COMPOSE/READ) --- */
+#stackPaneRight {
+    -fx-background-color: white;
+}
+
 .content-panel {
     -fx-background-color: white;
 }
@@ -173,4 +174,5 @@
     -fx-text-fill: #CCC;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
+    -fx-padding: 0 0 0 65;
 }

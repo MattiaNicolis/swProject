@@ -12,14 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #f7f7f7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.VediQuestionarioController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/VediQuestionario.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.VediQuestionarioController">
     
     <top>
-        <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
-            <Label style="-fx-text-fill: #4CAF50;" text="Visualizza Questionario" BorderPane.alignment="CENTER">
-                <font>
-                    <Font name="System Bold" size="32.0" />
-                </font>
+        <VBox alignment="CENTER" styleClass="topBox">
+            <Label fx:id="topLabel" text="Visualizza Questionario" BorderPane.alignment="CENTER">
                 <padding>
                     <Insets bottom="10.0" top="15.0" />
                 </padding>
@@ -28,31 +25,31 @@
     </top>
     
     <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 30 150;">
+        <ScrollPane fitToWidth="true" styleClass="center">
             <VBox alignment="TOP_CENTER" spacing="25.0">
-                <Label fx:id="dataQuestionarioLabel" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Questionario del [GG/MM/AAAA]">
+                <Label fx:id="dataQuestionarioLabel" text="Questionario del [GG/MM/AAAA]">
                     <VBox.margin>
                         <Insets bottom="10.0" />
                     </VBox.margin>
                 </Label>
 
-                <GridPane hgap="20.0" maxWidth="800.0" style="-fx-background-color: white; -fx-padding: 30; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.0, 0, 4);" vgap="15.0">
+                <GridPane hgap="20.0" maxWidth="800.0" styleClass="gridPane" vgap="15.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="NEVER" minWidth="150.0" prefWidth="200.0" />
                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="600.0" />
                     </columnConstraints>
                     
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="💊 Nome farmaco:" />
-                    <Label fx:id="nomeFarmacoLabel" style="-fx-font-size: 14px;" GridPane.columnIndex="1" />
+                    <Label styleClass="label" text="Nome farmaco:" />
+                    <Label fx:id="nomeFarmacoLabel" styleClass="info" GridPane.columnIndex="1" />
                     
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="🕒 Dosi giornaliere:" GridPane.rowIndex="1" />
-                    <Label fx:id="dosiGiornaliereLabel" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label styleClass="label" text="Dosi giornaliere:" GridPane.rowIndex="1" />
+                    <Label fx:id="dosiGiornaliereLabel" styleClass="info" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="💉 Quantità per dose:" GridPane.rowIndex="2" />
-                    <Label fx:id="quantitàLabel" style="-fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label styleClass="label" text="Quantità per dose:" GridPane.rowIndex="2" />
+                    <Label fx:id="quantitàLabel" styleClass="info" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     
-                    <Label style="-fx-font-weight: bold; -fx-text-fill: #555;" text="⚠️ Eventuali sintomi:" GridPane.rowIndex="3" />
-                    <Label fx:id="sintomiLabel" style="-fx-font-size: 14px; -fx-padding: 10; -fx-border-color: #ddd; -fx-border-width: 1; -fx-background-color: #fcfcfc;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label styleClass="label" text="Eventuali sintomi:" GridPane.rowIndex="3" />
+                    <Label fx:id="sintomiLabel" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     
                     <BorderPane GridPane.columnSpan="2" GridPane.rowIndex="3">
                         <padding>
@@ -71,12 +68,12 @@
     </center>
     
     <bottom>
-        <ButtonBar style="-fx-border-color: #ddd; -fx-border-width: 1 0 0 0; -fx-background-color: white;" BorderPane.alignment="CENTER_RIGHT">
+        <ButtonBar styleClass="buttonBar" BorderPane.alignment="CENTER_RIGHT">
             <padding>
                 <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
             </padding>
             <buttons>
-                <Button fx:id="bottoneIndietro" onAction="#indietro" style="-fx-background-color: #e0e0e0; -fx-font-size: 14px; -fx-padding: 8 20;" text="⬅ Indietro" />
+                <Button fx:id="bottoneIndietro" onAction="#indietro" styleClass="btn-back" text="⬅ Indietro" />
             </buttons>
         </ButtonBar>
     </bottom>

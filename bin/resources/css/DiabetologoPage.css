@@ -10,18 +10,18 @@
 
 /* --- NAVBAR STYLES --- */
 .navbar {
-    -fx-background-color: #2D3447; 
+    -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 2);
 }
 
 .brand-label {
     -fx-text-fill: #B0B5C1;
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
 }
 
 .welcome-sublabel {
-    -fx-text-fill: #F0F0F0; /* Bianco leggermente sporco per uniformità */
-    -fx-font-size: 18px;
+    -fx-text-fill: #2D3447;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
 }
 
@@ -36,12 +36,26 @@
     -fx-background-color: transparent;
     -fx-border-color: #4A90E2;
     -fx-border-radius: 5px;
-    -fx-text-fill: #FFFFFF; /* Qui il bianco va bene perché è su scuro */
+    -fx-border-width: 1.5px;
+    -fx-text-fill: #4A90E2;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 .btn-action:hover {
-    -fx-background-color: #4A90E2;
+    -fx-background-color: rgb(74, 144, 226);
+    -fx-text-fill: white;
+}
+
+.btn-mail-alert {
+    -fx-background-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: #ff6666;
+    -fx-border-color: #ff6666;
+}
+
+.btn-mail-alert:hover {
+    -fx-background-color: #ff6666;
     -fx-text-fill: white;
 }
 
@@ -49,6 +63,7 @@
     -fx-background-color: transparent;
     -fx-border-color: #ff6666;
     -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
     -fx-text-fill: #ff6666;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -140,12 +155,13 @@
     -fx-text-fill: #2D3447;
 }
 .profile-label {
-    -fx-font-size: 13px;
-    -fx-text-fill: #666; /* Scurito leggermente */
+    -fx-font-size: 12px;
+    -fx-text-fill: #777; /* Scurito leggermente */
 }
 .profile-value {
     -fx-font-size: 13px;
     -fx-text-fill: #222;
+    -fx-font-weight: bold;
 }
 .scroll-pane-transparent {
     -fx-background-color: transparent;
