@@ -1,11 +1,8 @@
 package application.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import application.model.TerapiaConcomitante;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.Sessione;
 import application.view.Navigator;
@@ -14,14 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 public class TerapiaConcomitanteController {
-
-	// --- VARIABILI LOCALI ---	
+	
 	private TerapiaConcomitante tc;
-
-	// --- LIST VIEW ---
-	private List<Utente> diabetologi = new ArrayList<>();
-
-	// ---- LABEL FXML ---	
+	
 	@FXML private Label nomeLabel;
 	@FXML private Label dataInizioLabel;
 	@FXML private Label dataFineLabel;
@@ -31,18 +23,10 @@ public class TerapiaConcomitanteController {
 	private void initialize() {
 		tc = Sessione.getInstance().getTerapiaConcomitanteSelezionata();
 		
-		diabetologi = AdminService.getPeopleByRole("diabetologo");
-
 		nomeLabel.setText(tc.getNome());
 		dataInizioLabel.setText(tc.getDataInizio().format(AdminService.dateFormatter));
 		dataFineLabel.setText(tc.getDataFine().format(AdminService.dateFormatter));
-		
-		diabetologi.stream()
-			.filter(d -> d.getCf().equals(tc.getModificato()))
-			.findFirst()
-			.ifPresent(d -> {
-				modificatoLabel.setText(d.getNomeCognome() + " (" + d.getCf() + ")");
-			});
+		modificatoLabel.setText(AdminService.getNomeDiabetologoByCf(tc.getModificato()) + " (" + tc.getModificato() + ")");
 	}
 	
 	// NAVIGAZIONE

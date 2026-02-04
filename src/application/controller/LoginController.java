@@ -2,7 +2,8 @@ package application.controller;
 
 import java.io.IOException;
 
-import application.model.Utente;
+import application.model.Diabetologo;
+import application.model.Paziente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -11,16 +12,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
 public class LoginController {
 
-	// --- FIELD ---
 	@FXML private TextField cfField;
 	@FXML private PasswordField passwordField;
-
-	// --- LABEL ---
 	@FXML private Label firstLabel;
+	@FXML private RadioButton rbPaziente;
+	@FXML private RadioButton rbDiabetologo;
 	
 	@FXML
 	private void initialize() {
@@ -38,20 +39,31 @@ public class LoginController {
 		if(cf == null || cf.isBlank() || password == null || password.isBlank())
 			return LoginResult.EMPTY_FIELDS;
 
-		Utente utente = AdminService.login(cf, password);
-
-		if(utente != null) {
-			Sessione.getInstance().setUtente(utente);
-
-			if(utente.isDiabetologo()) return LoginResult.SUCCESS_DIABETOLOGO;
-			else if(utente.isPaziente()) return LoginResult.SUCCESS_PAZIENTE;
+		if(rbPaziente.isSelected()) {
+			Paziente paziente = AdminService.loginPaziente(cf, password);
+			if(paziente != null) {
+				Sessione.getInstance().setPaziente(paziente);
+				return LoginResult.SUCCESS_PAZIENTE;
+			} else {
+				return LoginResult.WRONG_CREDENTIALS;
+			}
+		} else if(rbDiabetologo.isSelected()) {
+			Diabetologo diabetologo = AdminService.loginDiabetologo(cf, password);
+			if(diabetologo != null) {
+				Sessione.getInstance().setDiabetologo(diabetologo);
+				return LoginResult.SUCCESS_DIABETOLOGO;
+			} else {
+				return LoginResult.WRONG_CREDENTIALS;
+			}
 		}
 
 		return LoginResult.WRONG_CREDENTIALS;
 	}
 
+
 	@FXML 
 	private void handleLogin(ActionEvent event) throws IOException {
+		
 		LoginResult result = tryLogin(cfField.getText(), passwordField.getText());
 
 		switch(result) {

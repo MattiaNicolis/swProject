@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import application.model.Diabetologo;
 import application.model.Mail;
+import application.model.Paziente;
 import application.model.Utente;
+import application.model.UtenteInfo;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -26,31 +29,33 @@ import javafx.scene.layout.VBox;
 
 public class MailController {
 	
-	// --- VARIABILI LOCALI ---	
+	// --- SEZIONE VARIABILI LOCALI ---	
 	private Utente u;
-
-	// --- LIST VIEW - MAPPE ---
 	private List<Mail> mailRicevute = new ArrayList<>();
 	private List<Mail> mailInviate = new ArrayList<>();
-	private List<Utente> diabetologi = new ArrayList<>();
-	private List<Utente> pazienti = new ArrayList<>();
-	@FXML private ListView<Mail> listaMail;
+	private List<UtenteInfo> diabetologi = new ArrayList<>();
+	private List<UtenteInfo> pazienti = new ArrayList<>();
+
 	private Map<String, String> emailToNameMap = new HashMap<>();
+
 	private FilteredList<Mail> currentFilteredList;
 
-	// --- PAGINE ---
+	// --- SEZIONE PAGINE ---
 	@FXML private VBox scriviPanel;
 	
-	// --- BOTTONI ---
+	// --- SEZIONE BOTTONI ---
 	@FXML private Button bottoneIndietro;
 	
-	// --- TEXTFIELD ---
+	// --- SEZIONE TEXTFIELD ---
 	@FXML private TextField searchMailBar;
 	@FXML private TextField destinatarioField;
 	@FXML private TextField oggettoField;
 	
-	// --- TEXTAREA ---
+	// --- SEZIONE TEXTAREA ---
 	@FXML private TextArea corpoArea;
+	
+	// --- SEZIONI LISTEVIEW ---
+	@FXML private ListView<Mail> listaMail;
 	
 	// LABEL
 	@FXML private Label mailNonLette;
@@ -59,7 +64,16 @@ public class MailController {
 	@FXML private Label headerLabel;
 	
 	@FXML public void initialize() throws IOException{
-		u = Sessione.getInstance().getUtente();
+		if(Sessione.getInstance().getPaziente() != null) {
+			u = Sessione.getInstance().getPaziente();
+		} else if (Sessione.getInstance().getDiabetologo() != null) {
+			u = Sessione.getInstance().getDiabetologo();
+		}
+
+		if (u == null) {
+            MessageUtils.showError("Errore di sessione: Utente non trovato.");
+            return;
+        }
 		
 		caricaDati();
 
@@ -89,30 +103,29 @@ public class MailController {
 	private void caricaDati() {
 		mailInviate = AdminService.loadMailInviate(u);
 		mailRicevute = AdminService.loadMailRicevute(u);
-		diabetologi = AdminService.getPeopleByRole("diabetologo");
-		if(u.isDiabetologo())
-			pazienti = AdminService.getPeopleByRole("paziente");
+		diabetologi = AdminService.getUtenteInfo("diabetologi");
+		if(u instanceof Diabetologo)
+			pazienti = AdminService.getUtenteInfo("pazienti");
 
 		populateNameMap(diabetologi);
         populateNameMap(pazienti);
 	}
 
-	private void populateNameMap(List<Utente> utenti) {
+	private void populateNameMap(List<UtenteInfo> utenti) {
         if(utenti == null) return;
-        for(Utente utente : utenti) {
+        for(UtenteInfo utente : utenti) {
             emailToNameMap.put(utente.getMail(), utente.getNomeCognome());
         }
     }
 	
 	private void setupInterface() {
-        if (u.isPaziente()) {
-            diabetologi.stream()
-                .filter(d -> d.getCf().equals(u.getDiabetologoRif()))
-                .findFirst()
-                .ifPresent(d -> {
-                    destinatarioField.setText(d.getMail());
-                    mailDiabetologo.setText(d.getMail());
-                });
+        if (u instanceof Paziente) {
+			Paziente p = (Paziente) u; 
+        
+        	String mail = AdminService.getMailDiabetologoRif(p.getDiabetologoRif());
+        
+        	destinatarioField.setText(mail);
+        	mailDiabetologo.setText(mail);
         } else {
             mailDiabetologo.setVisible(false);
             labelDiabetologo.setVisible(false);
@@ -162,6 +175,7 @@ public class MailController {
 				hideCompose();
 			}
 		}
+		
 	}
 	
 	@FXML
@@ -265,9 +279,9 @@ public class MailController {
 	// NAVIGAZIONE
 	@FXML
 	private void indietro(ActionEvent event) throws IOException {
-		if (u.isDiabetologo()) {
+		if (u instanceof Diabetologo) {
 			Navigator.getInstance().switchToDiabetologoPage(event);
-        } else if (u.isPaziente()) {
+        } else if (u instanceof Paziente) {
 			Navigator.getInstance().switchToPazientePage(event);
         }
 	}

@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.model.Dato;
+import application.model.Diabetologo;
 import application.model.Patologia;
+import application.model.Paziente;
 import application.model.TerapiaConcomitante;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -23,18 +24,15 @@ import javafx.scene.control.TextField;
 
 public class StoriaDatiPazienteController {
 	
-	// --- VARIABILI LOCALI ---
-	private Utente u;
-	private Utente p;
-
-	// --- LIST VIEW ---
+	// VARIABILI
+	private Diabetologo d;
+	private Paziente p;
 	private List<Dato> fattori = new ArrayList<>();
 	private List<Dato> comorbidità = new ArrayList<>();
 	private List<Dato> allergie = new ArrayList<>();
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
 	
-	// --- SEZIONE TERAPIA E PATOLOGIA ---
 	@FXML private ComboBox<String> tipologia;
 	@FXML private TextField nomeField;
 	@FXML private TextField nomePatologiaField;
@@ -47,8 +45,8 @@ public class StoriaDatiPazienteController {
 	
 	@FXML
 	private void initialize() {
-		u = Sessione.getInstance().getUtente();
-		p = Sessione.getInstance().getPazienteSelezionato();
+		d = Sessione.getInstance().getDiabetologo();
+		p = Sessione.getInstance().getPaziente();
 
 		caricaDati();
 		
@@ -78,7 +76,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
 
-		Dato dato = new Dato(p.getCf(), nome, u.getCf());
+		Dato dato = new Dato(p.getCf(), nome, d.getCf());
 
 		boolean esisteGia = false;
     	boolean operazioneRiuscita = false;
@@ -114,7 +112,6 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
-
 	@FXML
 	private void aggiungiFattoreComorbiditàAllergia(ActionEvent event) throws IOException { 
 		StoriaDatiPazienteResult result = tryCreateFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
@@ -130,13 +127,12 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-
 	private StoriaDatiPazienteResult tryRemoveFattoreComorbiditàAllergie(String tipo, String nome) {
 		if(nome == null || nome.isBlank() || tipo == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
 		}
 		
-		Dato dato = new Dato(p.getCf(), nome, u.getCf());
+		Dato dato = new Dato(p.getCf(), nome, d.getCf());
 		boolean operazioneRiuscita = false;
 
 		switch(tipo) {
@@ -159,7 +155,6 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.SUCCESS;
 		}
 	}
-
 	@FXML
 	private void rimuoviFattoreComorbiditàAllergia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemoveFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
@@ -194,7 +189,7 @@ public class StoriaDatiPazienteController {
 				nome,
 				dataInizio,
 				indicazioni,
-				u.getCf()
+				d.getCf()
 			);
 		boolean ok = AdminService.creaPatologia(patologia);
 		if(ok) {
@@ -203,7 +198,6 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
-
 	@FXML
 	private void aggiungiPatologia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryCreatePatologia(
@@ -224,7 +218,6 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-
 	private StoriaDatiPazienteResult tryRemovePatologia(String nome, LocalDate dataInizio, String indicazioni) {
 		if(nome == null || nome.isBlank()) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -235,7 +228,7 @@ public class StoriaDatiPazienteController {
 				nome,
 				dataInizio,
 				indicazioni,
-				u.getCf()
+				d.getCf()
 			);
 		boolean ok = AdminService.eliminaPatologia(patologia);
 		if(ok) {
@@ -244,7 +237,6 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
-
 	@FXML
 	private void rimuoviPatologia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemovePatologia(
@@ -285,7 +277,7 @@ public class StoriaDatiPazienteController {
 				nome,
 				dataInizio,
 				dataFine,
-				u.getCf()
+				d.getCf()
 			);
 		boolean ok = AdminService.creaTerapiaConcomitante(terapiaConcomitante);
 		if(ok) {
@@ -294,7 +286,6 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
-
 	@FXML
 	private void aggiungiTerapia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryCreateTerapiaConcomitante(
@@ -315,7 +306,6 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-
 	private StoriaDatiPazienteResult tryRemoveTerapia(String nome, LocalDate dataInizio, LocalDate dataFine) {
 		if(nome == null || nome.isBlank() || dataInizio == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -329,9 +319,8 @@ public class StoriaDatiPazienteController {
 				nome,
 				dataInizio,
 				dataFine,
-				u.getCf()
+				d.getCf()
 			);
-
 		boolean ok = AdminService.eliminaTerapiaConcomitante(terapiaConcomitante);
 		if(ok) {
 			return StoriaDatiPazienteResult.SUCCESS;
@@ -339,7 +328,6 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
-
 	@FXML
 	private void rimuoviTerapia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemoveTerapia(
@@ -360,7 +348,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
-
+	
 	// NAVIGAZIONE
 	@FXML
 	private void switchToMostraDatiPaziente(ActionEvent event) throws IOException {

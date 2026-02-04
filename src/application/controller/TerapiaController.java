@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import application.model.Diabetologo;
+import application.model.Paziente;
 import application.model.Terapia;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -23,8 +24,8 @@ import javafx.scene.control.TextField;
 public class TerapiaController {
 	
 	// VARIABILI
-	private Utente u;
-	private Utente p;
+	private Diabetologo d;
+	private Paziente p;
 	private Terapia t;
 	private Terapia terapia; // oggetto creato per l'inserimento nel database
 	private List<Terapia> terapie = new ArrayList<>();
@@ -49,14 +50,14 @@ public class TerapiaController {
 	
 	@FXML
 	private void initialize() {
-		u = Sessione.getInstance().getUtente();
-		p = Sessione.getInstance().getPazienteSelezionato();
+		d = Sessione.getInstance().getDiabetologo();
+		p = Sessione.getInstance().getPaziente();
 		
 		t = Sessione.getInstance().getTerapiaSelezionata(); // se sto creando una nuova terapia sarà null, se la sto modificando non sarà null
 
 		terapie = AdminService.loadTerapieByPaziente(p);
 
-		labelPaziente.setText(p.getNomeCognome() + " (" + p.getCf() + ")");
+		labelPaziente.setText(p.getNome() + " " + p.getCognome() + " (" + p.getCf() + ")");
 		labelPaziente.setFocusTraversable(true);
 		nomeFarmacoLabel.setVisible(false);
 		if(t != null) {
@@ -171,7 +172,7 @@ public class TerapiaController {
 				dataInizio,
 				dataFine, 
 				indicazioniField.getText(), 
-				u.getCf(), 
+				d.getCf(), 
 				false,
 				0);
 			ok = AdminService.modificaTerapia(terapia);
@@ -187,7 +188,7 @@ public class TerapiaController {
 				dataInizio, 
 				dataFine, 
 				indicazioni,
-				u.getCf(), 
+				d.getCf(), 
 				false,
 				0);
 			ok = AdminService.creaTerapia(terapia);

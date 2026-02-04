@@ -4,24 +4,26 @@ import java.io.IOException;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import application.model.Diabetologo;
+import application.model.Paziente;
 import application.model.Questionario;
 import application.model.Utente;
 import application.service.AdminService;
+import application.utils.MessageUtils;
 import application.utils.Sessione;
 import application.view.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 public class VediQuestionarioController {
-
-    // VARIABILI LOCALI ---    
+    
     private Questionario q;
     private Utente u;
 
-    // --- BOTTONI ---
+    // --- SEZIONE BOTTONI ---
 	@FXML private Button bottoneIndietro;
 
-    // --- LABEL ---
+    // LABEL
     @FXML private Label nomeFarmacoLabel;
     @FXML private Label dosiGiornaliereLabel;
     @FXML private Label quantitàLabel;
@@ -31,7 +33,16 @@ public class VediQuestionarioController {
     @FXML
     private void initialize() {
         q = Sessione.getInstance().getQuestionarioSelezionato();
-        u = Sessione.getInstance().getUtente();
+
+        if(Sessione.getInstance().getPaziente() != null) {
+			u = Sessione.getInstance().getPaziente();
+		} else if (Sessione.getInstance().getDiabetologo() != null) {
+			u = Sessione.getInstance().getDiabetologo();
+		}
+		if (u == null) {
+            MessageUtils.showError("Errore di sessione: Utente non trovato.");
+            return;
+        }
 
         // Inizializza i campi della UI con i dati del questionario
         dataQuestionarioLabel.setText("Questionario del giorno: " + q.getGiornoCompilazione().format(AdminService.dateFormatter));
@@ -50,10 +61,10 @@ public class VediQuestionarioController {
     @FXML
     private void indietro(ActionEvent event) throws IOException {
         Sessione.getInstance().setQuestionarioSelezionato(null);
-        if(u.isDiabetologo()) {
+        if(u instanceof Diabetologo) {
             Navigator.getInstance().switchToMostraDatiPaziente(event);
         }
-        else if(u.isPaziente()) {
+        else if(u instanceof Paziente) {
             Navigator.getInstance().switchToPazientePage(event);
         }
     }

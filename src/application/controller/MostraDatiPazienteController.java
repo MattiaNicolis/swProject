@@ -10,11 +10,11 @@ import java.util.List;
 import application.model.Dato;
 import application.model.Glicemia;
 import application.model.Patologia;
+import application.model.Paziente;
 import application.model.Peso;
 import application.model.Questionario;
 import application.model.Terapia;
 import application.model.TerapiaConcomitante;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -32,13 +32,11 @@ import javafx.scene.control.ListView;
 
 public class MostraDatiPazienteController {
 
-	// --- VARIABILI LOCALI ---
-	private Utente p;
+	//VARIABILI
+	private Paziente p;
 	private String scelta;
 	private LocalDate date;
 	private LocalDate date2;
-
-	// --- LIST VIEW - INTERNE ---
 	private List<Glicemia> glicemia = new ArrayList<>();
 	private List<Terapia> terapie = new ArrayList<>();
 	private List<Questionario> questionari = new ArrayList<>();
@@ -48,24 +46,14 @@ public class MostraDatiPazienteController {
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
 	private List<Peso> peso = new ArrayList<>();
-	private List<Utente> diabetologi = new ArrayList<>();
-
-	// --- LIST VIEW - FXML ---
-	@FXML private ListView<Terapia> listaTerapiePaziente;
-	@FXML public ListView<Dato> listaFattori;
-	@FXML public ListView<Dato> listaComorbidità;
-	@FXML public ListView<Dato> listaAllergie;
-	@FXML public ListView<Patologia> listaPatologie;
-	@FXML public ListView<TerapiaConcomitante> listaTerapieConcomitanti;
-	@FXML public ListView<Questionario> listaQuestionari;
 	
-	// --- GRAFICO GLICEMIA ---
+	// GRAFICO GLICEMIA
 	@FXML private LineChart<String, Number> grafico;
 
-	// --- GRAFICO PESO ---
+	// GRAFICO PESO
 	@FXML private LineChart<String, Number> graficoPeso;
 	
-	// --- LABEL ---
+	//LABEL
 	@FXML private Label labelPaziente;
 	@FXML private Label dataDiNascitaDato;
 	@FXML private Label sessoDato;
@@ -75,9 +63,18 @@ public class MostraDatiPazienteController {
 	@FXML private DatePicker dataVisualizza;
 	@FXML private Label luogoLabel;
 
+	//LISTE
+	@FXML private ListView<Terapia> listaTerapiePaziente;
+	@FXML public ListView<Dato> listaFattori;
+	@FXML public ListView<Dato> listaComorbidità;
+	@FXML public ListView<Dato> listaAllergie;
+	@FXML public ListView<Patologia> listaPatologie;
+	@FXML public ListView<TerapiaConcomitante> listaTerapieConcomitanti;
+	@FXML public ListView<Questionario> listaQuestionari;
+	
 	@FXML
 	private void initialize() {
-		p = Sessione.getInstance().getPazienteSelezionato();
+		p = Sessione.getInstance().getPaziente();
 		
 		caricaDatiPaziente();
 		setUpInterfaccia();
@@ -86,7 +83,7 @@ public class MostraDatiPazienteController {
 			visualizzaDati();
 		} catch (IOException e) {
 			e.printStackTrace();
-			MessageUtils.showError("Errore nel caricamento dati del paziente: " + p.getNomeCognome());
+			MessageUtils.showError("Errore nel caricamento dati del paziente: " + p.getNome() + " " + p.getCognome());
 		}
 	}
 
@@ -100,18 +97,17 @@ public class MostraDatiPazienteController {
 		terapieConcomitanti = AdminService.loadTerapieConcomitantiByPaziente(p);
 		patologie = AdminService.loadPatologieByPaziente(p);
 		peso = AdminService.loadPesoByCf(p.getCf());
-		diabetologi = AdminService.getPeopleByRole("diabetologo");
 	}
 	
 	private void setUpInterfaccia() {
-		labelPaziente.setText("Profilo clinico di " + p.getNomeCognome());
+		labelPaziente.setText("Profilo clinico di " + p.getNome() + " " + p.getCognome());
 		labelPaziente.setFocusTraversable(true);
 		dataDiNascitaDato.setText(p.getDataDiNascita().format(AdminService.dateFormatter));
 		sessoDato.setText(p.getSesso());
 		mailDato.setText(p.getMail());
 		luogoLabel.setText(p.getLuogoDiNascita());
 		
-		medicoRifLabel.setText(AdminService.getNomeUtenteByCf(diabetologi, p.getDiabetologoRif()) + " (" + p.getDiabetologoRif() + ")");
+		medicoRifLabel.setText(AdminService.getNomeDiabetologoByCf(p.getDiabetologoRif()) + " (" + p.getDiabetologoRif() + ")");
 			
 		sceltaVisualizza.getItems().addAll("Settimana", "Mese");
 	}
@@ -141,7 +137,6 @@ public class MostraDatiPazienteController {
 				}
 			}
 		});
-
 		listaTerapiePaziente.setOnMouseClicked(e -> {
 			Terapia selectedTerapia = listaTerapiePaziente.getSelectionModel().getSelectedItem();
 			if(selectedTerapia != null) {
@@ -157,17 +152,17 @@ public class MostraDatiPazienteController {
 		// FATTORI DI RISCHIO
 		listaFattori.setItems(FXCollections.observableArrayList(fattori));
 		AdminService.setCustomCellFactory(listaFattori, f -> 
-			f.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(diabetologi, f.getModificato()));
+			f.getNome() + " - Aggiunto da: " + AdminService.getNomeDiabetologoByCf(f.getModificato()));
 		
 		// COMORBIDITÀ
 		listaComorbidità.setItems(FXCollections.observableArrayList(comorbidità));
 		AdminService.setCustomCellFactory(listaComorbidità, c -> 
-			c.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(diabetologi, c.getModificato()));
+			c.getNome() + " - Aggiunto da: " + AdminService.getNomeDiabetologoByCf(c.getModificato()));
 		
 		// ALLERGIE
 		listaAllergie.setItems(FXCollections.observableArrayList(allergie));
 		AdminService.setCustomCellFactory(listaAllergie, a -> 
-			a.getNome() + " - Aggiunto da: " + AdminService.getNomeUtenteByCf(diabetologi, a.getModificato()));
+			a.getNome() + " - Aggiunto da: " + AdminService.getNomeDiabetologoByCf(a.getModificato()));
 		
 		// PATOLOGIE
 		listaPatologie.setItems(FXCollections.observableArrayList(patologie));
@@ -235,7 +230,6 @@ public class MostraDatiPazienteController {
 		DATE_IN_FUTURE,
 		OK
 	}
-
 	private SceltaResult tryScelta(String scelta, LocalDate date) {
 		if(date == null || scelta == null) {
 			return SceltaResult.EMPTY_FIELD;
@@ -244,7 +238,6 @@ public class MostraDatiPazienteController {
 		}
 		return SceltaResult.OK;
 	}
-
 	@FXML
 	private void handleScelta() throws IOException {
 		SceltaResult result = tryScelta(sceltaVisualizza.getValue(), dataVisualizza.getValue());
@@ -322,11 +315,11 @@ public class MostraDatiPazienteController {
 			}
 		}
 	}
-	
+
 	// NAVIGAZIONE
 	@FXML
 	private void switchToDiabetologoPage(ActionEvent event) throws IOException {
-		Sessione.getInstance().setPazienteSelezionato(null);
+		Sessione.getInstance().setPaziente(null);
 		Navigator.getInstance().switchToDiabetologoPage(event);
 	}
 	

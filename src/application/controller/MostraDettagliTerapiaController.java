@@ -1,10 +1,10 @@
 package application.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+import application.model.Diabetologo;
+import application.model.Paziente;
 import application.model.Terapia;
 import application.model.Utente;
 import application.service.AdminService;
@@ -19,12 +19,11 @@ import javafx.scene.control.Label;
 
 public class MostraDettagliTerapiaController {
 	
-	// --- VARIABILI LOCALI ---
+	// VARIABILI
 	private Utente u;
 	private Terapia t;
-	private List<Utente> diabetologi = new ArrayList<>();
 
-	// --- LABEL ---
+	// LABEL
 	@FXML private Label nomeFarmacoLabel;
 	@FXML private Label dosiGiornaliereLabel;
 	@FXML private Label quantitàLabel;
@@ -33,16 +32,24 @@ public class MostraDettagliTerapiaController {
 	@FXML private Label indicazioniLabel;
 	@FXML private Label modificatoDaLabel;
 
-	// --- BOTTONI ---
+	// BUTTON
 	@FXML private Button deleteButton;
 	@FXML private Button modifyButton;
 	
 	@FXML
 	private void initialize() {
-		u = Sessione.getInstance().getUtente();
+		if(Sessione.getInstance().getDiabetologo() != null) {
+			u = Sessione.getInstance().getDiabetologo();
+		} else if (Sessione.getInstance().getPaziente() != null) {
+			u = Sessione.getInstance().getPaziente();
+		}
+		if (u == null) {
+            MessageUtils.showError("Errore di sessione: Utente non trovato.");
+            return;
+        }
 		t = Sessione.getInstance().getTerapiaSelezionata();
 		
-		if(u.isPaziente()) {
+		if(u instanceof Paziente) {
 			deleteButton.setDisable(true);
 			modifyButton.setDisable(true);
 		}
@@ -65,9 +72,7 @@ public class MostraDettagliTerapiaController {
 		else
 			indicazioniLabel.setText("Nessuna indicazione.");
 		
-		diabetologi = AdminService.getPeopleByRole("diabetologo");
-
-		modificatoDaLabel.setText(AdminService.getNomeUtenteByCf(diabetologi, t.getDiabetologo()) + " (" + t.getDiabetologo() + ")");
+		modificatoDaLabel.setText(AdminService.getNomeDiabetologoByCf(t.getDiabetologo()) + " (" + t.getDiabetologo() + ")");
 	}
 
 	// NAVIGAZIONE
@@ -75,9 +80,9 @@ public class MostraDettagliTerapiaController {
 	private void indietro(ActionEvent event) throws IOException {
 		Sessione.getInstance().setTerapiaSelezionata(null);
 		
-		if (u.isDiabetologo()) {
+		if (u instanceof Diabetologo) {
 			Navigator.getInstance().switchToMostraDatiPaziente(event);
-        } else if (u.isPaziente()) {
+        } else if (u instanceof Paziente) {
 			Navigator.getInstance().switchToPazientePage(event);
         }
 	}

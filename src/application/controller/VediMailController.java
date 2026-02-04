@@ -14,26 +14,31 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class VediMailController {
-
-	// --- VARIABILI LOCALI ---	
+	
 	private Utente u;
 	private Mail m;
 	
-	// --- LABEL ---
+	// FXML
 	@FXML private Label mittenteLabel;
 	@FXML private Label destinatarioLabel;
 	@FXML private Label oggettoLabel;
 	@FXML private Label corpoLabel;
 	@FXML private Label giornoOraLabel;
-
-	// --- BOTTONI ---
 	@FXML Button rispondiButton;
 	
 	@FXML
 	private void initialize() throws IOException {
-		u = Sessione.getInstance().getUtente();
-		m = Sessione.getInstance().getMailSelezionata();
+		if(Sessione.getInstance().getPaziente() != null) {
+			u = Sessione.getInstance().getPaziente();
+		} else if (Sessione.getInstance().getDiabetologo() != null) {
+			u = Sessione.getInstance().getDiabetologo();
+		}
+		if (u == null) {
+            MessageUtils.showError("Errore di sessione: Utente non trovato.");
+            return;
+        }
 
+		m = Sessione.getInstance().getMailSelezionata();
 		if (m == null) {
             MessageUtils.showError("Errore nel caricamento della mail.");
             return;

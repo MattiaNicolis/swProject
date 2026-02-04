@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import application.model.Paziente;
 import application.model.Questionario;
 import application.model.Terapia;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -21,35 +21,30 @@ import application.view.Navigator;
 
 public class QuestionarioController {
 
-    // --- LIST VIEW ---
+    // --- Componenti FXML ---
     @FXML private ListView<Terapia> listaTerapie;
-    private List<Terapia> terapie = new ArrayList<>();
-    private List<Terapia> terapieAttive = new ArrayList<>();
-    private List<Terapia> terapieMancanti = new ArrayList<>();
-
-    // --- LABEL ---    
+    
     @FXML private Label lblPlaceholder;
-
-    // --- SEZIONI COMPONENTI ---
     @FXML private VBox formContainer;
-
-    // --- TEXT FIELD ---
     
     @FXML private TextField nomeFarmacoField;
     @FXML private TextField doseField;
     @FXML private TextField quantitàField;
-
-    // --- TEXT AREA ---
     @FXML private TextArea sintomiArea;
 
-    // --- VARIBILI LOCALI ---
+    // --- Dati ---
     private Terapia t; // Terapia selezionata
-    private Utente p;
+    private Paziente p;
     private int dose, quantità;
+    
+    // Liste
+    private List<Terapia> terapie = new ArrayList<>();
+    private List<Terapia> terapieAttive = new ArrayList<>();
+    private List<Terapia> terapieMancanti = new ArrayList<>();
 
     @FXML
     private void initialize() {
-        p = Sessione.getInstance().getUtente();
+        p = Sessione.getInstance().getPaziente();
         
         caricamentoDati();
 
@@ -136,7 +131,6 @@ public class QuestionarioController {
         } 
         else return QuestionarioResult.FAILURE;
     }
-    
     @FXML
     private void handleQuestionario() {
         if (t == null) return;

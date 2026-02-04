@@ -1,11 +1,8 @@
 package application.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import application.model.Patologia;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.Sessione;
 import application.view.Navigator;
@@ -15,13 +12,8 @@ import javafx.scene.control.Label;
 
 public class PatologiaController {
 	
-	// --- VARIABILI LOCALI ---
 	private Patologia patologia;
-
-	// --- LIST VIEW ---
-	private List<Utente> diabetologi = new ArrayList<>();
-
-	// --- LABEL ---	
+	
 	@FXML private Label nomeLabel;
 	@FXML private Label dataLabel;
 	@FXML private Label indicazioniLabel;
@@ -31,18 +23,10 @@ public class PatologiaController {
 	private void initialize() {
 		patologia = Sessione.getInstance().getPatologiaSelezionata();
 		
-		diabetologi = AdminService.getPeopleByRole("diabetologo");
-
 		nomeLabel.setText(patologia.getNome());
 		dataLabel.setText(patologia.getInizio().format(AdminService.dateFormatter));
 		indicazioniLabel.setText(patologia.getIndicazioni());
-		
-		diabetologi.stream()
-			.filter(d -> d.getCf().equals(patologia.getModificato()))
-			.findFirst()
-			.ifPresent(d -> {
-				modificatoLabel.setText(d.getNomeCognome() + " (" + d.getCf() + ")");
-			});
+		modificatoLabel.setText(AdminService.getNomeDiabetologoByCf(patologia.getModificato()) + " (" + patologia.getModificato() + ")");
 	}
 	
 	// NAVIGAZIONE
