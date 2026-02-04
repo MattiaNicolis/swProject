@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import application.controller.PazienteController;
 import application.dao.impl.PesoDAO;
+import application.model.Paziente;
 import application.model.Peso;
 import application.model.Utente;
 import application.service.AdminService;
@@ -60,7 +61,7 @@ public class PazientePesoTest {
         controller = new PazienteController();
         
         // 1. Creiamo un utente fittizio
-        paziente = new Utente("CF_TEST", "pass", "paziente", "Nome Cognome", null, null, null, "mail@test.it", null);
+        paziente = new Paziente("CF_TEST", "pass", "Nome", "Cognome", null, null, null, "mail@test.it", null);
 
         // 2. INIETTIAMO L'UTENTE 'p' (Questo risolve il NullPointerException su p.getCf())
         injectPrivateField(controller, "p", paziente);

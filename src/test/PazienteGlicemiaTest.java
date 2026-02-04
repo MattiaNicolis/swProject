@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import application.controller.PazienteController;
 import application.dao.impl.GlicemiaDAO;
 import application.model.Glicemia;
+import application.model.Paziente;
 import application.model.Utente;
 import application.service.AdminService;
 
@@ -58,7 +59,7 @@ public class PazienteGlicemiaTest {
         AdminService.setGlicemiaDAO(new MockGlicemiaDAO());
         
         controller = new PazienteController();
-        paziente = new Utente("CF_PAZIENTE", "pass", "paziente", "Nome Cognome", null, null, null, "mail@test.it", null);
+        paziente = new Paziente("CF_PAZIENTE", "pass", "Nome", "Cognome", null, null, null, "mail@test.it", null);
 
         // 1. Iniettiamo il paziente 'p'
         injectPrivateField(controller, "p", paziente);

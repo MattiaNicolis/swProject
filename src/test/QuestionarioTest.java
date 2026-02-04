@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import application.controller.QuestionarioController;
 import application.dao.impl.QuestionarioDAO;
 import application.dao.impl.TerapiaDAO;
+import application.model.Paziente;
 import application.model.Questionario;
 import application.model.Terapia;
 import application.model.Utente;
@@ -66,7 +67,7 @@ public class QuestionarioTest {
         terapia = new Terapia(1, "a", "farmacoTest", 0, 0, null, null, null, null, false, 0);
         injectPrivateField(controller, "t", terapia);
 
-        paziente = new Utente("a", "a", "paziente", null, null, null, null, null, null);
+        paziente = new Paziente("a", "a", null, null, null, null, null, null, null);
         injectPrivateField(controller, "p", paziente);
     }
 

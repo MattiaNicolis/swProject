@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import application.dao.impl.QuestionarioDAO;
 import application.dao.impl.TerapiaDAO;
 import application.model.Glicemia;
+import application.model.Paziente;
 import application.model.Questionario;
 import application.model.Terapia;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.DiabetologoUtils;
 
@@ -128,7 +128,7 @@ class DiabetologoPageTest {
     @DisplayName("Giorni di non compilazione < 3")
     void testSituazioneRegolare() throws Exception {
         int giorni = 0;
-        Utente p = new Utente("a", null, null, null, null, null, null, null, null);
+        Paziente p = new Paziente("a", null, null, null, null, null, null, null, null);
 
         LocalDate dataInizio = LocalDate.now().minusDays(2);
         LocalDate dataFine = LocalDate.now().plusDays(10);
@@ -148,7 +148,7 @@ class DiabetologoPageTest {
     @DisplayName("Giorni di non compilazione 3 +")
     void testNonCompila() throws Exception {
         int giorni = 0;
-        Utente p = new Utente("a", null, null, null, null, null, null, null, null);
+        Paziente p = new Paziente("a", null, null, null, null, null, null, null, null);
 
         LocalDate dataInizio = LocalDate.of(2025, 12, 20);
         LocalDate dataFine = LocalDate.of(2025, 12, 31);

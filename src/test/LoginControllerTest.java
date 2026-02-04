@@ -10,23 +10,32 @@ import org.junit.jupiter.api.Test;
 
 import application.controller.LoginController;
 import application.service.AdminService;
-import application.dao.impl.UtenteDAO;
-import application.model.Utente;
+import application.dao.impl.PazienteDAO;
+import application.dao.impl.DiabetologoDAO;
+import application.model.Diabetologo;
+import application.model.Paziente;
 
 class LoginControllerTest {
 
     private LoginController controller;
 
-    class MockUtenteDAO extends UtenteDAO {
+    class MockPazienteDAO extends PazienteDAO {
         @Override
-        public Utente login(String cf, String password) {
+        public Paziente loginPaziente(String cf, String password) {
             // Simuliamo il comportamento
             if ("PAZIENTE_TEST".equals(cf) && "password123".equals(password)) {
-                return new Utente("PAZIENTE_TEST", "password123", "paziente", "Mario", null, null, null, null, null);
+                return new Paziente("PAZIENTE_TEST", "password123", "Mario", "Rossi", null, null, null, null, null);
             }
-            
-            if("DIABETOLOGO_TEST".equals(cf) && "password123".equals(password)) {
-                return new Utente("PAZIENTE_TEST", "password123", "diabetologo", "Mario", null, null, null, null, null);
+            return null;
+        }
+    }
+
+    class MockDiabetologoDAO extends DiabetologoDAO {
+        @Override
+        public Diabetologo loginDiabetologo(String cf, String password) {
+            // Simuliamo il comportamento
+            if ("DIABETOLOGO_TEST".equals(cf) && "password123".equals(password)) {
+                return new Diabetologo("DIABETOLOGO_TEST", "password123", "Luigi", "Vaona", null, null, null, null);
             }
             return null;
         }
@@ -41,13 +50,15 @@ class LoginControllerTest {
 
     @BeforeEach
     void setup() {
-        AdminService.setUtenteDAO(new MockUtenteDAO());
+        AdminService.setPazienteDAO(new MockPazienteDAO());
+        AdminService.setDiabetologoDAO(new MockDiabetologoDAO());
         controller = new LoginController();
     }
 
     @AfterEach
     void tearDown() {
-        AdminService.setUtenteDAO(new UtenteDAO());
+        AdminService.setPazienteDAO(new PazienteDAO());
+        AdminService.setDiabetologoDAO(new DiabetologoDAO());
     }
 
     @Test

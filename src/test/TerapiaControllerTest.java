@@ -15,15 +15,17 @@ import org.junit.jupiter.api.Test;
 
 import application.controller.TerapiaController;
 import application.dao.impl.TerapiaDAO;
+import application.model.Diabetologo;
+import application.model.Paziente;
 import application.model.Terapia;
-import application.model.Utente;
 import application.service.AdminService;
 
 public class TerapiaControllerTest {
 
     private TerapiaController controller;
     private List<Terapia> terapie;
-    private Utente paziente;
+    private Paziente paziente;
+    private Diabetologo diabetologo;
     private LocalDate dataInizio;
     private LocalDate dataFine;
 
@@ -62,17 +64,18 @@ public class TerapiaControllerTest {
         AdminService.setTerapiaDAO(new MockTerapiaDAO());
         controller = new TerapiaController();
 
-        dataInizio = LocalDate.of(2025, 12, 31);
-        dataFine = LocalDate.of(2026, 1, 10);
+        dataInizio = LocalDate.of(2026, 12, 31);
+        dataFine = LocalDate.of(2027, 1, 10);
 
         terapie = new ArrayList<>();
         terapie.add(new Terapia(1, "a", "farmacoSbagliato", 0, 0, dataInizio, dataFine, null, null, false, 0));
         
-        paziente = new Utente("a", "a", "paziente", null, null, null, null, null, null);
+        paziente = new Paziente("a", "a", "Simone", null, null, null, null, null, null);
+        diabetologo = new Diabetologo("b", "b", "Mattia", null, dataFine, null, null, null);
 
         injectPrivateField(controller, "t", null);
         injectPrivateField(controller, "p", paziente);
-        injectPrivateField(controller, "u", paziente);
+        injectPrivateField(controller, "d", diabetologo);
         injectPrivateField(controller, "terapie", terapie);
     }
 

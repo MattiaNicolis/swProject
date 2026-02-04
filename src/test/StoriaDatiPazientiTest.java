@@ -15,7 +15,9 @@ import application.dao.impl.DatiDAO;
 import application.dao.impl.PatologiaDAO;
 import application.dao.impl.TerapiaConcomitanteDAO;
 import application.model.Dato;
+import application.model.Diabetologo;
 import application.model.Patologia;
+import application.model.Paziente;
 import application.model.TerapiaConcomitante;
 import application.model.Utente;
 import application.service.AdminService;
@@ -220,13 +222,13 @@ public class StoriaDatiPazientiTest {
             AdminService.setPatologiaDAO(new MockPatologiaDAO());
             AdminService.setTerapiaConcomitanteDAO(new MockTerapiaConcomitanteDAO());
             
-            Utente medico = new Utente("a", "a", "diabetologo", null, null, null, null, null, null);
-            Utente paziente = new Utente("b", "b", "paziente", null, null, null, null, null, "a");
+            Diabetologo medico = new Diabetologo("a", "a", null, null, null, null, null, null);
+            Paziente paziente = new Paziente("b", "b", "paziente", null, null, null, null, null, "a");
 
             controller = new StoriaDatiPazienteController();
             
             // Iniettiamo i campi privati per simulare lo stato del controller
-            injectPrivateField(controller, "u", medico);
+            injectPrivateField(controller, "d", medico);
             injectPrivateField(controller, "p", paziente);
             
             // Popoliamo le liste interne (fattori, comorbidità, allergie, patologie)

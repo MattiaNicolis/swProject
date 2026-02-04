@@ -66,9 +66,9 @@ class MailControllerTest {
         // 2. Crea gli utenti di test
         // Nota: Assicurati che il costruttore corrisponda alla tua classe Utente. 
         // Ho usato stringhe generiche per i campi non rilevanti.
-        utenteSuccesso = new Utente("CF1", "pass", "paziente", "Utente Successo", null, null, null, "successo@test.it", null);
-        utenteFail = new Utente("CF2", "pass", "paziente", "Utente Fail", null, null, null, "fail@test.it", null);
-        mittente = new Utente("CF_ME", "pass", "diabetologo", "Io Mittente", null, null, null, "me@test.it", null);
+        utenteSuccesso = new Utente("CF1", "pass", "Utente", "Successo", null, null, null, "successo@test.it");
+        utenteFail = new Utente("CF2", "pass", "Utente", "Fail", null, null, null, "fail@test.it");
+        mittente = new Utente("CF_ME", "pass", "Io Mittente", null, null, null, "me@test.it", null);
 
         // 3. INIEZIONE MANUALE (La parte fondamentale che mancava)
         
@@ -78,8 +78,8 @@ class MailControllerTest {
         // Iniettiamo la mappa emailToNameMap popolata
         // Il controller usa questa mappa per verificare se l'email esiste
         Map<String, String> mappaTest = new HashMap<>();
-        mappaTest.put(utenteSuccesso.getMail(), utenteSuccesso.getNomeCognome());
-        mappaTest.put(utenteFail.getMail(), utenteFail.getNomeCognome());
+        mappaTest.put(utenteSuccesso.getMail(), utenteSuccesso.getNome() + " " + utenteSuccesso.getCognome());
+        mappaTest.put(utenteFail.getMail(), utenteFail.getNome() + " " + utenteFail.getCognome());
         
         injectPrivateField(controller, "emailToNameMap", mappaTest);
     }
