@@ -6,24 +6,22 @@ public class Utente {
 
 	private String cf;
 	private String pw;
-	private String ruolo;
-	private String nomeCognome;
+	private String nome;
+	private String cognome;
 	private LocalDate dataDiNascita;
 	private String luogoDiNascita;
 	private String sesso;
 	private String mail;
-	private String diabetologoRif;
 	
-	public Utente(String cf, String pw, String ruolo, String nomeCognome, LocalDate dataDiNascita, String luogoDiNascita, String sesso, String mail, String diabetologoRif) {
+	public Utente(String cf, String pw, String nome, String cognome, LocalDate dataDiNascita, String luogoDiNascita, String sesso, String mail) {
 		this.cf = cf;
 		this.pw = pw;
-		this.ruolo = ruolo;
-		this.nomeCognome = nomeCognome;
+		this.nome = nome;
+		this.cognome = cognome;
 		this.dataDiNascita = dataDiNascita;
 		this.sesso = sesso;
 		this.luogoDiNascita = luogoDiNascita;
 		this.mail = mail;
-		this.diabetologoRif = diabetologoRif;
 	}
 	
 	public boolean checkPw(String pw) {
@@ -38,20 +36,12 @@ public class Utente {
 		return pw;
 	}
 	
-	public String getRuolo() {
-		return ruolo;
+	public String getNome() {
+		return nome;
 	}
 
-	public boolean isDiabetologo() {
-    	return "diabetologo".equals(this.ruolo);
-	}
-
-	public boolean isPaziente() {
-		return "paziente".equals(this.ruolo);
-	}
-	
-	public String getNomeCognome() {
-		return nomeCognome;
+	public String getCognome() {
+		return cognome;
 	}
 	
 	public LocalDate getDataDiNascita() {
@@ -68,9 +58,5 @@ public class Utente {
 	
 	public String getMail() {
 		return mail;
-	}
-	
-	public String getDiabetologoRif() {
-		return diabetologoRif;
 	}
 }
