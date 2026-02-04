@@ -1,18 +1,18 @@
 package application.utils;
 
+import application.model.Diabetologo;
 import application.model.Mail;
 import application.model.Patologia;
+import application.model.Paziente;
 import application.model.Questionario;
 import application.model.Terapia;
 import application.model.TerapiaConcomitante;
-import application.model.Utente;
 
 public class Sessione {
-
 	private static Sessione instance;
 	
-	private Utente utente;
-	private Utente pazienteSelezionato;
+	private Diabetologo diabetologo;
+	private Paziente paziente;
 	private Terapia terapiaSelezionata;
 	private TerapiaConcomitante terapiaConcomitanteSelezionata;
 	private Patologia patologiaSelezionata;
@@ -30,35 +30,34 @@ public class Sessione {
 	}
 	
 	//------------------------------------
-	public void setUtente(Utente utente) {
-		this.utente = utente;
+	public void setPaziente(Paziente paziente) {
+		this.paziente = paziente;
 	}
 	
-	public Utente getUtente() {
-		return utente;
+	public Paziente getPaziente() {
+		return paziente;
+	}
+
+	public void setDiabetologo(Diabetologo diabetologo) {
+		this.diabetologo = diabetologo;
 	}
 	
+	public Diabetologo getDiabetologo() {
+		return diabetologo;
+	}
+	//------------------------------------
+
 	public void logout() {
-		setUtente(null);
+		setPaziente(null);
+		setDiabetologo(null);
 
 		// NULL ANCHE IL RESTO PER PULIZIA SICURA
-		setPazienteSelezionato(null);
 		setTerapiaSelezionata(null);
 		setTerapiaConcomitanteSelezionata(null);
 		setPatologiaSelezionata(null);
 		setMailSelezionata(null);
 		setQuestionarioSelezionato(null);
 	}
-
-	//---------------------------------------------------
-	public void setPazienteSelezionato(Utente pazienteSelezionato) {
-		this.pazienteSelezionato = pazienteSelezionato;
-	}
-	
-	public Utente getPazienteSelezionato() {
-		return pazienteSelezionato;
-	}
-
 	//--------------------------------------------------
 	public void setTerapiaSelezionata(Terapia terapia) {
 		this.terapiaSelezionata = terapia;
@@ -67,7 +66,6 @@ public class Sessione {
 	public Terapia getTerapiaSelezionata() {
 		return terapiaSelezionata;
 	}
-
 	//--------------------------------------------------------------------------------------
 	public void setTerapiaConcomitanteSelezionata(TerapiaConcomitante terapiaConcomitante) {
 		this.terapiaConcomitanteSelezionata = terapiaConcomitante;
@@ -76,7 +74,6 @@ public class Sessione {
 	public TerapiaConcomitante getTerapiaConcomitanteSelezionata() {
 		return terapiaConcomitanteSelezionata;
 	}
-
 	//--------------------------------------------------------
 	public void setPatologiaSelezionata(Patologia patologia) {
 		this.patologiaSelezionata = patologia;
@@ -85,7 +82,6 @@ public class Sessione {
 	public Patologia getPatologiaSelezionata() {
 		return patologiaSelezionata;
 	}
-
 	//-----------------------------------------
 	public void setMailSelezionata(Mail mail) {
 		this.mailSelezionata = mail;
