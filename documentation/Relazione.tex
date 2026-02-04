@@ -1,0 +1,401 @@
+\documentclass[12pt, a4paper, oneside]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+\usepackage{xcolor}
+\definecolor{azzurrino}{HTML}{1565C0}
+\definecolor{grigiochiaro}{HTML}{F5F5F5}
+\definecolor{grigioscuro}{HTML}{424242}
+
+\usepackage[
+    colorlinks=true,
+    linkcolor=grigioscuro,
+    citecolor=azzurrino,
+    urlcolor=azzurrino
+]{hyperref}
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries\color{azzurrino}}
+  {\filleft\Huge\thechapter}
+  {0pt}
+  {\titlerule[1pt]\vspace{1ex}\filright}
+  [\vspace{1ex}\titlerule]
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{azzurrino}}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{grigioscuro}}{\thesubsection}{1em}{}
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\titleformat{\subsubsection}
+  {\normalfont\large\bfseries\color{grigioscuro}}{\thesubsubsection}{1em}{}
+
+\usepackage[font=small, labelfont={bf, color=azzurrino}]{caption}
+
+\usepackage{fancyhdr}
+\setlength{\headheight}{25pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\color{grigioscuro}\leftmark}
+\fancyhead[R]{\color{azzurrino}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{azzurrino}\leaders\hrule height \headrulewidth\hfill}}
+
+\usepackage{enumitem}
+\setlist{nosep, leftmargin=1.5em}
+
+\usepackage{graphicx}
+\usepackage{bookmark}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage[normalem]{ulem}
+\usepackage{subcaption}
+\usepackage{soul}
+\usepackage{parskip}
+\usepackage{mdframed}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{listings, skins, breakable, theorems}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+
+\title{\Huge\bfseries Progetto di ingegneria del software \\[0.5ex]
+\textcolor{azzurrino}{Glicocare} \\[1ex]
+\Large UniVR - Dipartimento di Informatica \\[1.5ex]
+\Large A.A. 2024/25}
+\author{
+\Large{Marco Broccolato -- VR501013}\\[0.6em]
+\Large{Mattia Nicolis -- VR500356}\\[0.6em]
+\Large{Simone Pedretti -- VR500040}
+}
+\date{}
+
+% =================================
+\begin{document}
+    \frontmatter
+    \maketitle
+    \tableofcontents
+    \thispagestyle{empty}
+    \newpage
+
+    %===========================
+    \mainmatter
+
+    % --- CAPITOLO 1 - RISCRITTO SPECIFICHE DEL PROGETTO ---
+    \chapter{Specifiche e analisi dei requisiti}
+    Il sistema proposto consente l’accesso a personale medico e pazienti affetti da diabete.\\[0.2ex]
+    Gli utenti sono classificati in due ruoli distinti: \textcolor{azzurrino}{\textbf{Diabetologo}} e \textcolor{azzurrino}{\textbf{Paziente}}.\\[0.2ex]
+    L’accesso al sistema avviene tramite autenticazione mediante credenziali predefinite, fornite dagli amministratori di sistema, che determinano il caricamento della schermata iniziale associata al ruolo dell’utente autenticato.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1.1\linewidth]{../documentation/images/casi-uso-Totale.png}
+        \caption{Casi d'uso - diabetologo e paziente}
+    \end{figure}
+    \section{Use case}
+
+    \subsection{Diabetologo}
+    A seguito di una corretta autenticazione, il diabetologo accede alla propria home page, dalla quale può visualizzare i propri dati anagrafici e la lista dei pazienti affetti da diabete.
+
+    \medskip
+    \begin{tcolorbox}[
+        title=$\textbf{UC}_\text{d}$ -- Visualizza dati paziente,
+        colback=white,
+        colframe=black,
+        fonttitle=\bfseries
+    ]
+
+        \textbf{Attori:} diabetologo
+        
+        \medskip
+        \textbf{Precondizioni:} diabetologo ha effettuato correttamente l’autenticazione al sistema
+        
+        \medskip
+        \textbf{Flusso principale:}
+        \begin{enumerate}[label=$\triangleright$]
+            \item diabetologo accede al sistema
+            \item sistema mostra l’area riservata del diabetologo
+            \item diabetologo seleziona un paziente
+            \item sistema consente al diabetologo di:
+            \begin{itemize}[label=$\diamond$]
+                \item creare, modificare o eliminare una terapia
+                \item visualizzare l’andamento della glicemia e del peso corporeo
+                \item aggiungere o rimuovere dati dallo storico clinico del paziente
+                \item visualizzare lo storico dei questionari compilati
+            \end{itemize}
+            \item diabetologo visualizza i questionari non conformi
+            \item diabetologo visualizza i pazienti con valori glicemici fuori dal range
+        \end{enumerate}
+        
+        \medskip
+        \textbf{Postcondizioni:} dati visualizzati o modificati risultano aggiornati nel sistema
+    \end{tcolorbox}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{../documentation/images/activity-diagram-modifcaDatiPaziente.jpg}
+        \caption{Diagramma di sequenza - Ricevi Notifica}
+    \end{figure}
+
+    \begin{tcolorbox}[
+        title = $\text{UC}_\text{d}$ - Ricevi notifica,
+        colback=white,
+        colframe=black,
+        fonttitle=\bfseries
+    ]
+        \textbf{Attori:} diabetologo
+
+        \medskip
+        \textbf{Precondizioni:} diabetologo ha effettuto correttamente l'auteniticazione al sistema
+
+        \medskip
+        \textbf{Flusso principale:}
+        \begin{itemize}[label=$\triangleright$]
+            \item diabetologo accede al sistema
+            \item sistema mostra l'area riservata del siabetologo
+            \item diabetologo clicca sul bottone "... Mail"
+            \item sistema mostra l'area riservata alla mail
+            \item sistema consente al diabetologo di:
+            \begin{itemize}[label=$\diamond$]
+                \item inviare o rispondere a una mail
+                \item inviare una mail al paziente che ha compilato in maniera errata il questionario
+            \end{itemize}
+        \end{itemize}
+
+        \medskip
+        \textbf{Postcondizioni:}
+    \end{tcolorbox}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{../documentation/images/activity-diagram-riceviNotifica.jpeg}
+        \caption{Diagramma di sequenza - Modifica dati paziente}
+    \end{figure}
+
+    \subsection{Paziente}
+    A seguito di una corretta autenticazione, il paziente accede alla propria home page, dalla quale può visualizzare i propri dati anagrafici, i grafici relativi all’andamento della glicemia e del peso corporeo, le terapie assegnate e lo storico dei questionari compilati.
+
+    \begin{tcolorbox}[
+        title = $\text{UC}_\text{p}$ - Misurazione glicemia,
+        colback=white,
+        colframe=black,
+        fonttitle=\bfseries
+    ]
+        \textbf{Attori:} paziente
+
+        \medskip
+        \textbf{Precondizioni:} paziente ha effettuto correttamente l'auteniticazione al sistema
+
+        \medskip
+        \textbf{Flusso principale:}
+        \begin{itemize}[label=$\triangleright$]
+            \item paziente accede al sistema
+            \item sistema mostra l'area riservata del paziente
+            \item paziente inserisce il valore della glicemia, il momento della misurazione e l'ora
+        \end{itemize}
+
+        \medskip
+        \textbf{Postcondizioni:}
+    \end{tcolorbox}
+
+    \medskip
+
+    \begin{tcolorbox}[
+        title = $\text{UC}_\text{p}$ - Misurazione del peso corporeo,
+        colback=white,
+        colframe=black,
+        fonttitle=\bfseries
+    ]
+        \textbf{Attori:} paziente
+        
+        \textbf{Precondizioni:} paziente ha effettuto correttamente l'auteniticazione al sistema
+        
+        \textbf{Flusso principale:}
+        \begin{itemize}[label=$\triangleright$]
+            \item paziente accede al sistema
+            \item sistema mostra l’area riservata del paziente
+            \item paziente inserisce il valore del peso corporeo
+        \end{itemize}
+
+        \medskip
+        \textbf{Postcondizioni:}
+    \end{tcolorbox}
+
+    \medskip
+    \begin{tcolorbox}[
+        title = $\text{UC}_\text{p}$ - Compilazone questionario,
+        colback=white,
+        colframe=black,
+        fonttitle=\bfseries
+    ]
+        \textbf{Attori:} paziente
+        
+        \textbf{Precondizioni:} paziente ha effettuto correttamente l'auteniticazione al sistema
+        
+        \textbf{Flusso principale:}
+        \begin{itemize}[label=$\triangleright$]
+            \item paziente accede al sistema
+            \item sistema mostra l’area riservata del paziente
+            \item paziente clicca il bottone "Compila questionario"
+            \item sistema mostra l'area riservata alla compilazione del questionario
+            \item paziente inserisce i dati della terapia nei campi appositi
+        \end{itemize}
+
+        \medskip
+        \textbf{Postcondizioni:}
+    \end{tcolorbox}
+    
+    \medskip
+    \begin{tcolorbox}[
+        title = $\text{UC}_\text{p}$ - Riceve notifica,
+        colback=white,
+        colframe=black,
+        fonttitle=\bfseries
+    ]
+        \textbf{Attori:} paziente
+        
+        \textbf{Precondizioni:} paziente ha effettuto correttamente l'auteniticazione al sistema
+        
+        \textbf{Flusso principale:}
+        \begin{itemize}[label=$\triangleright$]
+            \item paziente accede al sistema
+            \item sistema mostra l’area riservata del paziente
+            \item paziente riceve una notifica se ha una o più terapie in corso (da iniziare)
+        \end{itemize}
+
+        \medskip
+        \textbf{Postcondizioni:}
+    \end{tcolorbox}
+    
+    \medskip
+    \begin{tcolorbox}[
+        title = $\text{UC}_\text{p}$ - Invia mail,
+        colback=white,
+        colframe=black,
+        fonttitle=\bfseries
+    ]
+        \textbf{Attori:} paziente
+        
+        \textbf{Precondizioni:} paziente ha effettuto correttamente l'auteniticazione al sistema
+        
+        \textbf{Flusso principale:}
+        \begin{itemize}[label=$\triangleright$]
+            \item paziente accede al sistema
+            \item sistema mostra l’area riservata del paziente
+            \item sistema mostra l'area riservata alla mail
+            \item sistema consente al diabetologo di:
+            \begin{itemize}[label=$\diamond$]
+                \item inviare o rispondere a una mail
+                \item inviare una mail al paziente che ha compilato in maniera errata il questionario
+            \end{itemize}
+        \end{itemize}
+
+        \medskip
+        \textbf{Postcondizioni:}
+    \end{tcolorbox}
+
+    \section{Activity diagram}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\linewidth]{../documentation/images/diagramma-attività-login.png}
+        \caption{Autenticazione}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{../documentation/images/activity-diagram-diabetologo.jpeg}
+        \caption{Diabetologo}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{../documentation/images/activity-diagram-paziente.jpeg}
+        \caption{Paziente}
+    \end{figure}
+
+    % --- CAPITOLO 2 - SPIEGAZIONE DEL MODO DI PROCEDERE ---
+    \chapter{Processo di sviluppo e pattern utilizzati}
+    \section{Metodologia di sviluppo}
+
+    In fase preliminare è stata condotta un'approfondita analisi dei requisiti, volta a identificare e formalizzare le funzionalità principali (\textit{core}) del progetto.
+
+    Il processo di sviluppo del software ha poi seguito un approccio metodologico \textbf{agile e incrementale}. Nonostante la natura iterativa del processo, all'interno di ogni ciclo di sviluppo è stata mantenuta una rigorosa linearità operativa articolata nelle fasi di \textit{progettazione}, \textit{implementazione} e \textit{validazione}.
+
+    Nello specifico, l'implementazione di ogni singolo caso d'uso (\textit{use-case}) è stata seguita da una fase di verifica puntuale (testing). In caso di esito negativo dei test, si è proceduto con attività di \textit{debugging} e \textit{refactoring}, iterando il processo fino al raggiungimento della stabilità e della conformità ai requisiti funzionali prefissati.
+
+    A conclusione del ciclo di sviluppo, l'attività si è focalizzata sulla stesura della documentazione tecnica definitiva, arricchita dalla modellazione UML tramite diagrammi di attività e di sequenza, per rappresentare dettagliatamente il flusso logico del software.
+
+    \section{Pattern Architetturali e Design Pattern}
+    L'architettura del sistema è stata definita seguendo pattern consolidati nell'ingegneria del software, al fine di garantire modularità, manutenibilità e una chiara separazione delle responsabilità.
+
+    \subsection{Model-View-Controller (MVC)}
+    A livello macroscopico, il progetto adotta il pattern architetturale \textbf{MVC}. Questo ha permesso di disaccoppiare la logica di presentazione dalla logica di business e dai dati:
+    \begin{itemize}
+        \item \textbf{Model:} Rappresenta lo stato dell'applicazione.
+        \item \textbf{View:} Si occupa della visualizzazione dei dati e dell'interazione con l'utente.
+        \item \textbf{Controller:} Gestisce il flusso delle operazioni, ricevendo gli input dalla View e aggiornando il Model di conseguenza.
+    \end{itemize}
+    
+    \subsection{Data Access Object (DAO)}
+    Per la gestione della persistenza è stato implementato il pattern \textbf{DAO}. Questo pattern astrae e incapsula tutti gli accessi alla base di dati (CRUD), nascondendo i dettagli complessi delle query SQL al resto dell'applicazione. Grazie ai DAO, la logica di business non dipende direttamente dal database, facilitando eventuali migrazioni o modifiche alla struttura dati.
+
+    \subsection{Singleton}
+    Il pattern \textbf{Singleton} è stato utilizzato per garantire l'univocità di determinate istanze critiche all'interno dell'applicazione.
+    \begin{itemize}
+        \item Un esempio è la classe \texttt{Sessione.java}: il Singleton assicura che esista una sola istanza attiva relativa all'utente corrente, prevenendo conflitti di accesso ai dati di sessione.
+        \item Un altro esempio è la classe \texttt{Navigator.java}: utilizzata per centralizzare la logica di navigazione, permettendo il cambio controllato delle viste (pagine) all'interno dell'interfaccia utente.
+    \end{itemize}
+
+    \subsection{Service Layer (Business Logic)}
+    Per orchestrare le operazioni tra il Controller e il livello di persistenza (DAO), è stato introdotto un \textbf{Service Layer} (rappresentato dalla classe \texttt{AdminService}).
+    Questa classe agisce come un punto di ingresso unificato per la logica di business: riceve le richieste dai controller, applica le regole di dominio necessarie e coordina le chiamate ai vari DAO. Sebbene tecnicamente definito come \textit{Service Layer}, questo componente applica il principio del \textbf{Facade Pattern}, semplificando l'interfaccia verso i sottosistemi di dati e nascondendo la complessità delle transazioni sottostanti.
+
+    % --- CAPITOLO 3 - SPIEGAZIONE DEI TEST EFFETTUATI ---
+    \chapter{Test}
+    La fase di testing rappresenta una componente critica del ciclo di vita del software, essenziale per garantire la robustezza, l'affidabilità e la corretta esecuzione delle funzionalità implementate. In linea con la metodologia agile adottata, l'attività di verifica non è stata relegata alla sola fase finale, ma è stata integrata durante tutto il processo di sviluppo.
+
+    La strategia principale adottata è stata quella dello \textbf{Unit Testing}. Questo approccio consiste nell'isolare e testare singole porzioni di codice (solitamente metodi o classi) per accertarsi che funzionino correttamente in autonomia, indipendentemente dal resto del sistema.
+
+    Per l'implementazione automatizzata dei test è stato utilizzato il framework \textbf{JUnit}, lo standard industriale per l'ecosistema Java.
+
+    \section{Test degli sviluppatori}
+    \subsection{Test della Logica}
+    In questa fase sono stati eseguiti test mirati a validare la logica applicativa, sottoponendo il sistema a diverse tipologie di input (validi, errati e limiti) per verificare la conformità della risposta rispetto al comportamento atteso.
+    
+    Tra i principali scenari di test effettuati si evidenziano:
+    \begin{itemize}
+        \item \textbf{Meccanismo di autenticazione:} Verifica della sicurezza in fase di login. È stato accertato che l'inserimento di credenziali errate o non presenti nel database comporti il blocco dell'accesso, reindirizzando l'utente alla schermata di errore appropriata.
+        \item \textbf{Dashboard del Diabetologo:} Verifica del corretto recupero dei dati dal database e del popolamento dinamico delle liste pazienti e delle metriche nella Home Page dedicata al medico.
+        \item \textbf{Sistema di notifica:} Validazione del modulo di comunicazione, con particolare attenzione al corretto invio e alla ricezione delle e-mail di avviso generate dal sistema.
+        \item \textbf{Gestione Dati Pazienti (CRUD):} Test approfonditi sulle operazioni di inserimento, aggiornamento ed eliminazione dati. È stata verificata la robustezza del sistema a fronte di \textit{input} non validi (es. formati errati) o dati mancanti, assicurando che le eccezioni vengano gestite senza causare crash del software.
+    \end{itemize}
+    
+    \subsection{Validazione dell'Interfaccia Grafica (GUI)}
+    Oltre ai test automatici sulla logica, è stata eseguita un'estesa fase di \textbf{testing manuale} sull'interfaccia utente.
+    L'obiettivo di questa fase è stato verificare la robustezza del layer di presentazione (View) e la corretta integrazione con il Controller.
+    
+    Nello specifico, è stata condotta una verifica esaustiva di tutti gli elementi interattivi (pulsanti, form) per accertarsi che:
+    \begin{itemize}
+        \item Ogni azione scatenata dall'utente (es. click su un pulsante di conferma) venisse gestita correttamente senza generare errori a runtime o crash dell'applicazione.
+        \item La navigazione tra le diverse schermate avvenisse in modo fluido e coerente, senza "link rotti" o pagine irraggiungibili.
+        \item Il sistema fornisse un feedback visivo adeguato ad ogni interazione (es. messaggi di conferma o alert di errore), garantendo una buona esperienza utente.
+    \end{itemize}
+
+    \section{Test utente generico}
+
+\end{document}
