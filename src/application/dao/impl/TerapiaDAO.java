@@ -198,22 +198,22 @@ public class TerapiaDAO implements application.dao.interfaces.TerapiaDAOinterfac
 	}
 
 	public boolean aggiornaNumQuestionari(Terapia t) {
-		String query = "UPDATE terapie SET questionari = questionari + 1 WHERE id = ?";
+    String query = "UPDATE terapie SET questionari = questionari + 1 WHERE id = ?";
 
-		try (Connection conn = Database.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(query)) {
+    try (Connection conn = Database.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
 
-			stmt.setInt(1, t.getId());
+        stmt.setInt(1, t.getId());
 
-			int rows = stmt.executeUpdate();
-			
-			return rows > 0;
+        int rows = stmt.executeUpdate();
+        
+        return rows > 0;
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 
 	public Terapia getTerapiaById(int id) {
 		String query = "SELECT * FROM terapie WHERE id = ?";

@@ -74,6 +74,7 @@ public class QuestionarioDAO implements application.dao.interfaces.QuestionarioD
 	}
 
 	public List<Questionario> getQuestionariNonConformi() {
+
 		List<Questionario> lista = new ArrayList<>();
 		String query = """
 			SELECT q.* FROM questionario q
@@ -131,6 +132,7 @@ public class QuestionarioDAO implements application.dao.interfaces.QuestionarioD
 	}
 
 	public boolean esisteQuestionarioOggi(int terapiaId) {
+
 		// SELECT 1 è un'ottimizzazione: non ci interessa leggere i dati, solo sapere se c'è una riga.
 		String query = "SELECT 1 FROM questionario WHERE terapia_id = ? AND giornoCompilazione = ?";
 
@@ -150,4 +152,6 @@ public class QuestionarioDAO implements application.dao.interfaces.QuestionarioD
 			return false;
 		}
 	}
+
+
 }

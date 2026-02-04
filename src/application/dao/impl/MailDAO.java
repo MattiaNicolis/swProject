@@ -13,6 +13,7 @@ import java.util.List;
 import application.database.Database;
 import application.model.Mail;
 import application.model.Utente;
+import application.model.UtenteInfo;
 
 public class MailDAO implements application.dao.interfaces.MailDAOinterface {
 
@@ -114,5 +115,46 @@ public class MailDAO implements application.dao.interfaces.MailDAOinterface {
             ev.printStackTrace();
             return false;
         }
+    }
+
+    public String getMailDiabetologoRif(String cf) {
+        String query = "SELECT mail FROM diabetologi WHERE cf = ?";
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, cf);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("mail");
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<UtenteInfo> getUtenteInfo(String role) {
+        List<UtenteInfo> lista = new ArrayList<>();
+        String query = "SELECT nome, cognome, mail FROM " + role;
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    UtenteInfo ui = new UtenteInfo(
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getString("mail"));
+                    lista.add(ui);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }

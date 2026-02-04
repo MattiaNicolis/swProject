@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.database.Database;
-import application.model.Utente;
+import application.model.Paziente;
 
-public class UtenteDAO implements application.dao.interfaces.UtenteDAOinterface {
+public class PazienteDAO implements application.dao.interfaces.PazienteDAOinterface {
 
-    public Utente login(String cf, String password) {
-        String query = "SELECT * FROM utenti WHERE CF = ? AND pw = ?";
+    public Paziente loginPaziente(String cf, String password) {
+        String query = "SELECT * FROM pazienti WHERE CF = ? AND pw = ?";
         try(Connection conn = Database.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -22,18 +22,18 @@ public class UtenteDAO implements application.dao.interfaces.UtenteDAOinterface 
             
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Utente utente = new Utente(
-                        rs.getString("CF"),
+                    Paziente paziente = new Paziente(
+                        rs.getString("cf"),
                         rs.getString("pw"),
-                        rs.getString("ruolo"),
-                        rs.getString("nomeCognome"),
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
                         rs.getDate("dataDiNascita").toLocalDate(),
                         rs.getString("luogoDiNascita"),
                         rs.getString("sesso"),
                         rs.getString("mail"),
-                        rs.getString("diabetologo_rif")
+                        rs.getString("diabetologoRif")
                     );
-                    return utente;
+                    return paziente;
                 }
             }
 
@@ -43,28 +43,26 @@ public class UtenteDAO implements application.dao.interfaces.UtenteDAOinterface 
         return null;
     }
 
-    public List<Utente> getPeopleByRole(String role) {
-        List<Utente> lista = new ArrayList<>();
-        String query = "SELECT * FROM utenti WHERE ruolo = ?";
+    public List<Paziente> getPazienti() {
+        List<Paziente> lista = new ArrayList<>();
+        String query = "SELECT * FROM pazienti";
         try(Connection conn = Database.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, role);
-
             try(ResultSet rs = stmt.executeQuery()) {
                 while(rs.next()) {
-                    Utente utente = new Utente(
-                        rs.getString("CF"),
+                    Paziente paziente = new Paziente(
+                        rs.getString("cf"),
                         rs.getString("pw"),
-                        rs.getString("ruolo"),
-                        rs.getString("nomeCognome"),
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
                         rs.getDate("dataDiNascita").toLocalDate(),
                         rs.getString("luogoDiNascita"),
                         rs.getString("sesso"),
                         rs.getString("mail"),
-                        rs.getString("diabetologo_rif")
+                        rs.getString("diabetologoRif")
                     );
-                    lista.add(utente);
+                    lista.add(paziente);
                 }
             }
 
