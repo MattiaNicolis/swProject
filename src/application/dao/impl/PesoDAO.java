@@ -12,6 +12,7 @@ import application.model.Peso;
 
 public class PesoDAO implements application.dao.interfaces.PesoDAOinterface {
     
+	//Restituisce la lista dei pesi corporei di un determinato paziente a partire dal suo cf
     public List<Peso> getPesoByCf(String cf) {
         List<Peso> lista = new ArrayList<>();
         String query = "SELECT * FROM peso WHERE cf = ? AND giorno >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) ORDER BY giorno ASC;";
@@ -37,6 +38,7 @@ public class PesoDAO implements application.dao.interfaces.PesoDAOinterface {
 		return lista;
     }
 
+	//Crea una nuovo istanza di peso per un determinato paziente e lo inserisce nel database
 	public boolean creaPeso(Peso p) {
 		String query = "INSERT INTO peso (cf, valore, giorno) VALUES (?, ?, ?)";
 		try (Connection conn = Database.getConnection(); 
@@ -59,6 +61,7 @@ public class PesoDAO implements application.dao.interfaces.PesoDAOinterface {
 		}
 	}
 
+	//Modifica una determinata istanza di peso
 	public boolean aggiornaPeso(Peso p) {
 		String query = "UPDATE peso SET valore = ?, giorno = ? WHERE id = ?";
 		try (Connection conn = Database.getConnection();

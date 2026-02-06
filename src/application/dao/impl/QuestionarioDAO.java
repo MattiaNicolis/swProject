@@ -15,6 +15,7 @@ import application.model.Utente;
 
 public class QuestionarioDAO implements application.dao.interfaces.QuestionarioDAOinterface {
 
+	//Crea una nuova istanza di questionario di un determinato paziente e lo inserisce nel database
     public boolean creaQuestionario(Questionario q) {
         String query = "INSERT INTO questionario (CF, giornoCompilazione, nomeFarmaco, dosiGiornaliere, quantità, sintomi, controllato, terapia_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		try (Connection conn = Database.getConnection(); 
@@ -43,6 +44,7 @@ public class QuestionarioDAO implements application.dao.interfaces.QuestionarioD
 		}
     }
 
+	//Restituisce la lista dei questionari di un determinato paziente
 	public List<Questionario> getQuestionariByPaziente(Utente p) {
 		List<Questionario> lista = new ArrayList<>();
         String query = "SELECT * FROM questionario WHERE CF = ? ORDER BY giornoCompilazione DESC";
@@ -73,6 +75,7 @@ public class QuestionarioDAO implements application.dao.interfaces.QuestionarioD
         return lista;
 	}
 
+	//Restituisce la lista di tutti i questionari non conformi di tutti i pazienti del sistema
 	public List<Questionario> getQuestionariNonConformi() {
 
 		List<Questionario> lista = new ArrayList<>();
@@ -113,6 +116,7 @@ public class QuestionarioDAO implements application.dao.interfaces.QuestionarioD
 		return lista;
 	}
 
+	//Setta il valore di controllato se il diabetologo ha verifica il motivo del questionario non conforme
 	public boolean segnaComeControllato(Questionario q) {
 		String query = "UPDATE questionario SET controllato = 1 WHERE id = ?";
 		try (Connection conn = Database.getConnection();
@@ -131,6 +135,7 @@ public class QuestionarioDAO implements application.dao.interfaces.QuestionarioD
 		}
 	}
 
+	//Restistuice un valore booleano se c'è o meno un questionario da compilare per quel determinato giorno
 	public boolean esisteQuestionarioOggi(int terapiaId) {
 
 		// SELECT 1 è un'ottimizzazione: non ci interessa leggere i dati, solo sapere se c'è una riga.

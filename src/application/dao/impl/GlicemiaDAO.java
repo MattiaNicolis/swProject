@@ -13,6 +13,7 @@ import application.model.Utente;
 
 public class GlicemiaDAO implements application.dao.interfaces.GlicemiaDAOinterface {
     
+	//Restituisce la lista di tutte le glicemie di tutti i pazienti
     public List<Glicemia> getAllGlicemia() {
         List<Glicemia> lista = new ArrayList<>();
         String query = "SELECT * FROM glicemia ORDER BY giorno DESC, orario ASC";
@@ -35,6 +36,7 @@ public class GlicemiaDAO implements application.dao.interfaces.GlicemiaDAOinterf
         return lista;
     }
 
+	//Crea una nuova istanza di glicemia per un determinato paziente e lo inserisce nel database
     public boolean creaGlicemia(Glicemia g) {
         String query = "INSERT INTO glicemia (CF, valore, giorno, orario, indicazioni) VALUES (?, ?, ?, ?, ?)";
 	    try (Connection conn = Database.getConnection();
@@ -60,6 +62,7 @@ public class GlicemiaDAO implements application.dao.interfaces.GlicemiaDAOinterf
 	    }
     }
 
+	//Restituisce la lista delle glicemia solo del paziente p
 	public List<Glicemia> getGlicemiaByPaziente(Utente p) {
 		List<Glicemia> lista = new ArrayList<>();
 		String query = "SELECT * FROM glicemia WHERE CF = ? ORDER BY giorno ASC, orario ASC";

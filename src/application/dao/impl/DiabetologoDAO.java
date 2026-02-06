@@ -10,6 +10,7 @@ import application.model.Diabetologo;
 
 public class DiabetologoDAO implements application.dao.interfaces.DiabetologoDAOinterface {
 
+    //Ritorna i dati di un particolare diabetologo a partire dal suo cf e pw
     public Diabetologo loginDiabetologo(String cf, String password) {
         String query = "SELECT * FROM diabetologi WHERE CF = ? AND pw = ?";
         try(Connection conn = Database.getConnection();
@@ -40,6 +41,7 @@ public class DiabetologoDAO implements application.dao.interfaces.DiabetologoDAO
         return null;
     }
 
+    //Costruisce una stringa formata da nome e cognome del diabetologo a partire dal suo cf
     public String getNomeCognomeDiabetologoByCf(String cf) {
         String query = "SELECT nome, cognome FROM diabetologi WHERE CF = ?";
         try(Connection conn = Database.getConnection();

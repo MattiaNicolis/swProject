@@ -17,6 +17,7 @@ import application.model.UtenteInfo;
 
 public class MailDAO implements application.dao.interfaces.MailDAOinterface {
 
+    //Restituisce la lista delle mail ricevute di un determinato utente (diabetologo/paziente)
     public List<Mail> getMailRicevute(Utente utente) {
         List<Mail> lista = new ArrayList<>();
         String query = "SELECT * FROM mail WHERE destinatario = ? ORDER BY giorno DESC, orario DESC";
@@ -45,6 +46,7 @@ public class MailDAO implements application.dao.interfaces.MailDAOinterface {
         return lista;
     }
 
+    //Restituisce la lista delle mail inviate da un particolare utente p (diabetologo/paziente)
     public List<Mail> getMailInviate(Utente utente) {
         List<Mail> lista = new ArrayList<>();
         String query = "SELECT * FROM mail WHERE mittente = ? ORDER BY giorno DESC, orario DESC";
@@ -73,6 +75,7 @@ public class MailDAO implements application.dao.interfaces.MailDAOinterface {
         return lista;
     }
 
+    //Crea una nuova mail da inviare e la inserisce nel databse
     public boolean scriviMail(Mail m) {
         String query = "INSERT INTO mail (mittente, destinatario, oggetto, corpo, giorno, orario, letta) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try (Connection conn = Database.getConnection(); 
@@ -100,6 +103,7 @@ public class MailDAO implements application.dao.interfaces.MailDAOinterface {
 	    }
     }
 
+    //Seleziona il contenuto della mail che si vuole visualizzare
     public boolean vediMail(Mail m) {
         String query = "UPDATE mail SET letta = ? WHERE id = ?";
         try (Connection conn = Database.getConnection();
@@ -117,6 +121,7 @@ public class MailDAO implements application.dao.interfaces.MailDAOinterface {
         }
     }
 
+    //Restiusce la mail del del diabetologo di riferimento di un determinato paziente a partire dal cf del diabetolo
     public String getMailDiabetologoRif(String cf) {
         String query = "SELECT mail FROM diabetologi WHERE cf = ?";
         try (Connection conn = Database.getConnection();
@@ -137,6 +142,7 @@ public class MailDAO implements application.dao.interfaces.MailDAOinterface {
         }
     }
 
+    //Restituisce una lista di informazioni (nome, cognome, mail) di un determinato utente (diabetologo/paziente) a partire dal ruolo
     public List<UtenteInfo> getUtenteInfo(String role) {
         List<UtenteInfo> lista = new ArrayList<>();
         String query = "SELECT nome, cognome, mail FROM " + role;

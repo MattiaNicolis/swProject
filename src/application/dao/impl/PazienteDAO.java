@@ -12,6 +12,7 @@ import application.model.Paziente;
 
 public class PazienteDAO implements application.dao.interfaces.PazienteDAOinterface {
 
+    //Restituisce i dati di un determinato paziente a partire dal suo cf e pw
     public Paziente loginPaziente(String cf, String password) {
         String query = "SELECT * FROM pazienti WHERE CF = ? AND pw = ?";
         try(Connection conn = Database.getConnection();
@@ -43,6 +44,7 @@ public class PazienteDAO implements application.dao.interfaces.PazienteDAOinterf
         return null;
     }
 
+    //Restituisce la lista di tutti i pazienti presenti nel sistema
     public List<Paziente> getPazienti() {
         List<Paziente> lista = new ArrayList<>();
         String query = "SELECT * FROM pazienti";

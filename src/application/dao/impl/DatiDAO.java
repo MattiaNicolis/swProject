@@ -13,6 +13,7 @@ import application.model.Utente;
 
 public class DatiDAO implements application.dao.interfaces.DatiDAOinterface {
     
+    //Restituisce la lista del tipo di dato del paziente
     public List<Dato> getDatiByPaziente(Utente p, String tipo) {
         List<Dato> lista = new ArrayList<>();
         String query = "SELECT * FROM " + tipo + " WHERE CF = ? ORDER BY nome";
@@ -37,6 +38,7 @@ public class DatiDAO implements application.dao.interfaces.DatiDAOinterface {
         return lista;
     }
     
+    //Crea un nuovo dato conoscendo il tipo e lo inserisce nel database
     public boolean creaDato(Dato d, String tipo) {
         String query = "INSERT INTO " + tipo + " (CF, nome, modificato) VALUES (?, ?, ?)";
 		try(Connection conn = Database.getConnection();
@@ -59,6 +61,7 @@ public class DatiDAO implements application.dao.interfaces.DatiDAOinterface {
 		}
     }
 
+    //Elimina dal database un particolare tipo di dato
     public boolean eliminaDato(Dato d, String tipo) {
         String query = "DELETE FROM " + tipo + " WHERE CF = ? AND nome = ?";
         try(Connection conn = Database.getConnection();
