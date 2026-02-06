@@ -29,32 +29,22 @@ import javafx.scene.layout.VBox;
 
 public class MailController {
 	
-	// --- SEZIONE VARIABILI LOCALI ---	
+	// Variabili
 	private Utente u;
 	private List<Mail> mailRicevute = new ArrayList<>();
 	private List<Mail> mailInviate = new ArrayList<>();
 	private List<UtenteInfo> diabetologi = new ArrayList<>();
 	private List<UtenteInfo> pazienti = new ArrayList<>();
-
 	private Map<String, String> emailToNameMap = new HashMap<>();
-
 	private FilteredList<Mail> currentFilteredList;
 
-	// --- SEZIONE PAGINE ---
+	// FXML
 	@FXML private VBox scriviPanel;
-	
-	// --- SEZIONE BOTTONI ---
 	@FXML private Button bottoneIndietro;
-	
-	// --- SEZIONE TEXTFIELD ---
 	@FXML private TextField searchMailBar;
 	@FXML private TextField destinatarioField;
 	@FXML private TextField oggettoField;
-	
-	// --- SEZIONE TEXTAREA ---
 	@FXML private TextArea corpoArea;
-	
-	// --- SEZIONI LISTEVIEW ---
 	@FXML private ListView<Mail> listaMail;
 	
 	// LABEL
@@ -64,6 +54,7 @@ public class MailController {
 	@FXML private Label headerLabel;
 	
 	@FXML public void initialize() throws IOException{
+		// Recupero utente in sessione
 		if(Sessione.getInstance().getPaziente() != null) {
 			u = Sessione.getInstance().getPaziente();
 		} else if (Sessione.getInstance().getDiabetologo() != null) {
@@ -75,50 +66,36 @@ public class MailController {
             return;
         }
 		
+		// Caricamento dati dal database
 		caricaDati();
 
+		// setup interfaccia
 		setupInterface();
-
-		searchMailBar.textProperty().addListener((obs, oldVal, newVal) -> updateFilter(newVal));
-
-		// MAIL RICEVUTE DI DEFAULT
-		showMailRicevute(null);
-		
-		mailNonLette.setText("Non lette: " + AdminService.contatoreMailNonLette(mailRicevute));
-		
-		// VEDI UNA SPECIFICA MAIL
-		listaMail.setOnMouseClicked(e -> {
-			Mail selectedMail = listaMail.getSelectionModel().getSelectedItem();
-			if(selectedMail != null) {
-				try {
-					Sessione.getInstance().setMailSelezionata(selectedMail);
-					Navigator.getInstance().switchToVediMail(e);
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-	} // FINE INITIALIZE ------------
+	}
 
 	private void caricaDati() {
 		mailInviate = AdminService.loadMailInviate(u);
 		mailRicevute = AdminService.loadMailRicevute(u);
+		// GetUtenteInfo per mappatura email-nome, senza prendere tutti i dati dal database
 		diabetologi = AdminService.getUtenteInfo("diabetologi");
-		if(u instanceof Diabetologo)
+		// Se utente è diabetologo, carica anche i pazienti per la mappatura
+		if(u instanceof Diabetologo) {
 			pazienti = AdminService.getUtenteInfo("pazienti");
-
+			populateNameMap(pazienti);
+		}
 		populateNameMap(diabetologi);
-        populateNameMap(pazienti);
 	}
 
 	private void populateNameMap(List<UtenteInfo> utenti) {
         if(utenti == null) return;
+		// Associa mail a nome utente
         for(UtenteInfo utente : utenti) {
             emailToNameMap.put(utente.getMail(), utente.getNomeCognome());
         }
     }
 	
 	private void setupInterface() {
+		// Se utente è paziente, mostra mail diabetologo di riferimento
         if (u instanceof Paziente) {
 			Paziente p = (Paziente) u; 
         
@@ -130,6 +107,26 @@ public class MailController {
             mailDiabetologo.setVisible(false);
             labelDiabetologo.setVisible(false);
         }
+
+		searchMailBar.textProperty().addListener((obs, oldVal, newVal) -> updateFilter(newVal));
+
+		// Mail ricevute di default nell'interfaccia
+		showMailRicevute(null);
+		
+		mailNonLette.setText("Non lette: " + AdminService.contatoreMailNonLette(mailRicevute));
+		
+		// Visualizza Mail al click
+		listaMail.setOnMouseClicked(e -> {
+			Mail selectedMail = listaMail.getSelectionModel().getSelectedItem();
+			if(selectedMail != null) {
+				try {
+					Sessione.getInstance().setMailSelezionata(selectedMail);
+					Navigator.getInstance().switchToVediMail(e);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
     }
 
 	private enum MailResult {
@@ -139,6 +136,7 @@ public class MailController {
 		FAILURE
 	}
 	
+	// Logica invio mail
 	private MailResult trySendMail(String destinatario, String oggetto, String corpo) {
 		if(destinatario == null || destinatario.isBlank() || oggetto == null || oggetto.isBlank()
 			|| corpo == null || corpo.isBlank()) {
@@ -158,6 +156,8 @@ public class MailController {
 			return MailResult.FAILURE;
 		}
 	}
+
+	// Invio mail parte grafica
 	@FXML
 	private void handleMail(ActionEvent event) throws IOException {
 		MailResult result = trySendMail(destinatarioField.getText(), oggettoField.getText(), corpoArea.getText());
@@ -178,18 +178,21 @@ public class MailController {
 		
 	}
 	
+	// Visualizza mail ricevute
 	@FXML
     private void showMailRicevute(ActionEvent e) {
         setupListView(mailRicevute, false);
 		headerLabel.setText("Posta arrivata");
     }
 
+	// Visualizza mail inviate
     @FXML
     private void showMailInviate(ActionEvent e) {
         setupListView(mailInviate, true);
 		headerLabel.setText("Posta inviata");
     }
 
+	// Configura ListView per visualizzare le mail
 	private void setupListView(List<Mail> listaSorgente, boolean isInviata) {
         searchMailBar.clear();
         currentFilteredList = new FilteredList<>(FXCollections.observableArrayList(listaSorgente), p -> true);
@@ -206,14 +209,17 @@ public class MailController {
                 } else {
                     String targetEmail = isInviata ? mail.getDestinatario() : mail.getMittente();
                     
+					// Ottieni nome tramite mappa mail - nome
                     String displayName = emailToNameMap.getOrDefault(targetEmail, targetEmail);
 
+					// Anteprima del corpo della mail
                     String preview = mail.getCorpo().split("\n")[0];
                     if (preview.length() > 30) preview = preview.substring(0, 30) + "...";
 
                     String stato = "";
                     String stile = "";
 
+					// Stile e stato mail
                     if (!mail.getLetta() && !isInviata) {
                         stile = "-fx-font-weight: bold; -fx-background-color: #f0f8ff;";
                     } else if (isInviata && !mail.getLetta()) {
@@ -229,6 +235,7 @@ public class MailController {
         });
     }
 	
+	// Filtro ricerca mail
 	private void updateFilter(String filterText) {
         if (currentFilteredList == null) return;
         
@@ -247,12 +254,14 @@ public class MailController {
         });
     }
 
+	// Mostra Pannello Scrivi mail
 	@FXML
     public void showCompose() {
         scriviPanel.setVisible(true);
         scriviPanel.setManaged(true);
     }
 
+	// Nascondi Pannello Scrivi mail
     @FXML
     private void hideCompose() {
         scriviPanel.setVisible(false);
@@ -262,12 +271,14 @@ public class MailController {
         corpoArea.clear();
     }
     
+	// Rispondi metodo
     public void rispondi(String mail, String oggetto) {
 		destinatarioField.clear();
 		destinatarioField.setText(mail);
 		oggettoField.clear();
 		String nuovoOggetto = oggetto;
     
+		// Aggiunta automatica "Re:" se non presente
 		if (nuovoOggetto != null && !nuovoOggetto.trim().toUpperCase().startsWith("RE:")) {
 			nuovoOggetto = "Re: " + nuovoOggetto;
 		}
@@ -279,6 +290,7 @@ public class MailController {
 	// NAVIGAZIONE
 	@FXML
 	private void indietro(ActionEvent event) throws IOException {
+		// Torna alla pagina precedente in base al tipo di utente
 		if (u instanceof Diabetologo) {
 			Navigator.getInstance().switchToDiabetologoPage(event);
         } else if (u instanceof Paziente) {

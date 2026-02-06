@@ -33,6 +33,7 @@ public class StoriaDatiPazienteController {
 	private List<TerapiaConcomitante> terapieConcomitanti = new ArrayList<>();
 	private List<Patologia> patologie = new ArrayList<>();
 	
+	// FXML
 	@FXML private ComboBox<String> tipologia;
 	@FXML private TextField nomeField;
 	@FXML private TextField nomePatologiaField;
@@ -45,6 +46,7 @@ public class StoriaDatiPazienteController {
 	
 	@FXML
 	private void initialize() {
+		// Recuper diabetolog in sessione e paziente selezionato
 		d = Sessione.getInstance().getDiabetologo();
 		p = Sessione.getInstance().getPaziente();
 
@@ -112,6 +114,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void aggiungiFattoreComorbiditàAllergia(ActionEvent event) throws IOException { 
 		StoriaDatiPazienteResult result = tryCreateFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
@@ -127,6 +130,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
+
 	private StoriaDatiPazienteResult tryRemoveFattoreComorbiditàAllergie(String tipo, String nome) {
 		if(nome == null || nome.isBlank() || tipo == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -155,6 +159,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.SUCCESS;
 		}
 	}
+
 	@FXML
 	private void rimuoviFattoreComorbiditàAllergia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemoveFattoreComorbiditàAllergie(tipologia.getValue(), nomeField.getText());
@@ -198,6 +203,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void aggiungiPatologia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryCreatePatologia(
@@ -218,6 +224,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
+
 	private StoriaDatiPazienteResult tryRemovePatologia(String nome, LocalDate dataInizio, String indicazioni) {
 		if(nome == null || nome.isBlank()) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -237,6 +244,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void rimuoviPatologia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemovePatologia(
@@ -286,6 +294,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void aggiungiTerapia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryCreateTerapiaConcomitante(
@@ -306,6 +315,7 @@ public class StoriaDatiPazienteController {
 			}
 		}
 	}
+
 	private StoriaDatiPazienteResult tryRemoveTerapia(String nome, LocalDate dataInizio, LocalDate dataFine) {
 		if(nome == null || nome.isBlank() || dataInizio == null) {
 			return StoriaDatiPazienteResult.EMPTY_FIELDS;
@@ -328,6 +338,7 @@ public class StoriaDatiPazienteController {
 			return StoriaDatiPazienteResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void rimuoviTerapia(ActionEvent event) throws IOException {
 		StoriaDatiPazienteResult result = tryRemoveTerapia(

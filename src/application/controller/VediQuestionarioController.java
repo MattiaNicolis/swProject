@@ -34,10 +34,10 @@ public class VediQuestionarioController {
     private void initialize() {
         q = Sessione.getInstance().getQuestionarioSelezionato();
 
-        if(Sessione.getInstance().getPaziente() != null) {
-			u = Sessione.getInstance().getPaziente();
-		} else if (Sessione.getInstance().getDiabetologo() != null) {
+        if(Sessione.getInstance().getDiabetologo() != null) {
 			u = Sessione.getInstance().getDiabetologo();
+		} else if (Sessione.getInstance().getPaziente() != null) {
+			u = Sessione.getInstance().getPaziente();
 		}
 		if (u == null) {
             MessageUtils.showError("Errore di sessione: Utente non trovato.");

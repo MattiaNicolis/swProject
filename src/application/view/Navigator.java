@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class Navigator {
 	
-	// --- SINGLETON ---
+	// Singleton
     private static Navigator instance;
 
     private Stage stage; // riferimento alla finestra principale
@@ -32,49 +32,49 @@ public class Navigator {
     public void setStage(Stage stage) {
         this.stage = stage;
 		stage.setTitle("Software per pazienti diabetici");
-		Image icon = new Image(getClass().getResourceAsStream("/resources/images/logo.png"));
+		Image icon = new Image(getClass().getResourceAsStream("/risorse/images/logo.png"));
 		stage.getIcons().add(icon);
     }
 	
 	//---------------------------------------------------------------
 	public void switchToLogin(ActionEvent event) throws IOException {
-		loadScene("/resources/fxml/Login.fxml");
+		loadScene("/risorse/fxml/Login.fxml");
 	}
 
 	//-------------------------------------------------------------------------
 	public void switchToDiabetologoPage(ActionEvent event) throws IOException {
-		loadScene("/resources/fxml/DiabetologoPage.fxml");
+		loadScene("/risorse/fxml/DiabetologoPage.fxml");
 	}
 			
 	//----------------------------------------------------------------------
 	public void switchToPazientePage(ActionEvent event) throws IOException {
-		loadScene("/resources/fxml/PazientePage.fxml");
+		loadScene("/risorse/fxml/PazientePage.fxml");
 	}
 	
 	//------------------------------------------------------------------------------------
 	public void switchToMostraDatiPaziente(Event event) throws IOException {
-		loadScene("/resources/fxml/MostraDatiPaziente.fxml");
+		loadScene("/risorse/fxml/MostraDatiPaziente.fxml");
 	}
 	
 	public void switchToMostraPatologia(Event event) throws IOException {
-		loadScene("/resources/fxml/PatologiaPregressa.fxml");
+		loadScene("/risorse/fxml/PatologiaPregressa.fxml");
 	}
 	
 	public void switchToMostraTerapiaConcomitante(Event event) throws IOException {
-		loadScene("/resources/fxml/TerapiaConcomitante.fxml");
+		loadScene("/risorse/fxml/TerapiaConcomitante.fxml");
 	}
 	
 	//------------------------------------------------------------------
 	public void switchToMailPage(Event event) throws IOException {
-		loadScene("/resources/fxml/MailPage.fxml");
+		loadScene("/risorse/fxml/MailPage.fxml");
 	}
 	
 	public void switchToVediMail(Event event) throws IOException {
-		loadScene("/resources/fxml/VediMail.fxml");
+		loadScene("/risorse/fxml/VediMail.fxml");
 	}
 	
 	public void switchToRispondi(Event event, String mail, String oggetto) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/MailPage.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/risorse/fxml/MailPage.fxml"));
         Parent root = loader.load();
 		MailController mailController = loader.getController();
 		mailController.rispondi(mail, oggetto);
@@ -83,25 +83,25 @@ public class Navigator {
 	
 	//--------------------------------------------------------------------------
 	public void switchToQuestionarioPage(ActionEvent event) throws IOException {
-		loadScene("/resources/fxml/QuestionarioPage.fxml");
+		loadScene("/risorse/fxml/QuestionarioPage.fxml");
 	}
 
 	public void switchVediQuestionario(Event event) throws IOException {
-		loadScene("/resources/fxml/VediQuestionario.fxml");
+		loadScene("/risorse/fxml/VediQuestionario.fxml");
 	}
 	
 	//----------------------------------------------------------------------
 	public void switchToTerapia(ActionEvent event) throws IOException {
-		loadScene("/resources/fxml/NuovaTerapia.fxml");
+		loadScene("/risorse/fxml/NuovaTerapia.fxml");
 	}
 	
 	public void switchToMostraDettagliTerapia(Event event) throws IOException {
-		loadScene("/resources/fxml/MostraDettagliTerapia.fxml");
+		loadScene("/risorse/fxml/MostraDettagliTerapia.fxml");
 	}
 
 	//----------------------------------------------------------------------------
 	public void switchToStoriaDatiPaziente(ActionEvent event) throws IOException {
-		loadScene("/resources/fxml/StoriaDatiPaziente.fxml");
+		loadScene("/risorse/fxml/StoriaDatiPaziente.fxml");
 	}
 	
 	// -----------------------------------------------------------------

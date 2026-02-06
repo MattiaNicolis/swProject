@@ -86,6 +86,7 @@ public class TerapiaController {
 		EMPTY_FIELDS,
 	}
 
+	// LOGICA
 	private TerapiaResult manageTerapia(String nomeFarmaco, String dosiGiornaliere, String quantità, LocalDate dataInizio, LocalDate dataFine, String indicazioni) {
 		if(t == null) {
 			if(nomeFarmaco == null || nomeFarmaco.isBlank())
@@ -180,7 +181,7 @@ public class TerapiaController {
 		else {
 			// Creazione della terapia nel database
 			terapia = new Terapia(
-				0, 
+				0, // id verrà generato automaticamente dal database
 				p.getCf(), 
 				nomeFarmaco, 
 				dosiGiornaliereInt, 
@@ -201,6 +202,7 @@ public class TerapiaController {
 		}
 	}
 	
+	// Gestione e grafica
 	@FXML
 	private void handleTerapia(ActionEvent event) throws IOException {
 		TerapiaResult result = manageTerapia(farmacoField.getText(), dosiGiornaliereField.getText(), quantitàField.getText(), dataInizioField.getValue(), dataFineField.getValue(), indicazioniField.getText());

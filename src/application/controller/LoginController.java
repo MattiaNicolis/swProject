@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 
 public class LoginController {
 
+	// FXML
 	@FXML private TextField cfField;
 	@FXML private PasswordField passwordField;
 	@FXML private Label firstLabel;
@@ -35,10 +36,13 @@ public class LoginController {
 		EMPTY_FIELDS
 	}
 
+	// Login logica
 	private LoginResult tryLogin(String cf, String password) {
+		// Campi vuoti
 		if(cf == null || cf.isBlank() || password == null || password.isBlank())
 			return LoginResult.EMPTY_FIELDS;
 
+		// Login Paziente
 		if(rbPaziente.isSelected()) {
 			Paziente paziente = AdminService.loginPaziente(cf, password);
 			if(paziente != null) {
@@ -47,7 +51,8 @@ public class LoginController {
 			} else {
 				return LoginResult.WRONG_CREDENTIALS;
 			}
-		} else if(rbDiabetologo.isSelected()) {
+		} // Login Diabetologo 
+		else if(rbDiabetologo.isSelected()) {
 			Diabetologo diabetologo = AdminService.loginDiabetologo(cf, password);
 			if(diabetologo != null) {
 				Sessione.getInstance().setDiabetologo(diabetologo);
@@ -61,6 +66,7 @@ public class LoginController {
 	}
 
 
+	// Login parte grafica
 	@FXML 
 	private void handleLogin(ActionEvent event) throws IOException {
 		

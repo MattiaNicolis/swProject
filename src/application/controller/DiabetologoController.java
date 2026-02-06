@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import application.model.Diabetologo;
 import application.model.Glicemia;
 import application.model.Mail;
 import application.model.Paziente;
 import application.model.Questionario;
 import application.model.Terapia;
-import application.model.Utente;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -35,7 +35,7 @@ import javafx.scene.text.TextFlow;
 public class DiabetologoController {
 		
 	// VARIABILI
-	private Utente d;
+	private Diabetologo d;
 	private List<Glicemia> glicemia = new ArrayList<>();
 	private List<Questionario> questNonConformi = new ArrayList<>();
 	private List<Mail> mailRicevute = new ArrayList<>();
@@ -49,8 +49,6 @@ public class DiabetologoController {
 	@FXML private ListView<Glicemia> listaGlicemieSballate;
 	@FXML private ListView<Questionario> listaQuestNonConformi;
 	@FXML private Button mailButton;
-
-	// LABEL - PROFILO
 	@FXML private Label nomeLabel;
 	@FXML private Label ddnLabel;
 	@FXML private Label sessoLabel;
@@ -59,14 +57,17 @@ public class DiabetologoController {
 	
 	@FXML
 	private void initialize() {
+		// Recupero diabetologo in sessione
 		d = Sessione.getInstance().getDiabetologo();
 		
+		// Caricamento dati dal database
 		caricaDatiDiabetologo();
-		setUpInterfaccia();
 
-		setupListaPazienti();
-		setupListaGlicemieSballate();
-		setupListaQuestionariNonConformi();
+		// Set up interfaccia e liste
+		setUpInterfaccia();
+		setUpListaPazienti();
+		setUpListaGlicemieSballate();
+		setUpListaQuestionariNonConformi();
 
 	} // FINE INITIALIZE
 
@@ -94,6 +95,7 @@ public class DiabetologoController {
 
 		mailButton.getStyleClass().removeAll("btn-mail", "btn-mail-alert");
 
+		// Grafica dinamica del bottone mail
 		if (AdminService.contatoreMailNonLette(mailRicevute) > 0) {
 			mailButton.getStyleClass().add("btn-mail-alert");
 		} else {
@@ -101,15 +103,14 @@ public class DiabetologoController {
 		}
 	}
 
-	private void setupListaPazienti(){
-		for(Utente p : pazienti) {
+	private void setUpListaPazienti(){
+		for(Paziente p : pazienti) {
 			pazientiNonCompilano.put(p.getCf(), DiabetologoUtils.calcolaGiorniNonCompilati(p));
 		}
 
-
 		ObservableList<Paziente> listaNomiPazientiAsObservable = FXCollections.observableArrayList(
 				pazienti.stream()
-			        .sorted(Comparator.comparing(Paziente::getCognome)) // ordine alfabetico
+			        .sorted(Comparator.comparing(Paziente::getCognome)) // ordine alfabetico per cognome
 			        .toList()
 			);
 		listaNomiPazienti.setItems(listaNomiPazientiAsObservable);
@@ -118,43 +119,42 @@ public class DiabetologoController {
 		    protected void updateItem(Paziente paziente, boolean empty) {
 		        super.updateItem(paziente, empty);
 		        
+				// Caso vuoto o null
 		        if (empty || paziente == null) {
 		            setText(null);
 		            setStyle("");
-		        } else {
+		        } else { // Caso paziente valido
 		        	int giorni = pazientiNonCompilano.get(paziente.getCf());
 
+					// Testo e stile se non compila da 3+ giorni
 					if(giorni >= 3) {
 						setText(paziente.getNome() + " " + paziente.getCognome() + " (" + paziente.getCf() + ")\n(Non compila da 3+ giorni!)");
 						// Rosso vivo + Grassetto
 						setStyle("-fx-background-color: #ffcccc; -fx-text-fill: black; -fx-font-weight: bold;");
 					}
-					else {
+					else { // Testo normale
+						// Classe Text è un nodo grafico primitivo
 						Text nomeCognomePaziente = new Text(paziente.getNome() + " " + paziente.getCognome());
 						nomeCognomePaziente.setStyle("-fx-font-weight: bold;");
 
 						Text cfPaziente = new Text(" (" + paziente.getCf() + ")");
 
+						// Unisce più Text in un unico nodo grafico
 						TextFlow cellFactoryPaziente = new TextFlow(nomeCognomePaziente, cfPaziente);
 
 						setText(null);
+						// Imposta il TextFlow come grafica della cella
 						setGraphic(cellFactoryPaziente);
 					}
 		        }
 		    }
 		});
 		
+		// Logica di click sulla cella
 		listaNomiPazienti.setOnMouseClicked(e -> {
-			Utente selectedPaziente = listaNomiPazienti.getSelectionModel().getSelectedItem();
+			Paziente selectedPaziente = listaNomiPazienti.getSelectionModel().getSelectedItem();
 			if(selectedPaziente != null) {
-				String cf = selectedPaziente.getCf();
-				pazienti.stream()
-					.filter(paziente -> paziente.getCf().equals(cf))
-					.findFirst()
-					.ifPresent(paziente -> {
-						Sessione.getInstance().setPaziente(paziente);
-					});
-				
+				Sessione.getInstance().setPaziente(selectedPaziente);
 				try {
 					Navigator.getInstance().switchToMostraDatiPaziente(e);
 				} catch (IOException ex) {
@@ -164,7 +164,7 @@ public class DiabetologoController {
 		});
 	}
 	
-	private void setupListaGlicemieSballate() {
+	private void setUpListaGlicemieSballate() {
 		ObservableList<Glicemia> listaGlicemieSballateAsObservable = FXCollections.observableArrayList(
 			glicemia.stream()
 				// Filtra: Oggi o Ieri
@@ -190,7 +190,7 @@ public class DiabetologoController {
 						.findFirst()
 						.ifPresent(p -> setText(p.getNome() + " " + p.getCognome() + " (" + p.getCf() + "): " + g.getValore()));
 
-					// RIUSO LA LOGICA DEL COLORE QUI
+					// Logica di colorazione
 					String color = DiabetologoUtils.getColoreSeverita(g);
 					if(color != null) {
 						setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
@@ -202,7 +202,7 @@ public class DiabetologoController {
 		});
 	}
 	
-	private void setupListaQuestionariNonConformi() {
+	private void setUpListaQuestionariNonConformi() {
 
     	listaQuestNonConformi.setItems(FXCollections.observableArrayList(questNonConformi));
     
@@ -228,6 +228,7 @@ public class DiabetologoController {
 		    }
 		});
 		
+		// Logica di click sulla cella
 		listaQuestNonConformi.setOnMouseClicked(e -> {
 			Questionario selectedQuest = listaQuestNonConformi.getSelectionModel().getSelectedItem();
 			
@@ -249,9 +250,10 @@ public class DiabetologoController {
 					} else {
 						MessageUtils.showError("Errore durante l'aggiornamento del database.");
 					}
+					listaQuestNonConformi.getSelectionModel().clearSelection();
 
 				} else if (result.get() == MessageUtils.BTN_MAIL) {
-					// Impostiamo comunque il paziente e questionario selezionato in sessione
+					// Prepara l'invio della mail, recuperando il paziente
 					Paziente paziente = AdminService.getPazienteByCf(pazienti, selectedQuest.getCf());
 
 					try {
@@ -259,6 +261,8 @@ public class DiabetologoController {
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}
+				} else {
+					listaQuestNonConformi.getSelectionModel().clearSelection();
 				}
 			}
 		});

@@ -328,6 +328,7 @@ public class PazienteController {
 		SUCCESS,
 		FAILURE
 	}
+
 	private GlicemiaResult tryCreateGlicemia(String valore, String ora, String minuti, String indicazioni) {
 		if (valore.isEmpty() || ora.isEmpty() || minuti.isEmpty() || indicazioni == null) {
 	    	return GlicemiaResult.EMPTY_FIELDS;
@@ -355,6 +356,7 @@ public class PazienteController {
 			return GlicemiaResult.FAILURE;
 		}
 	}
+
 	@FXML
 	private void handleGlicemia(ActionEvent event) throws IOException {
 		GlicemiaResult result = tryCreateGlicemia(valoreField.getText().trim(), oraField.getText().trim(), minutiField.getText().trim(), indicazioniBox.getValue());
@@ -382,6 +384,7 @@ public class PazienteController {
 		SUCCESS,
 		FAILURE
 	}
+
 	private PesoResult tryCreatePeso(String pesoString, boolean aggiorna) {
 		if(pesoString == null || pesoString.isBlank()) {
 			return PesoResult.EMPTY_FIELDS;
@@ -433,6 +436,7 @@ public class PazienteController {
 			else return PesoResult.FAILURE; 
 		}
 	}
+
 	@FXML
 	private void handlePeso(ActionEvent event) throws IOException {
 		PesoResult result = tryCreatePeso(pesoField.getText(), aggiorna);
@@ -458,32 +462,20 @@ public class PazienteController {
 		}
 	}
 
-	// SVUOTA LISTE
-	/*private void clearAll() {
-		glicemia.clear();
-		terapie.clear();
-		questionari.clear();
-		mailRicevute.clear();
-		peso.clear();
-	}*/
-
 	// NAVIGAZIONE
 	@FXML
 	private void switchToLogin(ActionEvent event) throws IOException {
-		//clearAll();
 		Sessione.getInstance().logout();
 		Navigator.getInstance().switchToLogin(event);
 	}
 	
 	@FXML
 	private void switchToMailPage(ActionEvent event) throws IOException {
-		//clearAll();
 		Navigator.getInstance().switchToMailPage(event);
 	}
 	
 	@FXML
 	private void switchToQuestionarioPage(ActionEvent event) throws IOException {
-		//clearAll();
 		Navigator.getInstance().switchToQuestionarioPage(event);
 	}
 }

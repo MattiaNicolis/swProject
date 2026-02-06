@@ -21,7 +21,7 @@ import application.view.Navigator;
 
 public class QuestionarioController {
 
-    // --- Componenti FXML ---
+    // FXML
     @FXML private ListView<Terapia> listaTerapie;
     
     @FXML private Label lblPlaceholder;
@@ -32,14 +32,13 @@ public class QuestionarioController {
     @FXML private TextField quantitàField;
     @FXML private TextArea sintomiArea;
 
-    // --- Dati ---
+    // Variabili
     private Terapia t; // Terapia selezionata
     private Paziente p;
     private int dose, quantità;
     
     // Liste
     private List<Terapia> terapie = new ArrayList<>();
-    private List<Terapia> terapieAttive = new ArrayList<>();
     private List<Terapia> terapieMancanti = new ArrayList<>();
 
     @FXML
@@ -48,7 +47,7 @@ public class QuestionarioController {
         
         caricamentoDati();
 
-        terapieAttive = trovaTerapieAttive();
+        // Terapie di oggi senza questionario
         terapieMancanti = terapieDaCompletare();
 
         listaTerapie.setItems(FXCollections.observableArrayList(terapieMancanti));
@@ -65,6 +64,7 @@ public class QuestionarioController {
             }
         });
 
+        // Compila questionario alla selezione
         listaTerapie.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 mostraDettagli(newVal);
@@ -83,6 +83,7 @@ public class QuestionarioController {
     }
 
     private List<Terapia> terapieDaCompletare() {
+        List<Terapia> terapieAttive = trovaTerapieAttive();
         return terapieAttive.stream()
                 .filter(terapia -> !AdminService.esisteQuestionarioOggi(terapia.getId()))
                 .collect(Collectors.toList());
@@ -102,6 +103,8 @@ public class QuestionarioController {
         EMPTY_FIELDS,
         INVALID_DATA
     }
+    
+    // Logica creazione questionario
     private QuestionarioResult tryCreateQuestionario(String nomeFarmaco, String dose, String quantità, String sintomi) {
         if(nomeFarmaco == null || nomeFarmaco.isBlank() ||
             dose == null || dose.isBlank() ||
@@ -131,6 +134,8 @@ public class QuestionarioController {
         } 
         else return QuestionarioResult.FAILURE;
     }
+
+    // Parte grafica e gestione
     @FXML
     private void handleQuestionario() {
         if (t == null) return;
@@ -167,7 +172,7 @@ public class QuestionarioController {
     // NAVIGAZIONE
     @FXML 
     private void switchToPazientePage(ActionEvent event) throws IOException {
-        Sessione.getInstance().setTerapiaSelezionata(null); // Meglio usare set null esplicito
+        Sessione.getInstance().setTerapiaSelezionata(null);
         Navigator.getInstance().switchToPazientePage(event);
     }
 }

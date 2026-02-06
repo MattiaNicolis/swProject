@@ -38,6 +38,7 @@ public class MostraDettagliTerapiaController {
 	
 	@FXML
 	private void initialize() {
+		// Recupero utente e terapia dalla sessione
 		if(Sessione.getInstance().getDiabetologo() != null) {
 			u = Sessione.getInstance().getDiabetologo();
 		} else if (Sessione.getInstance().getPaziente() != null) {
@@ -49,11 +50,13 @@ public class MostraDettagliTerapiaController {
         }
 		t = Sessione.getInstance().getTerapiaSelezionata();
 		
+		// Disabilito i bottoni di modifica ed eliminazione se l'utente è un paziente
 		if(u instanceof Paziente) {
 			deleteButton.setDisable(true);
 			modifyButton.setDisable(true);
 		}
 
+		// Disabilito il bottone di eliminazione se la terapia ha questionari associati
 		if(t.getQuestionari() > 0)
 			deleteButton.setDisable(true);
 

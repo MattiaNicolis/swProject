@@ -28,6 +28,7 @@ public class VediMailController {
 	
 	@FXML
 	private void initialize() throws IOException {
+		// Recupero utente in sessione
 		if(Sessione.getInstance().getPaziente() != null) {
 			u = Sessione.getInstance().getPaziente();
 		} else if (Sessione.getInstance().getDiabetologo() != null) {
@@ -38,6 +39,7 @@ public class VediMailController {
             return;
         }
 
+		// Recupero mail selezionata in sessione
 		m = Sessione.getInstance().getMailSelezionata();
 		if (m == null) {
             MessageUtils.showError("Errore nel caricamento della mail.");

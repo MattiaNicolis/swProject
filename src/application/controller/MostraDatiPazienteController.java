@@ -74,9 +74,13 @@ public class MostraDatiPazienteController {
 	
 	@FXML
 	private void initialize() {
+		// Recupero paziente selezionato
 		p = Sessione.getInstance().getPaziente();
 		
+		// Caricamento dati paziente dal database
 		caricaDatiPaziente();
+
+		// Set up interfaccia
 		setUpInterfaccia();
 		
 		try {
@@ -126,6 +130,7 @@ public class MostraDatiPazienteController {
 					setText(t.getNomeFarmaco() + ": " + t.getDataInizio().format(AdminService.dateFormatter) + 
 						" - " + t.getDataFine().format(AdminService.dateFormatter));
 
+					// Evidenzia in rosso le terapie con questionari mancanti
 					if(t.getDataFine().isBefore(LocalDate.now())) {
 						long giorniDiDifferenza = ChronoUnit.DAYS.between(t.getDataInizio(), t.getDataFine()) + 1;
 						if(giorniDiDifferenza != t.getQuestionari()) {
@@ -171,9 +176,7 @@ public class MostraDatiPazienteController {
 			Patologia selectedPatologia = listaPatologie.getSelectionModel().getSelectedItem();
 			if(selectedPatologia != null) {
 				Sessione.getInstance().setPatologiaSelezionata(selectedPatologia);
-				//System.out.println("Nome patologia: " + selectedPatologia.getNome());
 				try {
-					//clearAll();
 					Navigator.getInstance().switchToMostraPatologia(e);
 				} catch (IOException ev) {
 					ev.printStackTrace();
@@ -189,7 +192,6 @@ public class MostraDatiPazienteController {
 			if(selectedTerapiaConcomitante != null) {
 				Sessione.getInstance().setTerapiaConcomitanteSelezionata(selectedTerapiaConcomitante);
 				try {
-					//clearAll();
 					Navigator.getInstance().switchToMostraTerapiaConcomitante(e);
 				} catch (IOException ev) {
 					ev.printStackTrace();
@@ -205,7 +207,6 @@ public class MostraDatiPazienteController {
 			if(selectedQuestionario != null) {
 				Sessione.getInstance().setQuestionarioSelezionato(selectedQuestionario);
 				try {
-					//clearAll();
 					Navigator.getInstance().switchVediQuestionario(e);
 				} catch (IOException ev) {
 					ev.printStackTrace();
@@ -225,11 +226,14 @@ public class MostraDatiPazienteController {
 		graficoPeso.getData().add(misurazioni);
 	}
 	
+	// GRAFICO GLICEMIA
 	private enum SceltaResult {
 		EMPTY_FIELD,
 		DATE_IN_FUTURE,
 		OK
 	}
+
+	// Logica di validazione della scelta
 	private SceltaResult tryScelta(String scelta, LocalDate date) {
 		if(date == null || scelta == null) {
 			return SceltaResult.EMPTY_FIELD;
@@ -238,6 +242,8 @@ public class MostraDatiPazienteController {
 		}
 		return SceltaResult.OK;
 	}
+	
+	// Gestione grafica
 	@FXML
 	private void handleScelta() throws IOException {
 		SceltaResult result = tryScelta(sceltaVisualizza.getValue(), dataVisualizza.getValue());
@@ -285,7 +291,6 @@ public class MostraDatiPazienteController {
 						if(g.getGiorno().isBefore(date) || g.getGiorno().isAfter(date2)) continue;
 
 						if (giornoCorrente != null && !g.getGiorno().equals(giornoCorrente)) {
-							// ATTENZIONE: Usiamo giornoCorrente per l'etichetta, non g.getGiorno()!
 							String etichetta = giornoCorrente.format(DateTimeFormatter.ofPattern("dd/MM"));
 							
 							serieMax.getData().add(new XYChart.Data<>(etichetta, max));

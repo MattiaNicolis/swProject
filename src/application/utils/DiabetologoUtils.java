@@ -7,7 +7,6 @@ import application.model.Utente;
 import application.service.AdminService;
 
 public class DiabetologoUtils {
-	
     public static String getColoreSeverita(Glicemia g) {
 		int val = g.getValore();
 		String ind = g.getIndicazioni();
@@ -31,6 +30,7 @@ public class DiabetologoUtils {
 		return null; // Tutto ok
 	}
 
+	// In DiabetologoController -> per popolare la lista pazienti
 	public static int calcolaGiorniNonCompilati(Utente p) {
 		int giorniRitardo = 0;
 		
