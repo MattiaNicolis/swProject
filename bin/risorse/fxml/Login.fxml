@@ -21,7 +21,7 @@
          <children>
             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/images/logo-no-sfondo.png" />
+                  <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/risorse/images/logo-no-sfondo.png" />
                </image>
             </ImageView>
             
@@ -36,12 +36,12 @@
                <children>
                   <ImageView fitHeight="350.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/images/diabetologo.png" />
+                        <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/risorse/images/diabetologo.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="350.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/images/paziente.png" />
+                        <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/risorse/images/paziente.png" />
                      </image>
                   </ImageView>
                </children>
