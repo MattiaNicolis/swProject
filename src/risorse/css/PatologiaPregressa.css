@@ -1,0 +1,80 @@
+/* --- IMPOSTAZIONI GLOBALI --- */
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica", sans-serif;
+    -fx-background-color: #E0E5E9;
+}
+
+.topBox {
+    -fx-background-color: white; 
+    -fx-border-color: #E0E0E0; 
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0.0, 0, 1);
+}
+
+.topLabel {
+    -fx-text-fill: #4A90E2; 
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+}
+
+.scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent; 
+}
+
+.scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.gridPane {
+    -fx-background-color: white; 
+    -fx-padding: 30; 
+    -fx-border-radius: 8; 
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.0, 0, 4);
+}
+
+.nomeP {
+    -fx-font-weight: bold; 
+    -fx-text-fill: #333;
+}
+
+#nomeLabel {
+    -fx-font-size: 14px; 
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+.dataP {
+    -fx-font-weight: bold; 
+    -fx-text-fill: #555;
+}
+
+#dataLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.box {
+    -fx-font-size: 14px; 
+    -fx-padding: 10; 
+    -fx-border-color: #ddd; 
+    -fx-border-width: 1; 
+    -fx-background-color: #fcfcfc;
+    -fx-text-fill: #333;
+}
+
+.modificato {
+    -fx-font-size: 14px; 
+    -fx-font-style: italic;
+    -fx-text-fill: #555;
+}
+
+.btn-back {
+    -fx-background-color: #ccc;
+    -fx-text-fill: #333;
+    -fx-padding: 8 15; 
+    -fx-background-radius: 4;
+}
+.btn-back:hover {
+    -fx-background-color: #bbb;
+}

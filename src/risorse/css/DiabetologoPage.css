@@ -1,0 +1,176 @@
+/* Colori Globali e Font */
+* {
+    -fx-font-family: "Segoe UI", "Helvetica", sans-serif;
+}
+
+.main-background {
+    /* PRIMA: #f0f4f8 */
+    -fx-background-color: #E0E5E9; /* Scurito leggermente per ridurre il riverbero */
+}
+
+/* --- NAVBAR STYLES --- */
+.navbar {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 2);
+}
+
+.brand-label {
+    -fx-text-fill: #B0B5C1;
+    -fx-font-size: 14px;
+}
+
+.welcome-sublabel {
+    -fx-text-fill: #2D3447;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+/* --- BUTTONS --- */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 5px;
+    -fx-alignment: center;
+}
+
+.btn-action {
+    -fx-background-color: transparent;
+    -fx-border-color: #4A90E2;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: #4A90E2;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.btn-action:hover {
+    -fx-background-color: rgb(74, 144, 226);
+    -fx-text-fill: white;
+}
+
+.btn-mail-alert {
+    -fx-background-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: #ff6666;
+    -fx-border-color: #ff6666;
+}
+
+.btn-mail-alert:hover {
+    -fx-background-color: #ff6666;
+    -fx-text-fill: white;
+}
+
+.btn-logout {
+    -fx-background-color: transparent;
+    -fx-border-color: #ff6666;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: #ff6666;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.btn-logout:hover {
+    -fx-background-color: #ff6666;
+    -fx-text-fill: white;
+}
+
+/* --- CARDS (Contenitori) --- */
+/* Modifica cruciale per la LIM: niente bianco puro */
+.card, .card-warning, .card-info {
+    -fx-background-color: #F7F9FC; /* "Off-White" - riposante per gli occhi */
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 5, 0, 0, 1); /* Ombra leggermente più marcata */
+    -fx-padding: 20px;
+}
+
+/* Bordi colorati per alert e info */
+.card-warning {
+    -fx-border-color: transparent transparent transparent #FF6B6B;
+    -fx-border-width: 0 0 0 4;
+}
+
+.card-info {
+    -fx-border-color: transparent transparent transparent #FFD93D;
+    -fx-border-width: 0 0 0 4;
+}
+
+/* --- TESTI SEZIONI --- */
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222; /* Nero leggermente più profondo per contrasto */
+}
+.section-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555; /* Scurito leggermente */
+    -fx-padding: 0 0 10 0;
+}
+.section-title-warning {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #C62828; /* Rosso leggermente più scuro per leggibilità */
+}
+.section-title-info {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #EF6C00; /* Arancio più scuro */
+}
+.icon-label {
+    -fx-font-size: 20px;
+}
+
+/* --- LIST VIEW --- */
+.modern-list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #D1D9E0; /* Bordo più visibile del vecchio E0E0E0 */
+    -fx-border-radius: 4px;
+}
+.modern-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: #333;
+}
+.modern-list-view .list-cell:filled:selected, .modern-list-view .list-cell:filled:hover {
+    -fx-background-color: #D6EAF8; /* Blu un po' più carico rispetto al vecchio E3F2FD */
+    -fx-text-fill: #1565C0;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    -fx-background-color: #F7F9FC; /* Coerente con le card */
+    -fx-border-color: #D1D9E0; /* Bordo più visibile */
+    -fx-border-width: 0 0 0 1; 
+}
+.sidebar-title {
+    -fx-text-fill: #777; /* Più scuro del #999 per leggibilità */
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-letter-spacing: 1px;
+}
+.profile-image {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+.profile-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D3447;
+}
+.profile-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #777; /* Scurito leggermente */
+}
+.profile-value {
+    -fx-font-size: 13px;
+    -fx-text-fill: #222;
+    -fx-font-weight: bold;
+}
+.scroll-pane-transparent {
+    -fx-background-color: transparent;
+}
+.scroll-pane-transparent > .viewport {
+    -fx-background-color: transparent;
+}
+
+/*---PROFILO PERSONALE---*/
+#nomeLabel{
+    -fx-text-fill: #357ABD; /* Blu leggermente più scuro per contrasto su sfondo non bianco puro */
+}

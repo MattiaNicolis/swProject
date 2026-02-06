@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="main-background" stylesheets="@../css/VediMail.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.VediMailController">
+    
+    <top>
+        <HBox alignment="CENTER_LEFT" styleClass="view-header" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+            </padding>
+            <children>
+                
+                <Label alignment="CENTER_LEFT" styleClass="header-title" text="Visualizza mail" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" />
+                    </HBox.margin>
+                </Label>
+            <Region prefHeight="34.0" prefWidth="1100.0" />
+                
+                <Button fx:id="rispondiButton" mnemonicParsing="false" onAction="#switchToRispondi" styleClass="btn-reply" text="Rispondi" />
+                <Button mnemonicParsing="false" onAction="#switchToMailPage" styleClass="btn-back" text="⬅ Torna alla Posta" />
+            </children>
+        </HBox>
+    </top>
+    
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane-transparent" BorderPane.alignment="CENTER">
+            <VBox styleClass="mail-view-container">
+                <padding>
+                    <Insets bottom="30.0" left="60.0" right="60.0" top="30.0" />
+                </padding>
+                
+                <Label fx:id="oggettoLabel" styleClass="mail-subject" text="[Oggetto della mail]" wrapText="true">
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Label>
+                
+                <Separator styleClass="section-separator" />
+                
+                <VBox styleClass="mail-details-box">
+                    <padding>
+                        <Insets bottom="15.0" top="15.0" />
+                    </padding>
+                    <GridPane hgap="10.0" vgap="5.0">
+                        
+                        <Label styleClass="detail-label" text="Da:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="mittenteLabel" styleClass="detail-value" text="[Nome del Mittente &lt;mail@example.com&gt;]" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <Label styleClass="detail-label" text="A:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="destinatarioLabel" styleClass="detail-value" text="[Nome del Destinatario &lt;mail@example.com&gt;]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        
+                        <Label styleClass="detail-label" text="Data:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="giornoOraLabel" styleClass="detail-value" text="[GG/MM/AAAA HH:MM:SS]" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                    </GridPane>
+                </VBox>
+                
+                <Separator styleClass="section-separator" />
+                
+                <VBox styleClass="mail-body-box" VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                    <Label styleClass="body-intro" text="Corpo del Messaggio:" />
+                    <Label fx:id="corpoLabel" styleClass="body-content" text="[Contenuto lungo del corpo della mail...]" wrapText="true" VBox.vgrow="ALWAYS" />
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+    
+</BorderPane>

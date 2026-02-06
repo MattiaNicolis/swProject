@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/NuovaTerapia.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.TerapiaController">
+    
+    <top>
+        <VBox alignment="CENTER" styleClass="topBox">
+            <Label fx:id="title" text="Nuova Terapia">
+                <padding>
+                    <Insets bottom="10.0" top="15.0" />
+                </padding>
+            </Label>
+        </VBox>
+    </top>
+    
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="30.0">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="40.0" />
+            </padding>
+            
+            <VBox alignment="TOP_LEFT" maxWidth="800.0" spacing="25.0" styleClass="centerLeftBox">
+                
+                <VBox spacing="5.0">
+                    <Label fx:id="labelRiferimento" text="Paziente Riferimento:" />
+                    <Label fx:id="labelPaziente" text="[Nome e Codice Fiscale del Paziente]" />
+                </VBox>
+                
+                <Label fx:id="label1" text="Dettagli Nuova Terapia" />
+                
+                <GridPane hgap="20.0" vgap="20.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250.0" />
+                        <ColumnConstraints hgrow="NEVER" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="ALWAYS" prefWidth="250.0" />
+                    </columnConstraints>
+                    
+                    <Label styleClass="label2" text="Farmaco (Nome):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="farmacoField" styleClass="field" promptText="Nome Commerciale o Principio Attivo" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    
+                    <Label styleClass="label3" text="Farmaco (NON MODIFICABILE):" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label fx:id="nomeFarmacoLabel" text="[Nome Farmaco Caricato]" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+
+                    <Label styleClass="label2" text="Dosi Giornaliere:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                    <TextField fx:id="dosiGiornaliereField" promptText="Es. 1, 2, 3..." styleClass="field" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    
+                    <Label styleClass="label2" text="Quantità per Dose:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="quantitàField" promptText="Es. 5 unità, 1 compressa" styleClass="field" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                    
+                    <Label styleClass="label2" text="Data Inizio:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <DatePicker fx:id="dataInizioField" promptText="Data di inizio" styleClass="data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    
+                    <Label styleClass="label2" text="Data Fine:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    <DatePicker fx:id="dataFineField" promptText="Data di fine" styleClass="data" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    
+                    <Label styleClass="label2" text="Indicazioni/Note:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextArea fx:id="indicazioniField" prefHeight="80.0" prefWidth="600.0" promptText="Indicazioni specifiche (es. prima dei pasti, orari, ecc.)" styleClass="field" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+                              
+                </GridPane>
+                
+                <Button fx:id="conferma" onAction="#handleTerapia" text="Salva Nuova Terapia" BorderPane.alignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </Button>
+                
+            </VBox>
+            
+        </VBox>
+    </center>
+    
+    <bottom>
+        <Button onAction="#indietro" styleClass="btn-back" text="⬅ Indietro" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="20.0" top="10.0" />
+            </BorderPane.margin>
+        </Button>
+    </bottom>
+</BorderPane>

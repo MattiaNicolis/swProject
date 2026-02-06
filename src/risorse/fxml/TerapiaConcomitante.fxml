@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/TerapiaConcomitante.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.TerapiaConcomitanteController">
+    
+    <top>
+        <VBox alignment="CENTER" styleClass="topBox">
+            <Label styleClass="topLabel" text="Dettagli Terapia Concomitante" BorderPane.alignment="CENTER">
+                <padding>
+                    <Insets bottom="20.0" top="20.0" />
+                </padding>
+            </Label>
+        </VBox>
+    </top>
+    
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20.0">
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+            
+            <GridPane hgap="20.0" maxWidth="700.0" styleClass="gridPane" vgap="15.0">
+                
+                <columnConstraints>
+                    <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="150.0" prefWidth="180.0" />
+                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                </columnConstraints>
+                
+                <rowConstraints>
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" /> 
+                </rowConstraints>
+                
+                <Label styleClass="form-label" text="Nome farmaco:" />
+                <Label fx:id="nomeLabel" styleClass="form-value-bold" wrapText="true" GridPane.columnIndex="1" />
+                
+                <Label styleClass="form-label" text="Data di inizio:" GridPane.rowIndex="1" />
+                <Label fx:id="dataInizioLabel" styleClass="form-value" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                
+                <Label styleClass="form-label" text="Data di fine (Opz.):" GridPane.rowIndex="2" />
+                <Label fx:id="dataFineLabel" styleClass="form-value" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label styleClass="form-label" text="Registrato da:" GridPane.rowIndex="3" />
+                <Label fx:id="modificatoLabel" styleClass="form-value-italic" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                
+            </GridPane>
+        </VBox>
+    </center>
+    
+    <bottom>
+        <VBox alignment="CENTER">
+            <padding>
+                <Insets bottom="30.0" top="10.0" />
+            </padding>
+            <Button onAction="#switchToMostraDatiPaziente" styleClass="btn-back" text="⬅ Indietro" />
+        </VBox>
+    </bottom>
+</BorderPane>

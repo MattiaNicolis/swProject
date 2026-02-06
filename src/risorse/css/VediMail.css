@@ -1,0 +1,83 @@
+
+.view-header {
+    -fx-background-color: white;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.header-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Tasti di azione (Rispondi, Elimina) */
+.btn-reply {
+    -fx-background-color: #4A90E2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+.btn-reply:hover {
+    -fx-background-color: #0063B1;
+}
+
+.btn-back {
+    -fx-background-color: #ccc;
+    -fx-text-fill: #333;
+}
+.btn-back:hover {
+    -fx-background-color: #bbb;
+}
+
+/* Contenitore Centrale */
+.mail-view-container {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+    -fx-background-radius: 8px;
+    -fx-margin: 30px;
+}
+
+.mail-subject {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.section-separator {
+    -fx-background-color: #EEE;
+    -fx-pref-height: 1px;
+}
+
+.mail-details-box {
+    -fx-background-color: #F9F9F9; 
+    -fx-padding: 15px;
+    -fx-background-radius: 4px;
+}
+
+.detail-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #666;
+    -fx-font-size: 14px;
+    -fx-padding: 0 10 0 0;
+}
+
+.detail-value {
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+}
+
+/* Corpo Messaggio */
+.body-intro {
+    -fx-font-weight: bold;
+    -fx-text-fill: #444;
+    -fx-font-size: 16px;
+    -fx-padding: 0 0 10px 0;
+}
+
+.body-content {
+    -fx-font-size: 15px;
+    -fx-text-fill: #333;
+    -fx-line-spacing: 1.4;
+}

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@../css/PazientePage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PazienteController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="top-bar">
+            <children>
+                <VBox>
+                    <Label styleClass="brand-label" text="Portale Paziente" />
+                    <Label fx:id="welcomeLabel" text="Bentornato, Paziente" />
+                </VBox>
+                
+                <Region HBox.hgrow="ALWAYS" /> 
+                
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Button fx:id="mailButton" onAction="#switchToMailPage" styleClass="btn-action" text="Mail">
+                        <padding><Insets bottom="8" left="15" right="15" top="8" /></padding>
+                    </Button>
+                    <Button fx:id="questButton" onAction="#switchToQuestionarioPage" styleClass="btn-action" text="Questionari">
+                        <padding><Insets bottom="8" left="15" right="15" top="8" /></padding>
+                    </Button>
+                    <Separator orientation="VERTICAL" />
+                    <Button onAction="#switchToLogin" styleClass="btn-logout" text="🚪 Logout">
+                        <padding><Insets bottom="8" left="15" right="15" top="8" /></padding>
+                    </Button>
+                </HBox>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox prefHeight="474.0" prefWidth="1280.0" spacing="20.0" styleClass="content-area">
+            <children>
+            <ScrollPane fitToWidth="true" prefHeight="390.0" prefWidth="1219.0" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox spacing="20.0">
+                     <children>
+                         
+                        <VBox styleClass="card" VBox.vgrow="ALWAYS">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                    <Label styleClass="section-title" text="📉 Andamento Glicemico" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <HBox spacing="0">
+                                        <Button fx:id="oggiGlicemia" styleClass="btn-filter" text="Oggi" />
+                                        <Separator orientation="VERTICAL" />
+                                        <Button fx:id="settimanaGlicemia" styleClass="btn-filter" text="7 Giorni" />
+                                        <Separator orientation="VERTICAL" />
+                                        <Button fx:id="meseGlicemia" styleClass="btn-filter" text="30 Giorni" />
+                                    </HBox>
+                                </HBox>
+                                <Separator />
+                                <LineChart fx:id="graficoGlicemia" legendVisible="false" VBox.vgrow="ALWAYS" prefHeight="350">
+                                    <xAxis>
+                                        <CategoryAxis label="Data / Ora" side="BOTTOM" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="mg/dL" side="LEFT" />
+                                    </yAxis>
+                                </LineChart>
+                            </children>
+                        </VBox>
+                        
+                        <HBox spacing="20.0">
+                            <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                <Label styleClass="section-title" text="➕ Nuova Misurazione:" />
+                                <TextField fx:id="valoreField" prefWidth="100.0" promptText="Valore" />
+                                <ComboBox fx:id="indicazioniBox" prefWidth="130.0" promptText="Momento" />
+                                <HBox alignment="CENTER" spacing="5">
+                                    <TextField fx:id="oraField" alignment="CENTER" prefWidth="50.0" promptText="HH" />
+                                    <Label text=":" />
+                                    <TextField fx:id="minutiField" alignment="CENTER" prefWidth="50.0" promptText="MM" />
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button onAction="#handleGlicemia" styleClass="btn-success" text="Registra Valore">
+                                     <padding><Insets bottom="8" left="20" right="20" top="8" /></padding>
+                                </Button>
+                            </HBox>
+                        </HBox>
+                        
+                        <VBox styleClass="card">
+                           <children>
+                              <Label styleClass="section-title" text="Andamento peso corporeo" />
+                              <Separator prefWidth="200.0" />
+                              <LineChart fx:id="graficoPeso" legendVisible="false" prefHeight="350">
+                                <xAxis>
+                                    <CategoryAxis label="Data" side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis label="Kg" side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                           </children>
+                        </VBox>
+                        
+                        <HBox spacing="20.0">
+                            <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card" HBox.hgrow="ALWAYS">
+                                <Label styleClass="section-title" text="➕ Nuova Misurazione:" />
+                                <TextField fx:id="pesoField" prefWidth="100.0" promptText="Valore (Kg)" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button onAction="#handlePeso" styleClass="btn-success" text="Registra Valore">
+                                    <padding><Insets bottom="8" left="20" right="20" top="8" /></padding>
+                                </Button>
+                            </HBox>
+                        </HBox>
+
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            </children>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox fx:id="hBoxBottom" prefHeight="267.0" prefWidth="1280.0" spacing="20.0">
+            
+            <VBox prefWidth="350.0" styleClass="card">
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <VBox alignment="CENTER_LEFT" spacing="2">
+                        <Label fx:id="nomeLabel" text="Nome Cognome" />
+                        <Label styleClass="profile-label" text="Profilo Paziente" />
+                    </VBox>
+                </HBox>
+                <Separator />
+                <GridPane hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints maxWidth="110.0" minWidth="90.0" prefWidth="110.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="205.0" minWidth="199.0" prefWidth="199.0" />
+                    </columnConstraints>
+                    
+                    <Label styleClass="profile-label" text="Data di nascita:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label fx:id="ddnLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    
+                    <Label styleClass="profile-label" text="Sesso:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Label fx:id="sessoLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    
+                    <Label styleClass="profile-label" text="Medico:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="diabetologoLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    
+                    <Label styleClass="profile-label" text="Luogo di nascita:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="luogoLabel" styleClass="profile-value" text="--" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+
+            <VBox spacing="10.0" styleClass="card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="section-title" text="💊 Terapie Attive" />
+                </HBox>
+                <ListView fx:id="terapieCorrenti" styleClass="modern-list-view" VBox.vgrow="ALWAYS" />
+            </VBox>
+
+            <VBox spacing="10.0" styleClass="card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label styleClass="section-title" text="📋 Storico Questionari" />
+                </HBox>
+                <ListView fx:id="listaQuestionari" styleClass="modern-list-view" VBox.vgrow="ALWAYS" />
+            </VBox>
+        </HBox>
+    </bottom>
+
+</BorderPane>

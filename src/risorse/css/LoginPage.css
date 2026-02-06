@@ -1,0 +1,81 @@
+/* --- SFONDO PRINCIPALE --- */
+#mainPane {
+    -fx-background-color: #E3E7ED;
+    -fx-border-color: #4A90E2;  
+    -fx-border-width: 4pt;
+}
+
+#subPane, #stackPane {
+    -fx-background-color: #f0f4f8; 
+    -fx-border-color: #f0f4f8;    
+    -fx-border-width: 4pt;
+}
+
+/* --- TITOLO GRANDE --- */
+#firstLabel {
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #1565C0, #0288D1);
+    -fx-stroke: transparent; 
+    -fx-text-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 1, 1, 1);
+    -fx-font-size: 78px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -fx-font-weight: bold;
+}
+
+#secondLabel {
+    -fx-font-style: italic;
+    -fx-font-size: 15px;
+}
+
+/* --- CARD DI LOGIN --- */
+.card {
+    -fx-background-color: #F7F9FC;
+    -fx-padding: 25px;
+    -fx-spacing: 15px;
+    -fx-alignment: center;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0, 0, 5);
+}
+
+#accediLabel {
+    -fx-text-fill: #777;
+}
+
+/* --- TITOLO DELLA CARD ("Accedi" o simili) --- */
+.card-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A90E2;
+}
+
+/* --- CAMPI DI TESTO --- */
+.input-field {
+    -fx-pref-width: 220px;
+    -fx-padding: 10px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #A0B0C0; 
+    -fx-background-color: #FFFFFF; 
+}
+
+.input-field:focused {
+    -fx-border-color: #4A90E2;
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(21, 101, 192, 0.2), 5, 0, 0, 0);
+}
+
+/* --- BOTTONE ACCEDI --- */
+.login-button {
+    -fx-pref-width: 220px;
+    -fx-padding: 10px;
+    -fx-background-color: #4A90E2; 
+    -fx-background-radius: 6px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #4A90E2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}

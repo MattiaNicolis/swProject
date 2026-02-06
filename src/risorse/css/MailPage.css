@@ -1,0 +1,178 @@
+/* Colori base */
+* {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-primary-color: #4A90E2;
+    -fx-bg-color: #F3F3F3;
+    -fx-text-color: #333;
+}
+
+.main-background {
+    -fx-background-color: -fx-bg-color;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    -fx-background-color: white;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 1 0 0;
+}
+
+.app-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #999;
+    -fx-padding: 0 0 10 0;
+}
+
+.sidebar-section-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #AAA;
+    -fx-padding: 10 0 5 0;
+}
+
+/* Tasto Compose Grande */
+.btn-compose {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-padding: 10 15;
+}
+.btn-compose:hover {
+    -fx-background-color: #0063B1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,120,212,0.3), 10, 0, 0, 4);
+}
+
+/* Tasti Navigazione */
+.btn-nav {
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
+    -fx-font-size: 14px;
+    -fx-text-fill: #444;
+    -fx-cursor: hand;
+    -fx-padding: 8 10;
+}
+.btn-nav:hover {
+    -fx-background-color: #F0F0F0;
+    -fx-background-radius: 5px;
+}
+
+.badge {
+    -fx-background-color: #E3F2FD;
+    -fx-text-fill: -fx-primary-color;
+    -fx-background-radius: 10px;
+    -fx-padding: 2 8;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.btn-back {
+    -fx-background-color: #ccc;
+    -fx-text-fill: #333;
+}
+.btn-back:hover {
+    -fx-background-color: #bbb;
+}
+
+/* --- CENTER LIST --- */
+.mail-list-container {
+    -fx-background-color: #F9F9F9;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 1 0 0;
+}
+
+.section-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+}
+
+.search-bar {
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-background-color: white;
+    -fx-border-color: #DDD;
+    -fx-padding: 8 15;
+}
+.search-bar:focused {
+    -fx-border-color: -fx-primary-color;
+}
+
+.custom-list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.custom-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-border-color: #EEE;
+    -fx-border-width: 0 0 1 0;
+}
+.custom-list-view .list-cell:filled:selected, 
+.custom-list-view .list-cell:filled:hover {
+    -fx-background-color: white;
+    -fx-border-color: -fx-primary-color;
+    -fx-border-width: 0 0 0 3; /* Barra blu a sinistra */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+/* --- RIGHT PANEL (COMPOSE/READ) --- */
+#stackPaneRight {
+    -fx-background-color: white;
+}
+
+.content-panel {
+    -fx-background-color: white;
+}
+
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #666;
+}
+
+.input-field, .input-area {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+.input-field:focused, .input-area:focused {
+    -fx-background-color: white;
+    -fx-border-color: -fx-primary-color;
+}
+.input-area {
+    -fx-padding: 10px;
+}
+
+.btn-primary {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+}
+.btn-primary:hover {
+    -fx-background-color: #0063B1;
+}
+
+.btn-secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666;
+    -fx-cursor: hand;
+}
+.btn-secondary:hover {
+    -fx-text-fill: #333;
+    -fx-underline: true;
+}
+
+.placeholder-text {
+    -fx-text-fill: #CCC;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 65;
+}
