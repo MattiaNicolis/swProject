@@ -10,7 +10,6 @@ import application.model.Diabetologo;
 import application.model.Mail;
 import application.model.Paziente;
 import application.model.Utente;
-import application.model.UtenteInfo;
 import application.service.AdminService;
 import application.utils.MessageUtils;
 import application.utils.Sessione;
@@ -33,8 +32,8 @@ public class MailController {
 	private Utente u;
 	private List<Mail> mailRicevute = new ArrayList<>();
 	private List<Mail> mailInviate = new ArrayList<>();
-	private List<UtenteInfo> diabetologi = new ArrayList<>();
-	private List<UtenteInfo> pazienti = new ArrayList<>();
+	private List<Diabetologo> diabetologi = new ArrayList<>();
+	private List<Paziente> pazienti = new ArrayList<>();
 	private Map<String, String> emailToNameMap = new HashMap<>();
 	private FilteredList<Mail> currentFilteredList;
 
@@ -53,7 +52,7 @@ public class MailController {
 	@FXML private Label labelDiabetologo;
 	@FXML private Label headerLabel;
 	
-	@FXML public void initialize() throws IOException{
+	@FXML private void initialize() throws IOException{
 		// Recupero utente in sessione
 		if(Sessione.getInstance().getPaziente() != null) {
 			u = Sessione.getInstance().getPaziente();
@@ -77,20 +76,28 @@ public class MailController {
 		mailInviate = AdminService.loadMailInviate(u);
 		mailRicevute = AdminService.loadMailRicevute(u);
 		// GetUtenteInfo per mappatura email-nome, senza prendere tutti i dati dal database
-		diabetologi = AdminService.getUtenteInfo("diabetologi");
+		diabetologi = AdminService.getDiabetologoInfo();
 		// Se utente è diabetologo, carica anche i pazienti per la mappatura
 		if(u instanceof Diabetologo) {
-			pazienti = AdminService.getUtenteInfo("pazienti");
-			populateNameMap(pazienti);
+			pazienti = AdminService.getPazienteInfo();
+			populateNameMapP(pazienti);
 		}
-		populateNameMap(diabetologi);
+		populateNameMapD(diabetologi);
 	}
 
-	private void populateNameMap(List<UtenteInfo> utenti) {
+	private void populateNameMapP(List<Paziente> utenti) {
         if(utenti == null) return;
 		// Associa mail a nome utente
-        for(UtenteInfo utente : utenti) {
-            emailToNameMap.put(utente.getMail(), utente.getNomeCognome());
+        for(Paziente utente : utenti) {
+            emailToNameMap.put(utente.getMail(), utente.getNome() + " " + utente.getCognome());
+        }
+    }
+
+	private void populateNameMapD(List<Diabetologo> utenti) {
+        if(utenti == null) return;
+		// Associa mail a nome utente
+        for(Diabetologo utente : utenti) {
+            emailToNameMap.put(utente.getMail(), utente.getNome() + " " + utente.getCognome());
         }
     }
 	

@@ -32,49 +32,49 @@ public class Navigator {
     public void setStage(Stage stage) {
         this.stage = stage;
 		stage.setTitle("Software per pazienti diabetici");
-		Image icon = new Image(getClass().getResourceAsStream("/risorse/images/logo.png"));
+		Image icon = new Image(getClass().getResourceAsStream("/resources/images/logo.png"));
 		stage.getIcons().add(icon);
     }
 	
 	//---------------------------------------------------------------
 	public void switchToLogin(ActionEvent event) throws IOException {
-		loadScene("/risorse/fxml/Login.fxml");
+		loadScene("/resources/fxml/Login.fxml");
 	}
 
 	//-------------------------------------------------------------------------
 	public void switchToDiabetologoPage(ActionEvent event) throws IOException {
-		loadScene("/risorse/fxml/DiabetologoPage.fxml");
+		loadScene("/resources/fxml/DiabetologoPage.fxml");
 	}
 			
 	//----------------------------------------------------------------------
 	public void switchToPazientePage(ActionEvent event) throws IOException {
-		loadScene("/risorse/fxml/PazientePage.fxml");
+		loadScene("/resources/fxml/PazientePage.fxml");
 	}
 	
 	//------------------------------------------------------------------------------------
 	public void switchToMostraDatiPaziente(Event event) throws IOException {
-		loadScene("/risorse/fxml/MostraDatiPaziente.fxml");
+		loadScene("/resources/fxml/MostraDatiPaziente.fxml");
 	}
 	
 	public void switchToMostraPatologia(Event event) throws IOException {
-		loadScene("/risorse/fxml/PatologiaPregressa.fxml");
+		loadScene("/resources/fxml/PatologiaPregressa.fxml");
 	}
 	
 	public void switchToMostraTerapiaConcomitante(Event event) throws IOException {
-		loadScene("/risorse/fxml/TerapiaConcomitante.fxml");
+		loadScene("/resources/fxml/TerapiaConcomitante.fxml");
 	}
 	
 	//------------------------------------------------------------------
 	public void switchToMailPage(Event event) throws IOException {
-		loadScene("/risorse/fxml/MailPage.fxml");
+		loadScene("/resources/fxml/MailPage.fxml");
 	}
 	
 	public void switchToVediMail(Event event) throws IOException {
-		loadScene("/risorse/fxml/VediMail.fxml");
+		loadScene("/resources/fxml/VediMail.fxml");
 	}
 	
 	public void switchToRispondi(Event event, String mail, String oggetto) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/risorse/fxml/MailPage.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/MailPage.fxml"));
         Parent root = loader.load();
 		MailController mailController = loader.getController();
 		mailController.rispondi(mail, oggetto);
@@ -83,25 +83,25 @@ public class Navigator {
 	
 	//--------------------------------------------------------------------------
 	public void switchToQuestionarioPage(ActionEvent event) throws IOException {
-		loadScene("/risorse/fxml/QuestionarioPage.fxml");
+		loadScene("/resources/fxml/QuestionarioPage.fxml");
 	}
 
 	public void switchVediQuestionario(Event event) throws IOException {
-		loadScene("/risorse/fxml/VediQuestionario.fxml");
+		loadScene("/resources/fxml/VediQuestionario.fxml");
 	}
 	
 	//----------------------------------------------------------------------
 	public void switchToTerapia(ActionEvent event) throws IOException {
-		loadScene("/risorse/fxml/NuovaTerapia.fxml");
+		loadScene("/resources/fxml/NuovaTerapia.fxml");
 	}
 	
 	public void switchToMostraDettagliTerapia(Event event) throws IOException {
-		loadScene("/risorse/fxml/MostraDettagliTerapia.fxml");
+		loadScene("/resources/fxml/MostraDettagliTerapia.fxml");
 	}
 
 	//----------------------------------------------------------------------------
 	public void switchToStoriaDatiPaziente(ActionEvent event) throws IOException {
-		loadScene("/risorse/fxml/StoriaDatiPaziente.fxml");
+		loadScene("/resources/fxml/StoriaDatiPaziente.fxml");
 	}
 	
 	// -----------------------------------------------------------------

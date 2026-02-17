@@ -2,9 +2,10 @@ package application.dao.interfaces;
 
 import java.util.List;
 
+import application.model.Diabetologo;
 import application.model.Mail;
+import application.model.Paziente;
 import application.model.Utente;
-import application.model.UtenteInfo;
 
 public interface MailDAOinterface {
     public List<Mail> getMailRicevute(Utente utente);
@@ -12,5 +13,6 @@ public interface MailDAOinterface {
     public boolean scriviMail(Mail mail);
     public boolean vediMail(Mail mail);
     public String getMailDiabetologoRif(String cf);
-    public List<UtenteInfo> getUtenteInfo(String role);
+    public List<Diabetologo> getDiabetologoInfo();
+    public List<Paziente> getPazienteInfo();
 }

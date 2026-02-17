@@ -58,6 +58,7 @@ public class Sessione {
 		setMailSelezionata(null);
 		setQuestionarioSelezionato(null);
 	}
+	
 	//--------------------------------------------------
 	public void setTerapiaSelezionata(Terapia terapia) {
 		this.terapiaSelezionata = terapia;
@@ -74,6 +75,7 @@ public class Sessione {
 	public TerapiaConcomitante getTerapiaConcomitanteSelezionata() {
 		return terapiaConcomitanteSelezionata;
 	}
+	
 	//--------------------------------------------------------
 	public void setPatologiaSelezionata(Patologia patologia) {
 		this.patologiaSelezionata = patologia;
@@ -82,6 +84,7 @@ public class Sessione {
 	public Patologia getPatologiaSelezionata() {
 		return patologiaSelezionata;
 	}
+	
 	//-----------------------------------------
 	public void setMailSelezionata(Mail mail) {
 		this.mailSelezionata = mail;
@@ -90,6 +93,7 @@ public class Sessione {
 	public Mail getMailSelezionata() {
 		return mailSelezionata;
 	}
+	
 	//----------------------------------------------------------
 	public void setQuestionarioSelezionato(Questionario quest) {
 		this.questSelezionato = quest;

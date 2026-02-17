@@ -326,7 +326,8 @@ public class PazienteController {
 		EMPTY_FIELDS,
 		INVALID_DATA,
 		SUCCESS,
-		FAILURE
+		FAILURE,
+		INVALID_RANGE
 	}
 
 	private GlicemiaResult tryCreateGlicemia(String valore, String ora, String minuti, String indicazioni) {
@@ -347,6 +348,9 @@ public class PazienteController {
 	        return GlicemiaResult.INVALID_DATA;
 	    }
 
+		if(valoreInt <=0 || valoreInt > 500)
+			return GlicemiaResult.INVALID_RANGE;
+
 	    Glicemia g = new Glicemia(p.getCf(), valoreInt, LocalDate.now(), orario, indicazioni);
 		boolean ok = AdminService.creaGlicemia(g);
 		if(ok) {
@@ -365,6 +369,7 @@ public class PazienteController {
 			case EMPTY_FIELDS -> MessageUtils.showError("Per favore, compila tutti i campi.");
 			case INVALID_DATA -> MessageUtils.showError("Compila i dati correttamente.");
 			case FAILURE -> MessageUtils.showError("Errore durante l'inserimento della glicemia.");
+			case INVALID_RANGE -> MessageUtils.showError("Inserire un valore compreso tra 1 e 500.");
 			case SUCCESS -> {
 				valoreField.clear();
 				oraField.clear();

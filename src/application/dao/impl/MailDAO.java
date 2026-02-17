@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.database.Database;
+import application.model.Diabetologo;
 import application.model.Mail;
+import application.model.Paziente;
 import application.model.Utente;
-import application.model.UtenteInfo;
 
 public class MailDAO implements application.dao.interfaces.MailDAOinterface {
 
@@ -143,19 +144,52 @@ public class MailDAO implements application.dao.interfaces.MailDAOinterface {
     }
 
     //Restituisce una lista di informazioni (nome, cognome, mail) di un determinato utente (diabetologo/paziente) a partire dal ruolo
-    public List<UtenteInfo> getUtenteInfo(String role) {
-        List<UtenteInfo> lista = new ArrayList<>();
-        String query = "SELECT nome, cognome, mail FROM " + role;
+    public List<Diabetologo> getDiabetologoInfo() {
+        List<Diabetologo> lista = new ArrayList<>();
+        String query = "SELECT nome, cognome, mail FROM diabetologi";
         try (Connection conn = Database.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    UtenteInfo ui = new UtenteInfo(
+                    Diabetologo d = new Diabetologo(
+                        null,
+                        null,
                         rs.getString("nome"),
                         rs.getString("cognome"),
+                        null,
+                        null,
+                        null,
                         rs.getString("mail"));
-                    lista.add(ui);
+                    lista.add(d);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    public List<Paziente> getPazienteInfo() {
+        List<Paziente> lista = new ArrayList<>();
+        String query = "SELECT nome, cognome, mail FROM pazienti";
+        try (Connection conn = Database.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Paziente p = new Paziente(
+                        null,
+                        null,
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        null,
+                        null,
+                        null,
+                        rs.getString("mail"),
+                        null);
+
+                    lista.add(p);
                 }
             }
         } catch (SQLException e) {
