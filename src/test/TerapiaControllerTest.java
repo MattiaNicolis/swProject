@@ -94,7 +94,7 @@ public class TerapiaControllerTest {
     @Test
     @DisplayName("CREATION FAIL CASE")
     void testCreazioneTerapiaFallita() throws Exception {
-        assertEquals("FAILURE", invokeManageTerapia("farmacoSbagliato", "1", "1", LocalDate.of(2026, 02, 10), LocalDate.of(2026, 03, 5), "indicazioni").toString());
+        assertEquals("FAILURE", invokeManageTerapia("farmacoSbagliato", "1", "1", LocalDate.of(2026, 12, 19), LocalDate.of(2026, 12, 20), "indicazioni").toString());
     }
 
     @Test

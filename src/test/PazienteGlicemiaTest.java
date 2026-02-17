@@ -97,6 +97,24 @@ public class PazienteGlicemiaTest {
     }
 
     @Test
+    @DisplayName("INVALID RANGE CASE")
+    void testInvalidRange() {
+        try {
+            Object result = invokeTryCreateGlicemia("0", "13", "45", "Pre pasto");
+            assertEquals("INVALID_RANGE", result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Object result = invokeTryCreateGlicemia("501", "13", "45", "Pre pasto");
+            assertEquals("INVALID_RANGE", result.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     @DisplayName("INVALID DATA CASE")
     void testInvalidData() {
         // Caso caratteri non numerici
