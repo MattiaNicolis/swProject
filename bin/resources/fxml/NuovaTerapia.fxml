@@ -58,7 +58,7 @@
                     <TextField fx:id="dosiGiornaliereField" promptText="Es. 1, 2, 3..." styleClass="field" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                     
                     <Label styleClass="label2" text="Quantità per Dose:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="quantitàField" promptText="Es. 5 unità, 1 compressa" styleClass="field" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                    <TextField fx:id="quantitàField" promptText="Es. 1, 2, 3..." styleClass="field" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                     
                     <Label styleClass="label2" text="Data Inizio:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <DatePicker fx:id="dataInizioField" promptText="Data di inizio" styleClass="data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
