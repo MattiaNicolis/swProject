@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.10.9)  4 FEB 2026 16:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.10.9)  16 FEB 2026 22:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -954,10 +954,10 @@ l.93     \newpage
 
 ]
 Capitolo 1.
-<../documentation/images/casi-uso-Totale.png, id=90, 833.1125pt x 558.085pt>
-File: ../documentation/images/casi-uso-Totale.png Graphic file (type png)
-<use ../documentation/images/casi-uso-Totale.png>
-Package pdftex.def Info: ../documentation/images/casi-uso-Totale.png  used on input line 106.
+<../documentation/images/casi-uso-totale.png, id=98, 833.1125pt x 558.085pt>
+File: ../documentation/images/casi-uso-totale.png Graphic file (type png)
+<use ../documentation/images/casi-uso-totale.png>
+Package pdftex.def Info: ../documentation/images/casi-uso-totale.png  used on input line 106.
 (pdftex.def)             Requested size: 500.77129pt x 335.4582pt.
 
 Overfull \hbox (45.52718pt too wide) in paragraph at lines 106--107
@@ -967,68 +967,162 @@ Overfull \hbox (45.52718pt too wide) in paragraph at lines 106--107
 [1
 
 
- <../documentation/images/casi-uso-Totale.png>]
-<../documentation/images/activity-diagram-modifcaDatiPaziente.jpg, id=100, 908.39375pt x 958.58125pt>
-File: ../documentation/images/activity-diagram-modifcaDatiPaziente.jpg Graphic file (type jpg)
-<use ../documentation/images/activity-diagram-modifcaDatiPaziente.jpg>
-Package pdftex.def Info: ../documentation/images/activity-diagram-modifcaDatiPaziente.jpg  used on input line 150.
-(pdftex.def)             Requested size: 227.62206pt x 240.18591pt.
- [2 <../documentation/images/activity-diagram-modifcaDatiPaziente.jpg>]
-<../documentation/images/activity-diagram-riceviNotifica.jpeg, id=116, 1170.3725pt x 1171.37625pt>
-File: ../documentation/images/activity-diagram-riceviNotifica.jpeg Graphic file (type jpg)
-<use ../documentation/images/activity-diagram-riceviNotifica.jpeg>
-Package pdftex.def Info: ../documentation/images/activity-diagram-riceviNotifica.jpeg  used on input line 185.
-(pdftex.def)             Requested size: 318.66948pt x 318.939pt.
- [3 <../documentation/images/activity-diagram-riceviNotifica.jpeg>] [4]
-<../documentation/images/diagramma-attività-login.png, id=126, 282.05376pt x 382.42876pt>
+ <../documentation/images/casi-uso-totale.png>]
+<../documentation/images/sequence-diagram-diabetologo.png, id=108, 1179.40625pt x 1031.855pt>
+File: ../documentation/images/sequence-diagram-diabetologo.png Graphic file (type png)
+<use ../documentation/images/sequence-diagram-diabetologo.png>
+Package pdftex.def Info: ../documentation/images/sequence-diagram-diabetologo.png  used on input line 150.
+(pdftex.def)             Requested size: 409.71692pt x 358.4623pt.
+ [2]
+<../documentation/images/sequence-diagram-misurazioni.png, id=123, 879.285pt x 766.865pt>
+File: ../documentation/images/sequence-diagram-misurazioni.png Graphic file (type png)
+<use ../documentation/images/sequence-diagram-misurazioni.png>
+Package pdftex.def Info: ../documentation/images/sequence-diagram-misurazioni.png  used on input line 210.
+(pdftex.def)             Requested size: 409.71692pt x 357.32573pt.
+ [3 <../documentation/images/sequence-diagram-diabetologo.png>] [4 <../documentation/images/sequence-diagram-misurazioni.png>]
+<../documentation/images/sequence-diagram-mail.png, id=136, 804.00375pt x 1123.19624pt>
+File: ../documentation/images/sequence-diagram-mail.png Graphic file (type png)
+<use ../documentation/images/sequence-diagram-mail.png>
+Package pdftex.def Info: ../documentation/images/sequence-diagram-mail.png  used on input line 289.
+(pdftex.def)             Requested size: 409.71692pt x 572.3769pt.
+ [5]
+<../documentation/images/diagramma-attività-login.png, id=142, 282.05376pt x 382.42876pt>
 File: ../documentation/images/diagramma-attività-login.png Graphic file (type png)
 <use ../documentation/images/diagramma-attività-login.png>
-Package pdftex.def Info: ../documentation/images/diagramma-attività-login.png  used on input line 315.
+Package pdftex.def Info: ../documentation/images/diagramma-attività-login.png  used on input line 297.
 (pdftex.def)             Requested size: 227.62206pt x 308.62769pt.
-<../documentation/images/activity-diagram-diabetologo.jpeg, id=127, 912.40875pt x 723.70375pt>
+ [6 <../documentation/images/sequence-diagram-mail.png>]
+<../documentation/images/activity-diagram-diabetologo.jpeg, id=149, 912.40875pt x 723.70375pt>
 File: ../documentation/images/activity-diagram-diabetologo.jpeg Graphic file (type jpg)
 <use ../documentation/images/activity-diagram-diabetologo.jpeg>
-Package pdftex.def Info: ../documentation/images/activity-diagram-diabetologo.jpeg  used on input line 321.
+Package pdftex.def Info: ../documentation/images/activity-diagram-diabetologo.jpeg  used on input line 303.
 (pdftex.def)             Requested size: 455.24411pt x 361.08904pt.
- [5 <../documentation/images/diagramma-attività-login.png>]
-<../documentation/images/activity-diagram-paziente.jpeg, id=135, 912.40875pt x 583.17876pt>
+ [7 <../documentation/images/diagramma-attività-login.png>]
+<../documentation/images/activity-diagram-paziente.jpeg, id=156, 912.40875pt x 583.17876pt>
 File: ../documentation/images/activity-diagram-paziente.jpeg Graphic file (type jpg)
 <use ../documentation/images/activity-diagram-paziente.jpeg>
-Package pdftex.def Info: ../documentation/images/activity-diagram-paziente.jpeg  used on input line 327.
+Package pdftex.def Info: ../documentation/images/activity-diagram-paziente.jpeg  used on input line 309.
 (pdftex.def)             Requested size: 455.24411pt x 290.97466pt.
- [6 <../documentation/images/activity-diagram-diabetologo.jpeg>] [7 <../documentation/images/activity-diagram-paziente.jpeg>]
+ [8 <../documentation/images/activity-diagram-diabetologo.jpeg>]
+<../documentation/images/diagramma-classi.jpeg, id=162, 1110.1475pt x 763.85374pt>
+File: ../documentation/images/diagramma-classi.jpeg Graphic file (type jpg)
+<use ../documentation/images/diagramma-classi.jpeg>
+Package pdftex.def Info: ../documentation/images/diagramma-classi.jpeg  used on input line 317.
+(pdftex.def)             Requested size: 455.24411pt x 313.24033pt.
+ [9 <../documentation/images/activity-diagram-paziente.jpeg>]
+<../documentation/images/UML-controller3.jpeg, id=168, 603.25375pt x 362.35374pt>
+File: ../documentation/images/UML-controller3.jpeg Graphic file (type jpg)
+<use ../documentation/images/UML-controller3.jpeg>
+Package pdftex.def Info: ../documentation/images/UML-controller3.jpeg  used on input line 323.
+(pdftex.def)             Requested size: 409.71692pt x 246.09871pt.
+<../documentation/images/UML-controller1.jpeg, id=169, 603.25375pt x 1064.97874pt>
+File: ../documentation/images/UML-controller1.jpeg Graphic file (type jpg)
+<use ../documentation/images/UML-controller1.jpeg>
+Package pdftex.def Info: ../documentation/images/UML-controller1.jpeg  used on input line 327.
+(pdftex.def)             Requested size: 364.19667pt x 642.941pt.
+<../documentation/images/UML-controller2.jpeg, id=170, 603.25375pt x 1085.05376pt>
+File: ../documentation/images/UML-controller2.jpeg Graphic file (type jpg)
+<use ../documentation/images/UML-controller2.jpeg>
+Package pdftex.def Info: ../documentation/images/UML-controller2.jpeg  used on input line 331.
+(pdftex.def)             Requested size: 364.19667pt x 655.06052pt.
+ [10 <../documentation/images/diagramma-classi.jpeg> <../documentation/images/UML-controller3.jpeg>] [11 <../documentation/images/UML-controller1.jpeg>]
+<../documentation/images/sequence-diagram-loginController.png, id=183, 871.255pt x 1084.05pt>
+File: ../documentation/images/sequence-diagram-loginController.png Graphic file (type png)
+<use ../documentation/images/sequence-diagram-loginController.png>
+Package pdftex.def Info: ../documentation/images/sequence-diagram-loginController.png  used on input line 338.
+(pdftex.def)             Requested size: 409.71692pt x 509.78477pt.
+<../documentation/images/sequence-diagram-terapiaController.png, id=184, 1131.22626pt x 1462.46375pt>
+File: ../documentation/images/sequence-diagram-terapiaController.png Graphic file (type png)
+<use ../documentation/images/sequence-diagram-terapiaController.png>
+Package pdftex.def Info: ../documentation/images/sequence-diagram-terapiaController.png  used on input line 343.
+(pdftex.def)             Requested size: 409.71692pt x 529.67766pt.
+ [12 <../documentation/images/UML-controller2.jpeg>]
+<../documentation/images/sequence-diagram-mailController.png, id=190, 1021.8175pt x 825.0825pt>
+File: ../documentation/images/sequence-diagram-mailController.png Graphic file (type png)
+<use ../documentation/images/sequence-diagram-mailController.png>
+Package pdftex.def Info: ../documentation/images/sequence-diagram-mailController.png  used on input line 348.
+(pdftex.def)             Requested size: 409.71692pt x 330.8329pt.
+ [13 <../documentation/images/sequence-diagram-loginController.png>]
+<../documentation/images/sequence-diagram-pazienteController.png, id=197, 1017.8025pt x 1671.24374pt>
+File: ../documentation/images/sequence-diagram-pazienteController.png Graphic file (type png)
+<use ../documentation/images/sequence-diagram-pazienteController.png>
+Package pdftex.def Info: ../documentation/images/sequence-diagram-pazienteController.png  used on input line 353.
+(pdftex.def)             Requested size: 409.71692pt x 672.76985pt.
+ [14 <../documentation/images/sequence-diagram-terapiaController.png>] [15 <../documentation/images/sequence-diagram-mailController.png>] [16 <../documentation/images/sequence-diagram-pazienteController.png>]
 Capitolo 2.
-LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 349.
+LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 375.
 (C:\Users\Mattia\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmss.fd
 File: ts1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-) [8
+) [17
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 360.
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 386.
  (C:\Users\Mattia\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-) [9]
+) [18]
 Capitolo 3.
-[10
+<../documentation/images/loginControllerTest1.png, id=228, 227.34938pt x 66.2475pt>
+File: ../documentation/images/loginControllerTest1.png Graphic file (type png)
+<use ../documentation/images/loginControllerTest1.png>
+Package pdftex.def Info: ../documentation/images/loginControllerTest1.png  used on input line 411.
+(pdftex.def)             Requested size: 273.14923pt x 79.59464pt.
+<../documentation/images/loginControllerTest2.png, id=229, 356.83313pt x 173.89969pt>
+File: ../documentation/images/loginControllerTest2.png Graphic file (type png)
+<use ../documentation/images/loginControllerTest2.png>
+Package pdftex.def Info: ../documentation/images/loginControllerTest2.png  used on input line 416.
+(pdftex.def)             Requested size: 364.19667pt x 177.49738pt.
+[19
 
-] [11] (Relazione.aux)
+ <../documentation/images/loginControllerTest1.png>]
+<../documentation/images/diabetologoPageTest1.png, id=236, 382.42876pt x 117.43875pt>
+File: ../documentation/images/diabetologoPageTest1.png Graphic file (type png)
+<use ../documentation/images/diabetologoPageTest1.png>
+Package pdftex.def Info: ../documentation/images/diabetologoPageTest1.png  used on input line 422.
+(pdftex.def)             Requested size: 364.19667pt x 111.8457pt.
+<../documentation/images/diabetologoPageTest2.png, id=237, 864.98157pt x 286.82156pt>
+File: ../documentation/images/diabetologoPageTest2.png Graphic file (type png)
+<use ../documentation/images/diabetologoPageTest2.png>
+Package pdftex.def Info: ../documentation/images/diabetologoPageTest2.png  used on input line 427.
+(pdftex.def)             Requested size: 455.24411pt x 150.95557pt.
+<../documentation/images/mailControllerTest1.png, id=238, 158.09062pt x 66.2475pt>
+File: ../documentation/images/mailControllerTest1.png Graphic file (type png)
+<use ../documentation/images/mailControllerTest1.png>
+Package pdftex.def Info: ../documentation/images/mailControllerTest1.png  used on input line 433.
+(pdftex.def)             Requested size: 273.14923pt x 114.48224pt.
+<../documentation/images/mailControllerTest2.png, id=239, 644.4075pt x 167.12437pt>
+File: ../documentation/images/mailControllerTest2.png Graphic file (type png)
+<use ../documentation/images/mailControllerTest2.png>
+Package pdftex.def Info: ../documentation/images/mailControllerTest2.png  used on input line 438.
+(pdftex.def)             Requested size: 455.24411pt x 118.07004pt.
+ [20 <../documentation/images/loginControllerTest2.png> <../documentation/images/diabetologoPageTest1.png> <../documentation/images/diabetologoPageTest2.png>]
+<../documentation/images/storiaDatiPazienteTest1.png, id=250, 282.30469pt x 125.71968pt>
+File: ../documentation/images/storiaDatiPazienteTest1.png Graphic file (type png)
+<use ../documentation/images/storiaDatiPazienteTest1.png>
+Package pdftex.def Info: ../documentation/images/storiaDatiPazienteTest1.png  used on input line 444.
+(pdftex.def)             Requested size: 273.14923pt x 121.65059pt.
+<../documentation/images/storiaDatiPazienteTest2.png, id=251, 658.71094pt x 277.035pt>
+File: ../documentation/images/storiaDatiPazienteTest2.png Graphic file (type png)
+<use ../documentation/images/storiaDatiPazienteTest2.png>
+Package pdftex.def Info: ../documentation/images/storiaDatiPazienteTest2.png  used on input line 449.
+(pdftex.def)             Requested size: 409.71692pt x 172.3179pt.
+ [21 <../documentation/images/mailControllerTest1.png> <../documentation/images/mailControllerTest2.png> <../documentation/images/storiaDatiPazienteTest1.png>] [22 <../documentation/images/storiaDatiPazienteTest2.png>] (Relazione.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 33006 strings out of 474486
- 660770 string characters out of 5743283
- 1941542 words of memory out of 5000000
- 54687 multiletter control sequences out of 15000+600000
+ 33160 strings out of 474486
+ 667935 string characters out of 5743283
+ 1937542 words of memory out of 5000000
+ 54809 multiletter control sequences out of 15000+600000
  578004 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 93i,11n,99p,1250b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,11n,99p,1250b,592s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcss1200.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsi1200.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx0800.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1095.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1200.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1200.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1728.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1728.pk> <C:\Users\Mattia\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2488.pk><C:/Users/Mattia/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Mattia/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on Relazione.pdf (13 pages, 411058 bytes).
+Output written on Relazione.pdf (24 pages, 1039903 bytes).
 PDF statistics:
- 622 PDF objects out of 1000 (max. 8388607)
- 43 named destinations out of 1000 (max. 500000)
- 323 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 758 PDF objects out of 1000 (max. 8388607)
+ 75 named destinations out of 1000 (max. 500000)
+ 440 words of extra memory for PDF output out of 10000 (max. 10000000)
 

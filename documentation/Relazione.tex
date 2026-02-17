@@ -76,7 +76,7 @@
 \title{\Huge\bfseries Progetto di ingegneria del software \\[0.5ex]
 \textcolor{azzurrino}{Glicocare} \\[1ex]
 \Large UniVR - Dipartimento di Informatica \\[1.5ex]
-\Large A.A. 2024/25}
+\Large A.A. 2025/26}
 \author{
 \Large{Marco Broccolato -- VR501013}\\[0.6em]
 \Large{Mattia Nicolis -- VR500356}\\[0.6em]
@@ -103,7 +103,7 @@
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=1.1\linewidth]{../documentation/images/casi-uso-Totale.png}
+        \includegraphics[width=1.1\linewidth]{../documentation/images/casi-uso-totale.png}
         \caption{Casi d'uso - diabetologo e paziente}
     \end{figure}
     \section{Use case}
@@ -113,7 +113,7 @@
 
     \medskip
     \begin{tcolorbox}[
-        title=$\textbf{UC}_\text{d}$ -- Visualizza dati paziente,
+        title=$\textbf{UC}_\text{d}$ -- Visualizza/Modifica dati paziente,
         colback=white,
         colframe=black,
         fonttitle=\bfseries
@@ -147,8 +147,8 @@
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.5\linewidth]{../documentation/images/activity-diagram-modifcaDatiPaziente.jpg}
-        \caption{Diagramma di sequenza - Ricevi Notifica}
+        \includegraphics[width=0.9\linewidth]{../documentation/images/sequence-diagram-diabetologo.png}
+        \caption{Diagramma di sequenza - Visualizza/Modifica dati paziente}
     \end{figure}
 
     \begin{tcolorbox}[
@@ -166,7 +166,7 @@
         \textbf{Flusso principale:}
         \begin{itemize}[label=$\triangleright$]
             \item diabetologo accede al sistema
-            \item sistema mostra l'area riservata del siabetologo
+            \item sistema mostra l'area riservata del diabetologo
             \item diabetologo clicca sul bottone "... Mail"
             \item sistema mostra l'area riservata alla mail
             \item sistema consente al diabetologo di:
@@ -177,20 +177,14 @@
         \end{itemize}
 
         \medskip
-        \textbf{Postcondizioni:}
+        \textbf{Postcondizioni:} notifica letta e/o comunicazione inviata
     \end{tcolorbox}
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.7\linewidth]{../documentation/images/activity-diagram-riceviNotifica.jpeg}
-        \caption{Diagramma di sequenza - Modifica dati paziente}
-    \end{figure}
 
     \subsection{Paziente}
     A seguito di una corretta autenticazione, il paziente accede alla propria home page, dalla quale può visualizzare i propri dati anagrafici, i grafici relativi all’andamento della glicemia e del peso corporeo, le terapie assegnate e lo storico dei questionari compilati.
 
     \begin{tcolorbox}[
-        title = $\text{UC}_\text{p}$ - Misurazione glicemia,
+        title = $\text{UC}_\text{p}$ - Misurazione glicemia/peso corporeo,
         colback=white,
         colframe=black,
         fonttitle=\bfseries
@@ -198,42 +192,26 @@
         \textbf{Attori:} paziente
 
         \medskip
-        \textbf{Precondizioni:} paziente ha effettuto correttamente l'auteniticazione al sistema
+        \textbf{Precondizioni:} paziente ha effettuto correttamente l'autenticazione al sistema
 
         \medskip
         \textbf{Flusso principale:}
         \begin{itemize}[label=$\triangleright$]
             \item paziente accede al sistema
             \item sistema mostra l'area riservata del paziente
-            \item paziente inserisce il valore della glicemia, il momento della misurazione e l'ora
+            \item paziente inserisce il valore della glicemia, il momento della misurazione e l'ora / del proprio peso corporeo
         \end{itemize}
 
         \medskip
-        \textbf{Postcondizioni:}
+        \textbf{Postcondizioni:} visualizzazione del valore inserito nel grafico
     \end{tcolorbox}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{../documentation/images/sequence-diagram-misurazioni.png}
+        \caption{Diagramma di sequenza - Misurazioni del paziente}
+    \end{figure}
 
     \medskip
-
-    \begin{tcolorbox}[
-        title = $\text{UC}_\text{p}$ - Misurazione del peso corporeo,
-        colback=white,
-        colframe=black,
-        fonttitle=\bfseries
-    ]
-        \textbf{Attori:} paziente
-        
-        \textbf{Precondizioni:} paziente ha effettuto correttamente l'auteniticazione al sistema
-        
-        \textbf{Flusso principale:}
-        \begin{itemize}[label=$\triangleright$]
-            \item paziente accede al sistema
-            \item sistema mostra l’area riservata del paziente
-            \item paziente inserisce il valore del peso corporeo
-        \end{itemize}
-
-        \medskip
-        \textbf{Postcondizioni:}
-    \end{tcolorbox}
 
     \medskip
     \begin{tcolorbox}[
@@ -256,7 +234,7 @@
         \end{itemize}
 
         \medskip
-        \textbf{Postcondizioni:}
+        \textbf{Postcondizioni:} questionario inserito nella lista dei compilati
     \end{tcolorbox}
     
     \medskip
@@ -278,7 +256,7 @@
         \end{itemize}
 
         \medskip
-        \textbf{Postcondizioni:}
+        \textbf{Postcondizioni:} notifica letta e/o comunicazione inviata
     \end{tcolorbox}
     
     \medskip
@@ -300,13 +278,17 @@
             \item sistema consente al diabetologo di:
             \begin{itemize}[label=$\diamond$]
                 \item inviare o rispondere a una mail
-                \item inviare una mail al paziente che ha compilato in maniera errata il questionario
             \end{itemize}
         \end{itemize}
 
         \medskip
-        \textbf{Postcondizioni:}
+        \textbf{Postcondizioni:} comunicazione inviata
     \end{tcolorbox}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{../documentation/images/sequence-diagram-mail.png}
+        \caption{Diagramma di sequenza - Invio mail}
+    \end{figure}
 
     \section{Activity diagram}
 
@@ -326,6 +308,50 @@
         \centering
         \includegraphics[width=1\linewidth]{../documentation/images/activity-diagram-paziente.jpeg}
         \caption{Paziente}
+    \end{figure}
+
+    \section{Diagrammi UML}
+    \subsection{Classi}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{../documentation/images/diagramma-classi.jpeg}
+        \caption{Diagramma UML delle classi}
+    \end{figure}
+    \subsection{Controller}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{../documentation/images/UML-controller3.jpeg}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{../documentation/images/UML-controller1.jpeg}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{../documentation/images/UML-controller2.jpeg}
+        \caption{Classi UML dei Controller}
+    \end{figure}
+
+    \section{Diagrammi di sequenza del software}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{../documentation/images/sequence-diagram-loginController.png}
+        \caption{Fase di autenticazione}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{../documentation/images/sequence-diagram-terapiaController.png}
+        \caption{Gestione della terapia}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{../documentation/images/sequence-diagram-mailController.png}
+        \caption{Gestione dell'invio di una mail}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{../documentation/images/sequence-diagram-pazienteController.png}
+        \caption{Pagina paziente}
     \end{figure}
 
     % --- CAPITOLO 2 - SPIEGAZIONE DEL MODO DI PROCEDERE ---
@@ -352,7 +378,7 @@
     \end{itemize}
     
     \subsection{Data Access Object (DAO)}
-    Per la gestione della persistenza è stato implementato il pattern \textbf{DAO}. Questo pattern astrae e incapsula tutti gli accessi alla base di dati (CRUD), nascondendo i dettagli complessi delle query SQL al resto dell'applicazione. Grazie ai DAO, la logica di business non dipende direttamente dal database, facilitando eventuali migrazioni o modifiche alla struttura dati.
+    Per la gestione della persistenza è stato implementato il pattern \textbf{DAO}. Questo pattern astrae e incapsula tutti gli accessi alla base di dati (CRUD), nascondendo i dettagli complessi delle query SQL al resto dell'applicazione. Grazie ai DAO, la logica dei controllori non dipende direttamente dal database, facilitando eventuali migrazioni o modifiche alla struttura dati.
 
     \subsection{Singleton}
     Il pattern \textbf{Singleton} è stato utilizzato per garantire l'univocità di determinate istanze critiche all'interno dell'applicazione.
@@ -361,13 +387,13 @@
         \item Un altro esempio è la classe \texttt{Navigator.java}: utilizzata per centralizzare la logica di navigazione, permettendo il cambio controllato delle viste (pagine) all'interno dell'interfaccia utente.
     \end{itemize}
 
-    \subsection{Service Layer (Business Logic)}
+    \subsection{Service Layer}
     Per orchestrare le operazioni tra il Controller e il livello di persistenza (DAO), è stato introdotto un \textbf{Service Layer} (rappresentato dalla classe \texttt{AdminService}).
-    Questa classe agisce come un punto di ingresso unificato per la logica di business: riceve le richieste dai controller, applica le regole di dominio necessarie e coordina le chiamate ai vari DAO. Sebbene tecnicamente definito come \textit{Service Layer}, questo componente applica il principio del \textbf{Facade Pattern}, semplificando l'interfaccia verso i sottosistemi di dati e nascondendo la complessità delle transazioni sottostanti.
+    Questa classe agisce come un punto di ingresso unificato per la logica del software: riceve le richieste dai controller, applica le regole di dominio necessarie e coordina le chiamate ai vari DAO. Sebbene tecnicamente definito come \textit{Service Layer}, questo componente applica il principio del \textbf{Facade Pattern}, semplificando l'interfaccia verso i sottosistemi di dati e nascondendo la complessità delle transazioni sottostanti.
 
     % --- CAPITOLO 3 - SPIEGAZIONE DEI TEST EFFETTUATI ---
     \chapter{Test}
-    La fase di testing rappresenta una componente critica del ciclo di vita del software, essenziale per garantire la robustezza, l'affidabilità e la corretta esecuzione delle funzionalità implementate. In linea con la metodologia agile adottata, l'attività di verifica non è stata relegata alla sola fase finale, ma è stata integrata durante tutto il processo di sviluppo.
+    In linea con la metodologia agile adottata, l'attività di verifica non è stata relegata alla sola fase finale, ma è stata integrata durante tutto il processo di sviluppo.
 
     La strategia principale adottata è stata quella dello \textbf{Unit Testing}. Questo approccio consiste nell'isolare e testare singole porzioni di codice (solitamente metodi o classi) per accertarsi che funzionino correttamente in autonomia, indipendentemente dal resto del sistema.
 
@@ -380,12 +406,52 @@
     Tra i principali scenari di test effettuati si evidenziano:
     \begin{itemize}
         \item \textbf{Meccanismo di autenticazione:} Verifica della sicurezza in fase di login. È stato accertato che l'inserimento di credenziali errate o non presenti nel database comporti il blocco dell'accesso, reindirizzando l'utente alla schermata di errore appropriata.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{../documentation/images/loginControllerTest1.png}
+            \caption{Test di autenticazione}
+        \end{figure}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{../documentation/images/loginControllerTest2.png}
+            \caption{Impostazione e "distruzione del DAO fittizio"}
+        \end{figure}
         \item \textbf{Dashboard del Diabetologo:} Verifica del corretto recupero dei dati dal database e del popolamento dinamico delle liste pazienti e delle metriche nella Home Page dedicata al medico.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\linewidth]{../documentation/images/diabetologoPageTest1.png}
+            \caption{Test della pagina del diabetologo}
+        \end{figure}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=1\linewidth]{../documentation/images/diabetologoPageTest2.png}
+            \caption{Test conteggio giorni di non compilazione}
+        \end{figure}
         \item \textbf{Sistema di notifica:} Validazione del modulo di comunicazione, con particolare attenzione al corretto invio e alla ricezione delle e-mail di avviso generate dal sistema.
-        \item \textbf{Gestione Dati Pazienti (CRUD):} Test approfonditi sulle operazioni di inserimento, aggiornamento ed eliminazione dati. È stata verificata la robustezza del sistema a fronte di \textit{input} non validi (es. formati errati) o dati mancanti, assicurando che le eccezioni vengano gestite senza causare crash del software.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{../documentation/images/mailControllerTest1.png}
+            \caption{Test del sistema di comunicazione}
+        \end{figure}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=1\linewidth]{../documentation/images/mailControllerTest2.png}
+            \caption{Test del sistema di comunicazione: "SUCCESSO"}
+        \end{figure}
+        \item \textbf{Gestione Dati Pazienti:} Test approfonditi sulle operazioni di inserimento, aggiornamento ed eliminazione dati. È stata verificata la robustezza del sistema a fronte di \textit{input} non validi (es. formati errati) o dati mancanti, assicurando che le eccezioni vengano gestite senza causare crash del software.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{../documentation/images/storiaDatiPazienteTest1.png}
+            \caption{Test gestione dati paziente}
+        \end{figure}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\linewidth]{../documentation/images/storiaDatiPazienteTest2.png}
+            \caption{Test creazione dati paziente}
+        \end{figure}
     \end{itemize}
     
-    \subsection{Validazione dell'Interfaccia Grafica (GUI)}
+    \subsection{Validazione dell'Interfaccia Grafica}
     Oltre ai test automatici sulla logica, è stata eseguita un'estesa fase di \textbf{testing manuale} sull'interfaccia utente.
     L'obiettivo di questa fase è stato verificare la robustezza del layer di presentazione (View) e la corretta integrazione con il Controller.
     
@@ -397,5 +463,6 @@
     \end{itemize}
 
     \section{Test utente generico}
+    Verso la fase finale dello sviluppo, il software è stato testato da un utente generico (un familiare esterno al team di sviluppo). L'esito di questa sessione è stato estremamente costruttivo, in quanto ha consentito di risolvere alcune imprecisioni nella gestione della logica di controllo e di affinare ulteriormente l'interazione tra utente e sistema.
 
 \end{document}
