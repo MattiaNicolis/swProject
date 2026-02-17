@@ -4,14 +4,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.RadioButton?> <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?> <?import javafx.scene.image.Image?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="mainPane" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/LoginPage.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.LoginController">
+<HBox fx:id="mainPane" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/LoginPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.LoginController">
    <children>
       
       <VBox fx:id="subPane" alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
@@ -21,7 +23,7 @@
          <children>
             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/images/logo-no-sfondo.png" />
+                  <Image url="@../images/logo-no-sfondo.png" />
                </image>
             </ImageView>
             
@@ -36,12 +38,12 @@
                <children>
                   <ImageView fitHeight="350.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/images/diabetologo.png" />
+                        <Image url="@../images/diabetologo.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="350.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/C:/Users/Mattia/cartelleGit/swProject/src/resources/images/paziente.png" />
+                        <Image url="@../images/paziente.png" />
                      </image>
                   </ImageView>
                </children>

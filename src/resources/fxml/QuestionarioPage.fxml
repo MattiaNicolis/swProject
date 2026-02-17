@@ -75,7 +75,7 @@
                         <VBox spacing="5.0">
                            <children>
                               <Label text="Quantità per dose:" />
-                              <TextField fx:id="quantitàField" promptText="Es. 1 compressa" styleClass="compilazione" />
+                              <TextField fx:id="quantitàField" promptText="Es. 1, 2, 3..." styleClass="compilazione" />
                            </children>
                         </VBox>
 
